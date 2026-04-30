@@ -12,11 +12,14 @@ import {
   getLastUpdateState
 } from './auto-updater';
 import { songsStore } from './songs-store';
+import { generateFusion, listTemplates } from './fusion-pipeline';
 import type {
   AIRouteRequest,
   LyricsRequest,
   LyricsPipelineResult,
-  SongProject
+  SongProject,
+  FusionData,
+  FusionGenerateRequest
 } from '../shared/types';
 
 const isDev = !app.isPackaged;
@@ -99,6 +102,20 @@ function registerIpc() {
   ipcMain.handle(IPC.SONGS_EXPORT_TXT, (_e, id: string) => songsStore.exportTxt(id, mainWindow));
   ipcMain.handle(IPC.SONGS_EXPORT_BACKUP, () => songsStore.exportBackup(mainWindow));
   ipcMain.handle(IPC.SONGS_IMPORT_BACKUP, () => songsStore.importBackup(mainWindow));
+
+  // Fusion (T06)
+  ipcMain.handle(IPC.FUSION_TEMPLATES, () => listTemplates());
+  ipcMain.handle(IPC.FUSION_GENERATE, async (_e, req: FusionGenerateRequest) => {
+    const song = songsStore.get(req.songId);
+    if (!song) throw new Error('Song nicht gefunden');
+    const fusion = await generateFusion(song, req);
+    songsStore.saveFusion(req.songId, fusion);
+    return fusion;
+  });
+  ipcMain.handle(IPC.FUSION_SAVE, (_e, id: string, fusion: FusionData) =>
+    songsStore.saveFusion(id, fusion)
+  );
+  ipcMain.handle(IPC.FUSION_EXPORT_TXT, (_e, id: string) => songsStore.exportFusionTxt(id, mainWindow));
 }
 
 // === App Lifecycle ===

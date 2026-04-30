@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react';
 import { LyricsTab } from './tabs/LyricsTab';
+import { FusionTab } from './tabs/FusionTab';
 import { SettingsTab } from './tabs/SettingsTab';
 import { AboutTab } from './tabs/AboutTab';
 import { UpdateBadge } from './components/UpdateBadge';
 import { HistorySidebar } from './components/HistorySidebar';
 import { SongsProvider } from './lib/songs-context';
 
-type TabId = 'lyrics' | 'settings' | 'about';
+type TabId = 'lyrics' | 'fusion' | 'settings' | 'about';
 
 const TABS: { id: TabId; label: string }[] = [
-  { id: 'lyrics',   label: 'Lyrics Generator' },
+  { id: 'lyrics',   label: 'Lyrics' },
+  { id: 'fusion',   label: 'Fusion' },
   { id: 'settings', label: 'Einstellungen' },
   { id: 'about',    label: 'Über' }
 ];
@@ -54,11 +56,12 @@ export function App() {
         </header>
 
         <div className="app-body">
-          {sidebarOpen && active === 'lyrics' && (
-            <HistorySidebar onPick={() => setActive('lyrics')} />
+          {sidebarOpen && (active === 'lyrics' || active === 'fusion') && (
+            <HistorySidebar onPick={() => { /* Tab beibehalten */ }} />
           )}
           <main className="app-main">
             {active === 'lyrics'   && <LyricsTab />}
+            {active === 'fusion'   && <FusionTab />}
             {active === 'settings' && <SettingsTab />}
             {active === 'about'    && <AboutTab />}
           </main>

@@ -32,7 +32,13 @@ export const IPC = {
   SONGS_DUPLICATE: 'songs:duplicate',
   SONGS_EXPORT_TXT: 'songs:exportTxt',
   SONGS_EXPORT_BACKUP: 'songs:exportBackup',
-  SONGS_IMPORT_BACKUP: 'songs:importBackup'
+  SONGS_IMPORT_BACKUP: 'songs:importBackup',
+
+  // Fusion (T06)
+  FUSION_TEMPLATES: 'fusion:templates',
+  FUSION_GENERATE:  'fusion:generate',
+  FUSION_SAVE:      'fusion:save',
+  FUSION_EXPORT_TXT:'fusion:exportTxt'
 } as const;
 
 export type IpcChannel = (typeof IPC)[keyof typeof IPC];

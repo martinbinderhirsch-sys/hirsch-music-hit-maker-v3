@@ -2,7 +2,7 @@ import { app, dialog, BrowserWindow } from 'electron';
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import type { SongProject, SongListEntry, LyricsRequest, LyricsPipelineResult } from '../shared/types';
+import type { SongProject, SongListEntry, LyricsRequest, LyricsPipelineResult, FusionData } from '../shared/types';
 
 // Speicherort: <userData>/songs.json + <userData>/songs/<id>.json (Einzeldateien für Robustheit).
 // Die Liste (songs.json) ist der Index, die Einzeldateien enthalten die vollen Inhalte.
@@ -69,7 +69,8 @@ function toListEntry(song: SongProject): SongListEntry {
     updatedAt: song.updatedAt,
     genre: song.request.genre,
     locale: song.request.locale,
-    favorite: !!song.favorite
+    favorite: !!song.favorite,
+    hasFusion: !!song.fusion && song.fusion.sections.length > 0
   };
 }
 
@@ -109,7 +110,59 @@ export const songsStore = {
     return song;
   },
 
-  update(id: string, patch: Partial<Pick<SongProject, 'title' | 'notes' | 'favorite' | 'result'>>): SongProject | null {
+  saveFusion(id: string, fusion: FusionData): SongProject | null {
+    const existing = songsStore.get(id);
+    if (!existing) return null;
+    const updated: SongProject = {
+      ...existing,
+      fusion: { ...fusion, updatedAt: new Date().toISOString() },
+      updatedAt: new Date().toISOString()
+    };
+    fs.writeFileSync(songFilePath(id), JSON.stringify(updated, null, 2), 'utf8');
+    const index = readIndex().map(e => e.id === id ? toListEntry(updated) : e);
+    writeIndex(index);
+    return updated;
+  },
+
+  async exportFusionTxt(id: string, win: BrowserWindow | null): Promise<{ ok: boolean; path?: string; error?: string }> {
+    const song = songsStore.get(id);
+    if (!song) return { ok: false, error: 'Song nicht gefunden' };
+    if (!song.fusion) return { ok: false, error: 'Kein Fusion-Layout vorhanden' };
+
+    const safeName = song.title.replace(/[\\/:*?"<>|]/g, '_').slice(0, 80) || song.id;
+    const result = await dialog.showSaveDialog(win ?? undefined as unknown as BrowserWindow, {
+      title: 'Fusion (Lead-Sheet) als TXT speichern',
+      defaultPath: `${safeName} — Fusion.txt`,
+      filters: [{ name: 'Text', extensions: ['txt'] }]
+    });
+    if (result.canceled || !result.filePath) return { ok: false, error: 'Abgebrochen' };
+
+    const f = song.fusion;
+    const lines: string[] = [
+      song.title,
+      '='.repeat(song.title.length),
+      '',
+      `Tonart: ${f.key}   Tempo: ${f.tempoBpm} BPM   Takt: ${f.timeSignature}   Feel: ${f.feel}`,
+      `Stimme: ${f.voice}   Genre: ${song.request.genre}`,
+      '',
+      '── ARRANGEMENT ──',
+      f.arrangement || '(keine Notizen)',
+      '',
+      '── STRUKTUR ──',
+      ''
+    ];
+    for (const s of f.sections) {
+      const head = `[ ${s.label || s.kind.toUpperCase()} · ${s.bars} Takte${s.lyricsRef ? ` · Lyrics: ${s.lyricsRef}` : ''} ]`;
+      lines.push(head);
+      lines.push(`  ${s.chords}`);
+      if (s.notes) lines.push(`  Note: ${s.notes}`);
+      lines.push('');
+    }
+    fs.writeFileSync(result.filePath, lines.join('\n'), 'utf8');
+    return { ok: true, path: result.filePath };
+  },
+
+  update(id: string, patch: Partial<Pick<SongProject, 'title' | 'notes' | 'favorite' | 'result' | 'fusion'>>): SongProject | null {
     const existing = songsStore.get(id);
     if (!existing) return null;
     const updated: SongProject = {
@@ -158,6 +211,19 @@ export const songsStore = {
     });
     if (result.canceled || !result.filePath) return { ok: false, error: 'Abgebrochen' };
 
+    const fusionBlock = song.fusion ? [
+      '',
+      '--- FUSION (Architektur) ---',
+      '',
+      `Tonart: ${song.fusion.key}  ·  Tempo: ${song.fusion.tempoBpm} BPM  ·  Takt: ${song.fusion.timeSignature}  ·  Feel: ${song.fusion.feel}`,
+      `Stimme: ${song.fusion.voice}`,
+      song.fusion.arrangement ? `Arrangement: ${song.fusion.arrangement}` : '',
+      '',
+      ...song.fusion.sections.map(s =>
+        `[${(s.label || s.kind).toUpperCase()} · ${s.bars} Takte] ${s.chords}${s.notes ? ` (${s.notes})` : ''}`
+      )
+    ].filter(Boolean) : [];
+
     const txt = [
       song.title,
       '='.repeat(song.title.length),
@@ -169,6 +235,7 @@ export const songsStore = {
       '--- LYRICS (Final) ---',
       '',
       song.result.localized,
+      ...fusionBlock,
       '',
       '--- POLISHED ---',
       '',

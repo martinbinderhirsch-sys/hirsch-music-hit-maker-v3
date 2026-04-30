@@ -6,7 +6,10 @@ import type {
   LyricsPipelineResult,
   UpdateState,
   SongProject,
-  SongListEntry
+  SongListEntry,
+  FusionData,
+  FusionGenerateRequest,
+  FusionTemplate
 } from '../shared/types';
 
 // Schmale, klar definierte Bridge — der Renderer hat KEINEN direkten Node-Zugriff.
@@ -49,6 +52,12 @@ const api = {
     exportTxt: (id: string) => ipcRenderer.invoke(IPC.SONGS_EXPORT_TXT, id) as Promise<{ ok: boolean; path?: string; error?: string }>,
     exportBackup: () => ipcRenderer.invoke(IPC.SONGS_EXPORT_BACKUP) as Promise<{ ok: boolean; path?: string; count?: number; error?: string }>,
     importBackup: () => ipcRenderer.invoke(IPC.SONGS_IMPORT_BACKUP) as Promise<{ ok: boolean; imported?: number; error?: string }>
+  },
+  fusion: {
+    templates: () => ipcRenderer.invoke(IPC.FUSION_TEMPLATES) as Promise<FusionTemplate[]>,
+    generate:  (req: FusionGenerateRequest) => ipcRenderer.invoke(IPC.FUSION_GENERATE, req) as Promise<FusionData>,
+    save:      (id: string, fusion: FusionData) => ipcRenderer.invoke(IPC.FUSION_SAVE, id, fusion) as Promise<SongProject | null>,
+    exportTxt: (id: string) => ipcRenderer.invoke(IPC.FUSION_EXPORT_TXT, id) as Promise<{ ok: boolean; path?: string; error?: string }>
   }
 };
 
