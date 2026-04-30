@@ -53,6 +53,9 @@ export function SettingsTab() {
         <p className="hint">
           Wird verschlüsselt mit Windows DPAPI (safeStorage) gespeichert.
           Hol dir einen Key auf openrouter.ai.
+          {settings.openrouterApiKey && (
+            <span className="hint-ok"> · Key vorhanden ✓</span>
+          )}
         </p>
       </div>
 
