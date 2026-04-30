@@ -3,7 +3,10 @@ name: Build Windows Installer
 on:
   push:
     branches: [main]
-  workflow_dispatch:   # erlaubt manuellen Start über GitHub-UI
+  workflow_dispatch:
+
+permissions:
+  contents: write       # nötig für Release-Erstellung
 
 jobs:
   build:
@@ -30,10 +33,23 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Installer als Artefakt hochladen
-        uses: actions/upload-artifact@v4
+      - name: Setup.exe als GitHub Release veröffentlichen
+        uses: softprops/action-gh-release@v2
         with:
-          name: Hirsch-Music-Hit-Maker-Setup
-          path: release/*.exe
-          retention-days: 30
-          if-no-files-found: error
+          tag_name: v0.1.0-build-${{ github.run_number }}
+          name: "Hirsch Music Hit Maker v0.1.0 (Build ${{ github.run_number }})"
+          body: |
+            **Automatisch erzeugter Windows-Installer**
+
+            - Doppelklick auf `Hirsch Music Hit Maker-Setup-0.1.0.exe` zum Installieren
+            - Installer-Wizard erlaubt freie Verzeichniswahl
+            - Erstellt Desktop- und Startmenü-Verknüpfung
+            - Falls Windows SmartScreen warnt: "Weitere Informationen" → "Trotzdem ausführen"
+              (Code-Signing-Zertifikat folgt vor Public Release)
+          files: |
+            release/*.exe
+            release/*.exe.blockmap
+          draft: false
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
