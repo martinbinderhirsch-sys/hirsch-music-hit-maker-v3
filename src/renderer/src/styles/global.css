@@ -348,3 +348,15 @@ input[type="range"] { accent-color: var(--accent); }
 .pipeline-step-error .pipeline-dot { background: var(--error); border-color: var(--error); }
 .pipeline-step-error { color: var(--error); }
 .pipeline-status { font-weight: 600; }
+
+/* === Settings Diagnose === */
+.diag-ok    { color: var(--ok); }
+.diag-warn  { color: #d4a24a; }
+.diag-error { color: var(--error); font-weight: 600; }
+.key-actions { display: flex; gap: 8px; margin-top: 8px; }
+.alert-ok {
+  background: rgba(110,205,140,0.10); border: 1px solid var(--ok);
+  color: var(--ok); padding: 10px 14px; border-radius: var(--radius);
+  margin: 10px 0; font-size: 13px;
+}
+.tiny { padding: 4px 10px; font-size: 11px; }

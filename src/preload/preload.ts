@@ -22,7 +22,17 @@ const api = {
   settings: {
     get: (key: string) => ipcRenderer.invoke(IPC.SETTINGS_GET, key),
     set: (key: string, value: unknown) => ipcRenderer.invoke(IPC.SETTINGS_SET, key, value),
-    getAll: () => ipcRenderer.invoke(IPC.SETTINGS_GET_ALL)
+    getAll: () => ipcRenderer.invoke(IPC.SETTINGS_GET_ALL),
+    diagnoseKey: () => ipcRenderer.invoke(IPC.SETTINGS_DIAGNOSE_KEY) as Promise<{
+      hasStoredValue: boolean; format: 'none'|'encrypted'|'plain'|'raw';
+      decryptable: boolean; length: number; preview: string;
+      encryptionAvailable: boolean; legacyImportedFrom?: string;
+    }>,
+    clearKey: () => ipcRenderer.invoke(IPC.SETTINGS_CLEAR_KEY) as Promise<boolean>,
+    testKey:  () => ipcRenderer.invoke(IPC.SETTINGS_TEST_KEY) as Promise<
+      | { ok: true; label: string; usage: number; limit: number | null }
+      | { ok: false; error: string }
+    >
   },
   ai: {
     listModels: () => ipcRenderer.invoke(IPC.AI_LIST_MODELS),

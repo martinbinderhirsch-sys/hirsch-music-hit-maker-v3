@@ -9,6 +9,9 @@ export const IPC = {
   SETTINGS_GET: 'settings:get',
   SETTINGS_SET: 'settings:set',
   SETTINGS_GET_ALL: 'settings:getAll',
+  SETTINGS_DIAGNOSE_KEY: 'settings:diagnoseKey',
+  SETTINGS_CLEAR_KEY: 'settings:clearKey',
+  SETTINGS_TEST_KEY: 'settings:testKey',
 
   // KI-Router
   AI_ROUTE: 'ai:route',

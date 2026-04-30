@@ -94,13 +94,58 @@ function decrypt(value: string): string {
   if (!value) return '';
   if (value.startsWith('enc:')) {
     try {
-      return safeStorage.decryptString(Buffer.from(value.slice(4), 'base64'));
-    } catch {
+      const out = safeStorage.decryptString(Buffer.from(value.slice(4), 'base64'));
+      return out;
+    } catch (err) {
+      console.warn('[settings] Entschlüsselung fehlgeschlagen:', (err as Error).message);
       return '';
     }
   }
   if (value.startsWith('plain:')) return value.slice(6);
   return value;
+}
+
+// Diagnose: zeigt Status des API-Keys, OHNE den Klartext preiszugeben.
+export function diagnoseApiKey(): {
+  hasStoredValue: boolean;
+  format: 'none' | 'encrypted' | 'plain' | 'raw';
+  decryptable: boolean;
+  length: number;
+  preview: string;
+  encryptionAvailable: boolean;
+  legacyImportedFrom?: string;
+} {
+  const raw = (store.get('openrouterApiKey') as string) ?? '';
+  const legacyFrom = store.get('legacyKeyImportedFrom') as string | undefined;
+  const encryptionAvailable = safeStorage.isEncryptionAvailable();
+
+  if (!raw) {
+    return { hasStoredValue: false, format: 'none', decryptable: false, length: 0, preview: '', encryptionAvailable, legacyImportedFrom: legacyFrom };
+  }
+
+  let format: 'encrypted' | 'plain' | 'raw' = 'raw';
+  if (raw.startsWith('enc:')) format = 'encrypted';
+  else if (raw.startsWith('plain:')) format = 'plain';
+
+  const decrypted = decrypt(raw);
+  const decryptable = decrypted.length > 0;
+  const preview = decryptable
+    ? decrypted.slice(0, 7) + '…' + decrypted.slice(-4)
+    : '';
+
+  return {
+    hasStoredValue: true,
+    format,
+    decryptable,
+    length: decrypted.length,
+    preview,
+    encryptionAvailable,
+    legacyImportedFrom: legacyFrom
+  };
+}
+
+export function clearApiKey(): void {
+  store.delete('openrouterApiKey');
 }
 
 export const settingsStore = {

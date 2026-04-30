@@ -1,7 +1,7 @@
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import path from 'node:path';
 import { IPC } from '../shared/ipc-channels';
-import { settingsStore } from './settings-store';
+import { settingsStore, diagnoseApiKey, clearApiKey } from './settings-store';
 import { aiRoute, listModels } from './ai-router';
 import { generateLyrics } from './lyrics-pipeline';
 import {
@@ -69,6 +69,36 @@ function registerIpc() {
     return true;
   });
   ipcMain.handle(IPC.SETTINGS_GET_ALL, () => settingsStore.getAll());
+  ipcMain.handle(IPC.SETTINGS_DIAGNOSE_KEY, () => diagnoseApiKey());
+  ipcMain.handle(IPC.SETTINGS_CLEAR_KEY, () => { clearApiKey(); return true; });
+  ipcMain.handle(IPC.SETTINGS_TEST_KEY, async () => {
+    // Schneller Live-Test gegen OpenRouter — Models-Endpoint braucht keine Credits.
+    const key = settingsStore.get('openrouterApiKey') as string;
+    if (!key) return { ok: false, error: 'Kein Key gespeichert' };
+    try {
+      const controller = new AbortController();
+      const t = setTimeout(() => controller.abort(), 15000);
+      const res = await fetch('https://openrouter.ai/api/v1/auth/key', {
+        headers: { Authorization: `Bearer ${key}` },
+        signal: controller.signal
+      });
+      clearTimeout(t);
+      if (!res.ok) {
+        const text = await res.text();
+        return { ok: false, error: `HTTP ${res.status}: ${text.slice(0, 300)}` };
+      }
+      const data = await res.json() as { data?: { label?: string; usage?: number; limit?: number | null } };
+      return {
+        ok: true,
+        label: data.data?.label ?? 'unbenannt',
+        usage: data.data?.usage ?? 0,
+        limit: data.data?.limit ?? null
+      };
+    } catch (err) {
+      const msg = err instanceof Error ? (err.name === 'AbortError' ? 'Timeout' : err.message) : String(err);
+      return { ok: false, error: msg };
+    }
+  });
 
   ipcMain.handle(IPC.AI_LIST_MODELS, () => listModels());
   ipcMain.handle(IPC.AI_ROUTE, async (_e, req: AIRouteRequest) => aiRoute(req));
