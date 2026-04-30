@@ -20,12 +20,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
+
+      - name: Lockfile entfernen (Plattform-Migration)
+        # package-lock.json wurde auf Linux erzeugt und enthält nicht die
+        # Windows-spezifischen Rollup-Optional-Deps (npm Bug 4828).
+        shell: pwsh
+        run: if (Test-Path package-lock.json) { Remove-Item package-lock.json }
 
       - name: Abhängigkeiten installieren
-        # npm install statt npm ci, weil das package-lock.json auf Linux erzeugt wurde
-        # und Rollup's plattformspezifische Optional-Deps (rollup-win32-x64-msvc) fehlen.
-        # https://github.com/npm/cli/issues/4828
         run: npm install --no-audit --no-fund
 
       - name: Renderer + Main bauen
