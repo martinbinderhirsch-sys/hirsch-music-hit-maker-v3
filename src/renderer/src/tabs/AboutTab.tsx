@@ -14,7 +14,7 @@ export function AboutTab() {
         <li>Auto-Updater über GitHub Releases</li>
         <li>Lokale Song-History mit Suche, Favoriten, TXT-Export und JSON-Backup</li>
       </ul>
-      <p className="muted">© 2026 Hirsch · Version 0.1.2 · Pre-Alpha</p>
+      <p className="muted">© 2026 Hirsch · Version 0.1.3 · Pre-Alpha</p>
     </div>
   );
 }
