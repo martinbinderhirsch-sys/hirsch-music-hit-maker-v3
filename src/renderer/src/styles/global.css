@@ -124,3 +124,57 @@ input[type="range"] { accent-color: var(--accent); }
 .about-tab li { margin: 6px 0; }
 .muted { color: var(--text-dim); font-size: 11px; }
 .loading { color: var(--text-dim); }
+
+/* === Update-Badge === */
+.update-badge-wrap { position: relative; }
+.update-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--bg-2); border: 1px solid var(--line); color: var(--text-dim);
+  padding: 6px 12px; border-radius: 999px; font-size: 12px; cursor: pointer;
+  transition: border-color 120ms, color 120ms;
+}
+.update-badge:hover { border-color: var(--accent); color: var(--text); }
+.update-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--text-dim);
+  box-shadow: 0 0 0 0 currentColor;
+}
+.update-dot.ok        { background: var(--ok); }
+.update-dot.available { background: var(--accent); }
+.update-dot.ready     { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+.update-dot.error     { background: var(--error); }
+.update-dot.pulse     { animation: pulse 1.2s infinite ease-out; background: var(--accent); }
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(212,162,74,0.6); }
+  100% { box-shadow: 0 0 0 10px rgba(212,162,74,0); }
+}
+.update-label { white-space: nowrap; }
+
+.update-popover {
+  position: absolute; top: calc(100% + 8px); right: 0; z-index: 100;
+  width: 320px; background: var(--bg-1); border: 1px solid var(--line);
+  border-radius: var(--radius); box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  overflow: hidden;
+}
+.popover-header {
+  padding: 10px 14px; border-bottom: 1px solid var(--line);
+  font-size: 12px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px;
+}
+.popover-body { padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.popover-body p { margin: 0; font-size: 13px; }
+.btn-secondary {
+  background: transparent; border: 1px solid var(--line); color: var(--text);
+  padding: 8px 14px; border-radius: var(--radius); cursor: pointer; font-size: 12px;
+}
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+.release-notes {
+  background: var(--bg-2); padding: 10px; margin: 0;
+  border-radius: 6px; font-size: 11px; max-height: 140px; overflow: auto;
+  white-space: pre-wrap;
+}
+.progress {
+  height: 8px; background: var(--bg-2); border-radius: 999px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%; background: var(--accent); transition: width 200ms;
+}

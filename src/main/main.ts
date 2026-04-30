@@ -4,6 +4,13 @@ import { IPC } from '../shared/ipc-channels';
 import { settingsStore } from './settings-store';
 import { aiRoute, listModels } from './ai-router';
 import { generateLyrics } from './lyrics-pipeline';
+import {
+  initAutoUpdater,
+  checkForUpdates,
+  downloadUpdate,
+  quitAndInstall,
+  getLastUpdateState
+} from './auto-updater';
 import type { AIRouteRequest, LyricsRequest } from '../shared/types';
 
 const isDev = !app.isPackaged;
@@ -58,6 +65,19 @@ function registerIpc() {
   ipcMain.handle(IPC.AI_ROUTE, async (_e, req: AIRouteRequest) => aiRoute(req));
 
   ipcMain.handle(IPC.LYRICS_GENERATE, async (_e, req: LyricsRequest) => generateLyrics(req));
+
+  ipcMain.handle(IPC.UPDATE_CHECK, async () => {
+    await checkForUpdates();
+    return getLastUpdateState();
+  });
+  ipcMain.handle(IPC.UPDATE_DOWNLOAD, async () => {
+    await downloadUpdate();
+    return getLastUpdateState();
+  });
+  ipcMain.handle(IPC.UPDATE_INSTALL, () => {
+    quitAndInstall();
+    return true;
+  });
 }
 
 // === App Lifecycle ===
@@ -65,6 +85,7 @@ function registerIpc() {
 app.whenReady().then(() => {
   registerIpc();
   createWindow();
+  if (mainWindow) initAutoUpdater(mainWindow);
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();

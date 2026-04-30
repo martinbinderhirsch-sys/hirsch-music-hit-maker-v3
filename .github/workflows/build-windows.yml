@@ -33,23 +33,30 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup.exe als GitHub Release veröffentlichen
+      - name: Version aus package.json lesen
+        id: pkg
+        shell: pwsh
+        run: |
+          $v = (Get-Content package.json | ConvertFrom-Json).version
+          "version=$v" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+
+      - name: Setup.exe + Update-Feed als GitHub Release veröffentlichen
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v0.1.0-build-${{ github.run_number }}
-          name: "Hirsch Music Hit Maker v0.1.0 (Build ${{ github.run_number }})"
+          tag_name: v${{ steps.pkg.outputs.version }}
+          name: "Hirsch Music Hit Maker v${{ steps.pkg.outputs.version }}"
           body: |
-            **Automatisch erzeugter Windows-Installer**
+            **Automatischer Build #${{ github.run_number }}**
 
-            - Doppelklick auf `Hirsch Music Hit Maker-Setup-0.1.0.exe` zum Installieren
-            - Installer-Wizard erlaubt freie Verzeichniswahl
-            - Erstellt Desktop- und Startmenü-Verknüpfung
+            - Doppelklick auf den Installer zum Installieren
+            - Auto-Updater zieht ab dieser Version künftige Updates automatisch
             - Falls Windows SmartScreen warnt: "Weitere Informationen" → "Trotzdem ausführen"
-              (Code-Signing-Zertifikat folgt vor Public Release)
           files: |
             release/*.exe
             release/*.exe.blockmap
+            release/latest.yml
           draft: false
-          prerelease: true
+          prerelease: false
+          fail_on_unmatched_files: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

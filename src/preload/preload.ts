@@ -1,6 +1,6 @@
 import { contextBridge, ipcRenderer } from 'electron';
 import { IPC } from '../shared/ipc-channels';
-import type { AIRouteRequest, LyricsRequest } from '../shared/types';
+import type { AIRouteRequest, LyricsRequest, UpdateState } from '../shared/types';
 
 // Schmale, klar definierte Bridge — der Renderer hat KEINEN direkten Node-Zugriff.
 
@@ -19,6 +19,16 @@ const api = {
   },
   lyrics: {
     generate: (req: LyricsRequest) => ipcRenderer.invoke(IPC.LYRICS_GENERATE, req)
+  },
+  updates: {
+    check:    () => ipcRenderer.invoke(IPC.UPDATE_CHECK)    as Promise<UpdateState>,
+    download: () => ipcRenderer.invoke(IPC.UPDATE_DOWNLOAD) as Promise<UpdateState>,
+    install:  () => ipcRenderer.invoke(IPC.UPDATE_INSTALL)  as Promise<boolean>,
+    onStatus: (cb: (state: UpdateState) => void) => {
+      const listener = (_e: unknown, state: UpdateState) => cb(state);
+      ipcRenderer.on(IPC.UPDATE_STATUS, listener);
+      return () => ipcRenderer.removeListener(IPC.UPDATE_STATUS, listener);
+    }
   }
 };
 

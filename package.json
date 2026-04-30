@@ -1,6 +1,6 @@
 {
   "name": "hirsch-music-hit-maker",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Hirsch Music Hit Maker — AI-gestützte Songwriting-Desktop-App mit Multi-KI-Router (140 Sprachen)",
   "main": "dist/main/main.js",
   "author": {
@@ -23,7 +23,8 @@
     "lint": "echo \"(lint placeholder)\""
   },
   "dependencies": {
-    "electron-store": "8.2.0"
+    "electron-store": "8.2.0",
+    "electron-updater": "6.2.1"
   },
   "devDependencies": {
     "@types/node": "20.11.30",
@@ -77,6 +78,14 @@
       "deleteAppDataOnUninstall": false,
       "include": "build/installer.nsh"
     },
-    "publish": null
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "martinbinderhirsch-sys",
+        "repo": "hirsch-music-hit-maker-v3",
+        "vPrefixedTagName": true,
+        "releaseType": "release"
+      }
+    ]
   }
 }

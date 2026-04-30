@@ -15,7 +15,13 @@ export const IPC = {
   AI_LIST_MODELS: 'ai:listModels',
 
   // Lyrics-Pipeline
-  LYRICS_GENERATE: 'lyrics:generate'
+  LYRICS_GENERATE: 'lyrics:generate',
+
+  // Auto-Updater
+  UPDATE_CHECK: 'update:check',
+  UPDATE_DOWNLOAD: 'update:download',
+  UPDATE_INSTALL: 'update:install',
+  UPDATE_STATUS: 'update:status'   // Event vom Main → Renderer
 } as const;
 
 export type IpcChannel = (typeof IPC)[keyof typeof IPC];

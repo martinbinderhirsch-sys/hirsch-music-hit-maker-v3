@@ -41,6 +41,15 @@ export interface LyricsRequest {
   keepChorusInOriginal?: boolean;
 }
 
+export type UpdateState =
+  | { phase: 'idle' }
+  | { phase: 'checking' }
+  | { phase: 'available'; version: string; releaseNotes?: string }
+  | { phase: 'not-available'; currentVersion: string }
+  | { phase: 'downloading'; percent: number; transferred: number; total: number }
+  | { phase: 'downloaded'; version: string }
+  | { phase: 'error'; message: string };
+
 export interface LyricsPipelineResult {
   songDna: string;        // Stufe 1: sprachneutrale Song-DNA
   draft: string;          // Stufe 2: Creative Draft in Zielsprache

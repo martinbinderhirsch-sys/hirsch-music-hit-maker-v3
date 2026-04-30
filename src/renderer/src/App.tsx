@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { LyricsTab } from './tabs/LyricsTab';
 import { SettingsTab } from './tabs/SettingsTab';
 import { AboutTab } from './tabs/AboutTab';
+import { UpdateBadge } from './components/UpdateBadge';
 
 type TabId = 'lyrics' | 'settings' | 'about';
 
@@ -37,6 +38,7 @@ export function App() {
             </button>
           ))}
         </nav>
+        <UpdateBadge />
         <div className="app-version">v{version}</div>
       </header>
 
