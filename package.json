@@ -1,0 +1,82 @@
+{
+  "name": "hirsch-music-hit-maker",
+  "version": "0.1.0",
+  "description": "Hirsch Music Hit Maker — AI-gestützte Songwriting-Desktop-App mit Multi-KI-Router (140 Sprachen)",
+  "main": "dist/main/main.js",
+  "author": {
+    "name": "Hirsch",
+    "email": "falconhard34@yahoo.de"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -k -n RENDERER,MAIN -c blue,green \"npm:dev:renderer\" \"npm:dev:main\"",
+    "dev:renderer": "vite",
+    "dev:main": "wait-on tcp:5173 && tsc -p tsconfig.main.json && electron .",
+    "build:renderer": "vite build",
+    "build:main": "tsc -p tsconfig.main.json",
+    "build": "npm run build:renderer && npm run build:main",
+    "start": "electron .",
+    "dist": "npm run build && electron-builder --win --x64",
+    "dist:dir": "npm run build && electron-builder --win --dir",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.main.json",
+    "lint": "echo \"(lint placeholder)\""
+  },
+  "dependencies": {
+    "electron-store": "8.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "20.11.30",
+    "@types/react": "18.2.79",
+    "@types/react-dom": "18.2.25",
+    "@vitejs/plugin-react": "4.2.1",
+    "concurrently": "8.2.2",
+    "electron": "30.0.1",
+    "electron-builder": "24.13.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "5.4.5",
+    "vite": "5.2.10",
+    "wait-on": "7.2.0"
+  },
+  "build": {
+    "appId": "com.hirsch.musichitmaker",
+    "productName": "Hirsch Music Hit Maker",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "resources",
+        "to": "."
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "artifactName": "${productName}-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "allowElevation": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Hirsch Music Hit Maker",
+      "uninstallDisplayName": "Hirsch Music Hit Maker",
+      "deleteAppDataOnUninstall": false,
+      "include": "build/installer.nsh"
+    },
+    "publish": null
+  }
+}
