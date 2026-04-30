@@ -1,7 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
 import { LANGUAGES } from '../../../shared/languages';
-import type { LyricsRequest, LyricsPipelineResult } from '../../../shared/types';
+import type { LyricsRequest, LyricsPipelineResult, LyricsProgress } from '../../../shared/types';
 import { useSongs } from '../lib/songs-context';
+
+type StageStatus = 'pending' | 'running' | 'done' | 'error';
+const STAGE_LABELS: { id: 'songDna' | 'draft' | 'polish' | 'localize'; label: string }[] = [
+  { id: 'songDna',  label: '1 · Song-DNA' },
+  { id: 'draft',    label: '2 · Draft' },
+  { id: 'polish',   label: '3 · Polish' },
+  { id: 'localize', label: '4 · Localize' }
+];
 
 const GENRES = ['country', 'blues', 'americana', 'pop', 'rock', 'folk', 'hip-hop', 'r&b', 'electronic', 'metal'];
 const STYLES = ['modern', 'traditional', 'radio-friendly', 'raw', 'poetic', 'storytelling'];
@@ -22,6 +30,19 @@ export function LyricsTab() {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<LyricsPipelineResult | null>(null);
   const [activeStage, setActiveStage] = useState<'songDna' | 'draft' | 'polished' | 'localized'>('localized');
+  const [stageStatus, setStageStatus] = useState<Record<string, StageStatus>>({});
+
+  // Live-Fortschritt aus dem Main empfangen
+  useEffect(() => {
+    const off = window.hirsch.lyrics.onProgress(p => {
+      if (p.stage === 'error') {
+        setError(p.message);
+        return;
+      }
+      setStageStatus(prev => ({ ...prev, [p.stage]: p.status === 'start' ? 'running' : 'done' }));
+    });
+    return off;
+  }, []);
 
   // Wenn ein Song aus der Sidebar gewählt wurde → Eingaben + Ergebnis übernehmen.
   useEffect(() => {
@@ -56,10 +77,17 @@ export function LyricsTab() {
     setError(null);
   }
 
+  function resetStages() {
+    setStageStatus({
+      songDna: 'pending', draft: 'pending', polish: 'pending', localize: 'pending'
+    });
+  }
+
   async function generate() {
     setBusy(true);
     setError(null);
     setResult(null);
+    resetStages();
 
     const req: LyricsRequest = {
       topic, genre, mood, style,
@@ -84,6 +112,7 @@ export function LyricsTab() {
     if (!activeSong) return;
     setBusy(true);
     setError(null);
+    resetStages();
     const req: LyricsRequest = {
       topic, genre, mood, style,
       language, locale,
@@ -183,6 +212,25 @@ export function LyricsTab() {
           </button>
         )}
       </div>
+
+      {(busy || error) && (
+        <div className="pipeline-progress">
+          {STAGE_LABELS.map(s => {
+            const st = stageStatus[s.id] ?? 'pending';
+            return (
+              <div key={s.id} className={`pipeline-step pipeline-step-${st}`}>
+                <span className="pipeline-dot" />
+                <span className="pipeline-label">{s.label}</span>
+                <span className="pipeline-status">
+                  {st === 'running' && '…'}
+                  {st === 'done' && '✓'}
+                  {st === 'error' && '✗'}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      )}
 
       {error && <div className="alert-error">Fehler: {error}</div>}
 

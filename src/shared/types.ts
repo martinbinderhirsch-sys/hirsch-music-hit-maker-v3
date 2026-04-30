@@ -50,6 +50,13 @@ export type UpdateState =
   | { phase: 'downloaded'; version: string }
   | { phase: 'error'; message: string };
 
+export type LyricsProgress =
+  | { stage: 'songDna';   status: 'start' | 'done' }
+  | { stage: 'draft';     status: 'start' | 'done' }
+  | { stage: 'polish';    status: 'start' | 'done' }
+  | { stage: 'localize';  status: 'start' | 'done' }
+  | { stage: 'error';     status: 'error'; message: string };
+
 export interface LyricsPipelineResult {
   songDna: string;        // Stufe 1: sprachneutrale Song-DNA
   draft: string;          // Stufe 2: Creative Draft in Zielsprache

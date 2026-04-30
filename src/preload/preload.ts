@@ -4,6 +4,7 @@ import type {
   AIRouteRequest,
   LyricsRequest,
   LyricsPipelineResult,
+  LyricsProgress,
   UpdateState,
   SongProject,
   SongListEntry,
@@ -28,7 +29,12 @@ const api = {
     route: (req: AIRouteRequest) => ipcRenderer.invoke(IPC.AI_ROUTE, req)
   },
   lyrics: {
-    generate: (req: LyricsRequest) => ipcRenderer.invoke(IPC.LYRICS_GENERATE, req)
+    generate: (req: LyricsRequest) => ipcRenderer.invoke(IPC.LYRICS_GENERATE, req),
+    onProgress: (cb: (p: LyricsProgress) => void) => {
+      const listener = (_e: unknown, p: LyricsProgress) => cb(p);
+      ipcRenderer.on(IPC.LYRICS_PROGRESS, listener);
+      return () => { ipcRenderer.removeListener(IPC.LYRICS_PROGRESS, listener); };
+    }
   },
   updates: {
     check:    () => ipcRenderer.invoke(IPC.UPDATE_CHECK)    as Promise<UpdateState>,

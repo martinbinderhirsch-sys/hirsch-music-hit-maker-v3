@@ -321,3 +321,30 @@ input[type="range"] { accent-color: var(--accent); }
 }
 .icon-btn:hover { border-color: var(--accent); color: var(--text); }
 .icon-btn-danger:hover { border-color: var(--error); color: var(--error); }
+
+/* === Lyrics Pipeline Progress === */
+.pipeline-progress {
+  display: flex; gap: 12px; margin: 14px 0; flex-wrap: wrap;
+  padding: 12px 14px; background: var(--bg-2);
+  border: 1px solid var(--line); border-radius: var(--radius);
+}
+.pipeline-step {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--text-dim);
+  transition: color 200ms;
+}
+.pipeline-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--bg-0); border: 1px solid var(--line);
+  transition: all 200ms;
+}
+.pipeline-step-running .pipeline-dot {
+  background: var(--accent);
+  animation: pulse 1.2s infinite ease-out;
+}
+.pipeline-step-running { color: var(--text); }
+.pipeline-step-done .pipeline-dot { background: var(--ok); border-color: var(--ok); }
+.pipeline-step-done { color: var(--text); }
+.pipeline-step-error .pipeline-dot { background: var(--error); border-color: var(--error); }
+.pipeline-step-error { color: var(--error); }
+.pipeline-status { font-weight: 600; }

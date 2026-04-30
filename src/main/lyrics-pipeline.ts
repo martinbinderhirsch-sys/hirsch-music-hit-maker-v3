@@ -1,7 +1,9 @@
-import type { LyricsRequest, LyricsPipelineResult, ModelId } from '../shared/types';
+import { BrowserWindow } from 'electron';
+import type { LyricsRequest, LyricsPipelineResult, LyricsProgress, ModelId } from '../shared/types';
 import { aiRoute } from './ai-router';
 import { settingsStore } from './settings-store';
 import { findLocale } from '../shared/languages';
+import { IPC } from '../shared/ipc-channels';
 
 // 4-Stufen-Pipeline:
 //  1) Song-DNA  — sprachneutraler Brief
@@ -9,9 +11,26 @@ import { findLocale } from '../shared/languages';
 //  3) Polish    — Linguistic Polish Pass
 //  4) Localize  — Lokalisierung & Human Pass
 
+function emit(p: LyricsProgress) {
+  for (const w of BrowserWindow.getAllWindows()) {
+    if (!w.isDestroyed()) w.webContents.send(IPC.LYRICS_PROGRESS, p);
+  }
+}
+
+// Werft eine sprechende Exception, wenn eine Pipeline-Stufe fehlschlägt.
+// Das wird im Renderer in der Fehler-Box angezeigt.
+function ensureOk(stage: string, res: { ok: boolean; text: string; error?: string }) {
+  if (!res.ok || !res.text.trim()) {
+    const msg = `Stufe "${stage}" fehlgeschlagen: ${res.error ?? 'unbekannter Fehler'}`;
+    emit({ stage: 'error', status: 'error', message: msg });
+    throw new Error(msg);
+  }
+}
+
 export async function generateLyrics(req: LyricsRequest): Promise<LyricsPipelineResult> {
   const start = Date.now();
-  const model = (settingsStore.get('defaultModel') as ModelId) || 'openai/gpt-4o';
+  const model = (settingsStore.get('defaultModel') as ModelId) || 'google/gemini-2.5-flash';
+  console.log(`[lyrics] Pipeline-Start mit Modell ${model}, Locale ${req.locale}`);
 
   const localeInfo = findLocale(req.locale);
   const localeLabel = localeInfo
@@ -20,6 +39,7 @@ export async function generateLyrics(req: LyricsRequest): Promise<LyricsPipeline
   const tier = localeInfo?.language.tier ?? 'B';
 
   // ── Stufe 1: Song-DNA ───────────────────────────────────────────────
+  emit({ stage: 'songDna', status: 'start' });
   const dna = await aiRoute({
     model,
     system:
@@ -33,6 +53,9 @@ export async function generateLyrics(req: LyricsRequest): Promise<LyricsPipeline
       `Target locale: ${localeLabel} (cultural flavor only — do not write lyrics yet).`,
     temperature: 0.7
   });
+  ensureOk('Song-DNA', dna);
+  emit({ stage: 'songDna', status: 'done' });
+  emit({ stage: 'draft', status: 'start' });
 
   // ── Stufe 2: Creative Draft in Zielsprache/Locale ───────────────────
   const draft = await aiRoute({
@@ -48,6 +71,9 @@ export async function generateLyrics(req: LyricsRequest): Promise<LyricsPipeline
     prompt: `Song-DNA:\n${dna.text}\n\nSchreibe jetzt die Lyrics.`,
     temperature: 0.9
   });
+  ensureOk('Draft', draft);
+  emit({ stage: 'draft', status: 'done' });
+  emit({ stage: 'polish', status: 'start' });
 
   // ── Stufe 3: Linguistic Polish ───────────────────────────────────────
   const polished = await aiRoute({
@@ -59,6 +85,9 @@ export async function generateLyrics(req: LyricsRequest): Promise<LyricsPipeline
     prompt: draft.text,
     temperature: 0.5
   });
+  ensureOk('Polish', polished);
+  emit({ stage: 'polish', status: 'done' });
+  emit({ stage: 'localize', status: 'start' });
 
   // ── Stufe 4: Localization / Human Pass ──────────────────────────────
   const localizationNote =
@@ -79,6 +108,10 @@ export async function generateLyrics(req: LyricsRequest): Promise<LyricsPipeline
     prompt: polished.text,
     temperature: 0.6
   });
+  ensureOk('Localize', localized);
+  emit({ stage: 'localize', status: 'done' });
+
+  console.log(`[lyrics] Pipeline OK in ${Date.now() - start}ms`);
 
   return {
     songDna: dna.text,

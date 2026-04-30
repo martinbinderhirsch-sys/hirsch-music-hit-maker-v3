@@ -7,7 +7,7 @@ export function UpdateBadge() {
 
   useEffect(() => {
     const unsub = window.hirsch.updates.onStatus(setState);
-    return () => unsub();
+    return () => { unsub(); };
   }, []);
 
   async function checkNow() {

@@ -16,6 +16,7 @@ export const IPC = {
 
   // Lyrics-Pipeline
   LYRICS_GENERATE: 'lyrics:generate',
+  LYRICS_PROGRESS: 'lyrics:progress',  // Event vom Main → Renderer (Stufen-Status)
 
   // Auto-Updater
   UPDATE_CHECK: 'update:check',
