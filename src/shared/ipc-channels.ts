@@ -21,7 +21,18 @@ export const IPC = {
   UPDATE_CHECK: 'update:check',
   UPDATE_DOWNLOAD: 'update:download',
   UPDATE_INSTALL: 'update:install',
-  UPDATE_STATUS: 'update:status'   // Event vom Main → Renderer
+  UPDATE_STATUS: 'update:status',  // Event vom Main → Renderer
+
+  // Songs (Persistenz)
+  SONGS_LIST: 'songs:list',
+  SONGS_GET: 'songs:get',
+  SONGS_CREATE: 'songs:create',
+  SONGS_UPDATE: 'songs:update',
+  SONGS_DELETE: 'songs:delete',
+  SONGS_DUPLICATE: 'songs:duplicate',
+  SONGS_EXPORT_TXT: 'songs:exportTxt',
+  SONGS_EXPORT_BACKUP: 'songs:exportBackup',
+  SONGS_IMPORT_BACKUP: 'songs:importBackup'
 } as const;
 
 export type IpcChannel = (typeof IPC)[keyof typeof IPC];

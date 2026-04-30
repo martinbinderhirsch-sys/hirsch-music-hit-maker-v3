@@ -1,6 +1,6 @@
 {
   "name": "hirsch-music-hit-maker",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Hirsch Music Hit Maker — AI-gestützte Songwriting-Desktop-App mit Multi-KI-Router (140 Sprachen)",
   "main": "dist/main/main.js",
   "author": {

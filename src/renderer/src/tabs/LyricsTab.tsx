@@ -1,12 +1,15 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { LANGUAGES } from '../../../shared/languages';
 import type { LyricsRequest, LyricsPipelineResult } from '../../../shared/types';
+import { useSongs } from '../lib/songs-context';
 
 const GENRES = ['country', 'blues', 'americana', 'pop', 'rock', 'folk', 'hip-hop', 'r&b', 'electronic', 'metal'];
 const STYLES = ['modern', 'traditional', 'radio-friendly', 'raw', 'poetic', 'storytelling'];
 const MOODS  = ['uplifting', 'melancholic', 'reflective', 'romantic', 'angry', 'hopeful', 'nostalgic'];
 
 export function LyricsTab() {
+  const { activeSong, createSong, updateSong, selectSong } = useSongs();
+
   const [topic, setTopic] = useState('A long road home after a hard year');
   const [genre, setGenre] = useState('country');
   const [mood, setMood] = useState('reflective');
@@ -20,6 +23,22 @@ export function LyricsTab() {
   const [result, setResult] = useState<LyricsPipelineResult | null>(null);
   const [activeStage, setActiveStage] = useState<'songDna' | 'draft' | 'polished' | 'localized'>('localized');
 
+  // Wenn ein Song aus der Sidebar gewählt wurde → Eingaben + Ergebnis übernehmen.
+  useEffect(() => {
+    if (!activeSong) return;
+    const r = activeSong.request;
+    setTopic(r.topic);
+    setGenre(r.genre);
+    setMood(r.mood);
+    setStyle(r.style);
+    setLanguage(r.language);
+    setLocale(r.locale);
+    setRhyme(r.rhymeStrictness);
+    setResult(activeSong.result);
+    setActiveStage('localized');
+    setError(null);
+  }, [activeSong]);
+
   const localesForLang = useMemo(() => {
     const lang = LANGUAGES.find(l => l.code === language);
     return lang?.locales ?? [];
@@ -29,6 +48,12 @@ export function LyricsTab() {
     setLanguage(code);
     const lang = LANGUAGES.find(l => l.code === code);
     if (lang && lang.locales.length > 0) setLocale(lang.locales[0].code);
+  }
+
+  function newSong() {
+    selectSong(null);
+    setResult(null);
+    setError(null);
   }
 
   async function generate() {
@@ -46,6 +71,29 @@ export function LyricsTab() {
       const res = await window.hirsch.lyrics.generate(req);
       setResult(res);
       setActiveStage('localized');
+      // Auto-Save als neues Song-Projekt
+      await createSong({ request: req, result: res });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function regenerateForActive() {
+    if (!activeSong) return;
+    setBusy(true);
+    setError(null);
+    const req: LyricsRequest = {
+      topic, genre, mood, style,
+      language, locale,
+      rhymeStrictness: rhyme
+    };
+    try {
+      const res = await window.hirsch.lyrics.generate(req);
+      setResult(res);
+      setActiveStage('localized');
+      await updateSong(activeSong.id, { result: res });
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
@@ -55,6 +103,16 @@ export function LyricsTab() {
 
   return (
     <div className="lyrics-tab">
+      {activeSong && (
+        <div className="active-song-bar">
+          <div>
+            <span className="muted">Bearbeite:</span> <strong>{activeSong.title}</strong>
+            <span className="muted"> · gespeichert {new Date(activeSong.updatedAt).toLocaleString()}</span>
+          </div>
+          <button className="btn-secondary tiny" onClick={newSong}>Neuer Song</button>
+        </div>
+      )}
+
       <section className="form-grid">
         <div className="field field-wide">
           <label>Thema / Topic</label>
@@ -110,9 +168,20 @@ export function LyricsTab() {
       </section>
 
       <div className="actions">
-        <button className="btn-primary" onClick={generate} disabled={busy}>
-          {busy ? 'Generiere…' : 'Lyrics generieren (4-Stufen-Pipeline)'}
-        </button>
+        {activeSong ? (
+          <>
+            <button className="btn-primary" onClick={regenerateForActive} disabled={busy}>
+              {busy ? 'Generiere…' : 'Neu generieren (überschreibt diesen Song)'}
+            </button>
+            <button className="btn-secondary" onClick={generate} disabled={busy}>
+              Als neuen Song generieren
+            </button>
+          </>
+        ) : (
+          <button className="btn-primary" onClick={generate} disabled={busy}>
+            {busy ? 'Generiere…' : 'Lyrics generieren (4-Stufen-Pipeline)'}
+          </button>
+        )}
       </div>
 
       {error && <div className="alert-error">Fehler: {error}</div>}

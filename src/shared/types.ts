@@ -62,3 +62,25 @@ export interface LyricsPipelineResult {
     durationMs: number;
   };
 }
+
+// Persistiertes Song-Projekt im userData-Ordner.
+export interface SongProject {
+  id: string;                // ULID-ähnlich, lokal generiert
+  title: string;             // Titel — vom Nutzer editierbar
+  createdAt: string;         // ISO-Timestamp
+  updatedAt: string;
+  request: LyricsRequest;    // Originaler Eingabesatz
+  result: LyricsPipelineResult;
+  notes?: string;            // Freitext-Notiz
+  favorite?: boolean;
+}
+
+export interface SongListEntry {
+  id: string;
+  title: string;
+  createdAt: string;
+  updatedAt: string;
+  genre: string;
+  locale: string;
+  favorite: boolean;
+}

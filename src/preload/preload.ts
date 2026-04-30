@@ -1,6 +1,13 @@
 import { contextBridge, ipcRenderer } from 'electron';
 import { IPC } from '../shared/ipc-channels';
-import type { AIRouteRequest, LyricsRequest, UpdateState } from '../shared/types';
+import type {
+  AIRouteRequest,
+  LyricsRequest,
+  LyricsPipelineResult,
+  UpdateState,
+  SongProject,
+  SongListEntry
+} from '../shared/types';
 
 // Schmale, klar definierte Bridge — der Renderer hat KEINEN direkten Node-Zugriff.
 
@@ -29,6 +36,19 @@ const api = {
       ipcRenderer.on(IPC.UPDATE_STATUS, listener);
       return () => ipcRenderer.removeListener(IPC.UPDATE_STATUS, listener);
     }
+  },
+  songs: {
+    list:      () => ipcRenderer.invoke(IPC.SONGS_LIST) as Promise<SongListEntry[]>,
+    get:       (id: string) => ipcRenderer.invoke(IPC.SONGS_GET, id) as Promise<SongProject | null>,
+    create:    (args: { request: LyricsRequest; result: LyricsPipelineResult; title?: string }) =>
+                  ipcRenderer.invoke(IPC.SONGS_CREATE, args) as Promise<SongProject>,
+    update:    (id: string, patch: Partial<SongProject>) =>
+                  ipcRenderer.invoke(IPC.SONGS_UPDATE, id, patch) as Promise<SongProject | null>,
+    delete:    (id: string) => ipcRenderer.invoke(IPC.SONGS_DELETE, id) as Promise<boolean>,
+    duplicate: (id: string) => ipcRenderer.invoke(IPC.SONGS_DUPLICATE, id) as Promise<SongProject | null>,
+    exportTxt: (id: string) => ipcRenderer.invoke(IPC.SONGS_EXPORT_TXT, id) as Promise<{ ok: boolean; path?: string; error?: string }>,
+    exportBackup: () => ipcRenderer.invoke(IPC.SONGS_EXPORT_BACKUP) as Promise<{ ok: boolean; path?: string; count?: number; error?: string }>,
+    importBackup: () => ipcRenderer.invoke(IPC.SONGS_IMPORT_BACKUP) as Promise<{ ok: boolean; imported?: number; error?: string }>
   }
 };
 

@@ -11,8 +11,10 @@ export function AboutTab() {
         <li>Modelle via OpenRouter: GPT-4o · Gemini 2.5 Flash · Claude 3.5 Sonnet</li>
         <li>Sicher: contextIsolation, Preload-Bridge, verschlüsselte API-Keys</li>
         <li>Windows-Installer/Uninstaller via electron-builder + NSIS</li>
+        <li>Auto-Updater über GitHub Releases</li>
+        <li>Lokale Song-History mit Suche, Favoriten, TXT-Export und JSON-Backup</li>
       </ul>
-      <p className="muted">© 2026 Hirsch · Version 0.1.0 · Pre-Alpha</p>
+      <p className="muted">© 2026 Hirsch · Version 0.1.2 · Pre-Alpha</p>
     </div>
   );
 }

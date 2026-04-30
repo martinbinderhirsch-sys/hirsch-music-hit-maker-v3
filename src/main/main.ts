@@ -11,7 +11,13 @@ import {
   quitAndInstall,
   getLastUpdateState
 } from './auto-updater';
-import type { AIRouteRequest, LyricsRequest } from '../shared/types';
+import { songsStore } from './songs-store';
+import type {
+  AIRouteRequest,
+  LyricsRequest,
+  LyricsPipelineResult,
+  SongProject
+} from '../shared/types';
 
 const isDev = !app.isPackaged;
 
@@ -78,6 +84,21 @@ function registerIpc() {
     quitAndInstall();
     return true;
   });
+
+  // Songs
+  ipcMain.handle(IPC.SONGS_LIST, () => songsStore.list());
+  ipcMain.handle(IPC.SONGS_GET, (_e, id: string) => songsStore.get(id));
+  ipcMain.handle(IPC.SONGS_CREATE, (_e, args: { request: LyricsRequest; result: LyricsPipelineResult; title?: string }) =>
+    songsStore.create(args)
+  );
+  ipcMain.handle(IPC.SONGS_UPDATE, (_e, id: string, patch: Partial<SongProject>) =>
+    songsStore.update(id, patch)
+  );
+  ipcMain.handle(IPC.SONGS_DELETE, (_e, id: string) => songsStore.delete(id));
+  ipcMain.handle(IPC.SONGS_DUPLICATE, (_e, id: string) => songsStore.duplicate(id));
+  ipcMain.handle(IPC.SONGS_EXPORT_TXT, (_e, id: string) => songsStore.exportTxt(id, mainWindow));
+  ipcMain.handle(IPC.SONGS_EXPORT_BACKUP, () => songsStore.exportBackup(mainWindow));
+  ipcMain.handle(IPC.SONGS_IMPORT_BACKUP, () => songsStore.importBackup(mainWindow));
 }
 
 // === App Lifecycle ===
