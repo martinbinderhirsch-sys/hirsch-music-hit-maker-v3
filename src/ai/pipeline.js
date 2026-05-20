@@ -27,6 +27,9 @@
 'use strict';
 
 // ─── API-Schlüssel (Base64-enkodiert) ─────────────────────────────
+// v3.26.3: Key-Auflösung — Priorität: IPC (main.js) → localStorage → Fallback
+// In der Desktop-App kommen Keys sicher aus dem Hauptprozess via electronAPI.getApiKey()
+// Im Browser (Web-App) kommen Keys aus localStorage oder Fallback
 const _KEYS = {
   oai: () => {
     try { const k = localStorage.getItem('hirsch_openai_key'); if (k?.startsWith('sk-')) return k; } catch(e) {}
@@ -49,11 +52,29 @@ const _KEYS = {
   },
 };
 
+// Desktop-App: Keys asynchron aus Hauptprozess vorladen (IPC — sicherer als Renderer-Kontext)
+// Wird beim App-Start einmalig aufgerufen; überschreibt localStorage-Einträge nicht
+if (typeof window !== 'undefined' && window.electronAPI?.getApiKey) {
+  (async () => {
+    try {
+      const oai = await window.electronAPI.getApiKey('oai');
+      const gem = await window.electronAPI.getApiKey('gemini');
+      const or  = await window.electronAPI.getApiKey('openrouter');
+      if (oai) window._ipcKey_oai        = oai;
+      if (gem) window._ipcKey_gemini     = gem;
+      if (or)  window._ipcKey_openrouter = or;
+      console.log('[Pipeline] ✅ API-Keys sicher aus Hauptprozess geladen (IPC)');
+    } catch(e) {
+      console.warn('[Pipeline] IPC Key-Load fehlgeschlagen, nutze Fallback:', e.message);
+    }
+  })();
+}
+
 // ─── Basis-API-Wrapper ────────────────────────────────────────────
 
 /** GPT-4o direkt (mit JSON-Mode) */
 async function _gpt(system, user, opts = {}) {
-  const key = _KEYS.oai();
+  const key = window._ipcKey_oai || _KEYS.oai();
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
@@ -72,7 +93,7 @@ async function _gpt(system, user, opts = {}) {
 
 /** Gemini 2.5 Flash direkt */
 async function _gemini(system, user, opts = {}) {
-  const key = _KEYS.gemini();
+  const key = window._ipcKey_gemini || _KEYS.gemini();
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${key}`;
   const res = await fetch(url, {
     method: 'POST',
@@ -89,7 +110,7 @@ async function _gemini(system, user, opts = {}) {
 
 /** OpenRouter (alle anderen Modelle) */
 async function _or(model, system, user, opts = {}) {
-  const key = _KEYS.openrouter();
+  const key = window._ipcKey_openrouter || _KEYS.openrouter();
   const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {

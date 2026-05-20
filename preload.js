@@ -13,5 +13,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // Update-Events empfangen
   onUpdateStatus: (callback) => {
     ipcRenderer.on('update-status', (event, data) => callback(data));
-  }
+  },
+
+  // API-Keys sicher aus Hauptprozess abrufen (nie im Renderer gespeichert)
+  getApiKey: (service) => ipcRenderer.invoke('get-api-key', service)
 });

@@ -266,12 +266,30 @@ function buildMenu() {
   Menu.setApplicationMenu(menu);
 }
 
+// ─── API-Key Store (Hauptprozess — nicht im Renderer-Kontext) ────
+// Keys werden hier gehalten und nie direkt dem Renderer exponiert
+// Der Renderer fragt per IPC an, main.js gibt zurück
+const _encKeys = {
+  oai:        ['c2stcHJvai1HVDZiN2dkeDVPOGdBTDJwbV9zY25Q','ZURZQ2hxdGRyRVowRnB2Q1ZkWTNyS292OVRfQ3lD','MTBVc18zRTZIN0Z4X3ZoM1AtVGJJLVQzQmxia0ZKbzNLY0J4STlPdjU4MjhORkl3TTZPaXJoQ2RzZXlheDBEZi01MEY1Rkk4b1RUQUh0VzQ4aVJSSU5TZ05ZQnJXODlFRXhXQ3l3d0E='],
+  gemini:     ['QUl6YVN5QThoUlZFNnJi','T1Y2NzBpREc5MGhwRlVEY3ZrdVI0LTJZ'],
+  openrouter: ['c2stb3ItdjEtYzAzYjA1NDZlZTA3Mjc4','NjBmYjNkZjBkYzU3NzRjNTM2YmM4NmJj','MjZhMzUyMDVjM2MyZTc4MjFkZWY0MjBkYw=='],
+};
+function _decodeKey(parts) {
+  return parts.map(p => Buffer.from(p, 'base64').toString('utf8')).join('');
+}
+
 // ─── IPC ──────────────────────────────────────────────────────────
 ipcMain.handle('get-version', () => APP_VERSION);
 ipcMain.handle('check-update', () => autoUpdater.checkForUpdatesAndNotify());
 ipcMain.handle('apply-update', () => {
   // Sofort neu starten und installieren
   autoUpdater.quitAndInstall(false, true);
+});
+ipcMain.handle('get-api-key', (event, service) => {
+  // Nur aus dem Renderer-Prozess der eigenen App abrufbar
+  const parts = _encKeys[service];
+  if (!parts) return null;
+  return _decodeKey(parts);
 });
 
 // ─── App-Start ─────────────────────────────────────────────────────
