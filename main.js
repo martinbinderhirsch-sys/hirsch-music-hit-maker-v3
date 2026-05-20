@@ -21,11 +21,13 @@ autoUpdater.autoInstallOnAppQuit = true; // Nach Beenden automatisch installiere
 
 autoUpdater.on('checking-for-update', () => {
   console.log('[Updater] Suche nach Updates...');
+  if (mainWindow) mainWindow.webContents.send('update-status', { status: 'checking' });
 });
 
 autoUpdater.on('update-available', (info) => {
   console.log('[Updater] Update verfügbar:', info.version);
   if (mainWindow) {
+    mainWindow.webContents.send('update-status', { status: 'available', version: info.version });
     mainWindow.webContents.executeJavaScript(`
       if (typeof showToast === 'function')
         showToast('🔄 Update verfügbar: v${info.version} wird heruntergeladen...');
@@ -35,6 +37,7 @@ autoUpdater.on('update-available', (info) => {
 
 autoUpdater.on('update-not-available', () => {
   console.log('[Updater] App ist aktuell.');
+  if (mainWindow) mainWindow.webContents.send('update-status', { status: 'not-available' });
 });
 
 autoUpdater.on('download-progress', (progressObj) => {
@@ -50,6 +53,7 @@ autoUpdater.on('download-progress', (progressObj) => {
 
 autoUpdater.on('update-downloaded', (info) => {
   console.log('[Updater] Update heruntergeladen:', info.version);
+  if (mainWindow) mainWindow.webContents.send('update-status', { status: 'downloaded', version: info.version });
   if (mainWindow) {
     dialog.showMessageBox(mainWindow, {
       type: 'info',
@@ -69,6 +73,7 @@ autoUpdater.on('update-downloaded', (info) => {
 
 autoUpdater.on('error', (err) => {
   console.error('[Updater] Fehler:', err.message);
+  if (mainWindow) mainWindow.webContents.send('update-status', { status: 'error', message: err.message });
 });
 
 // ─── TopMediai CORS Proxy Server (Port 5001) ─────────────────────
@@ -264,6 +269,10 @@ function buildMenu() {
 // ─── IPC ──────────────────────────────────────────────────────────
 ipcMain.handle('get-version', () => APP_VERSION);
 ipcMain.handle('check-update', () => autoUpdater.checkForUpdatesAndNotify());
+ipcMain.handle('apply-update', () => {
+  // Sofort neu starten und installieren
+  autoUpdater.quitAndInstall(false, true);
+});
 
 // ─── App-Start ─────────────────────────────────────────────────────
 app.whenReady().then(() => {

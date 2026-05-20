@@ -1,6 +1,6 @@
 {
   "name": "hirsch-music-hit-maker",
-  "version": "3.26.1",
+  "version": "3.26.2",
   "description": "AI-powered music hit maker — 9 AI writers, 24.000+ songs, 49+ genres",
   "main": "main.js",
   "author": "Hirsch Music Production",
@@ -33,7 +33,7 @@
       ],
       "icon": "src/assets/icon.ico",
       "requestedExecutionLevel": "asInvoker",
-      "artifactName": "Hirsch-Music-Hit-Maker-v3.24.6-Setup.exe"
+      "artifactName": "${productName}-v${version}-Setup.exe"
     },
     "nsis": {
       "oneClick": false,
@@ -46,7 +46,7 @@
       "createStartMenuShortcut": true,
       "shortcutName": "Hirsch Music Hit Maker",
       "include": "src/main-process/installer.nsh",
-      "artifactName": "Hirsch-Music-Hit-Maker-v3.22.14-Setup.exe"
+      "artifactName": "${productName}-v${version}-Setup.exe"
     },
     "publish": [
       {
