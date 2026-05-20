@@ -1,0 +1,67 @@
+{
+  "name": "hirsch-music-hit-maker",
+  "version": "3.26.0",
+  "description": "AI-powered music hit maker — 9 AI writers, 24.000+ songs, 49+ genres",
+  "main": "main.js",
+  "author": "Hirsch Music Production",
+  "productName": "Hirsch Music Hit Maker",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win --x64",
+    "build:publish": "electron-builder --win --x64 --publish always"
+  },
+  "build": {
+    "appId": "at.hirschmusic.hitmaker",
+    "productName": "Hirsch Music Hit Maker",
+    "copyright": "© 2026 Hirsch Music Production",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "src/assets/icon.ico",
+      "requestedExecutionLevel": "asInvoker",
+      "artifactName": "Hirsch-Music-Hit-Maker-v3.24.6-Setup.exe"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "allowElevation": true,
+      "installerIcon": "src/assets/icon.ico",
+      "uninstallerIcon": "src/assets/icon.ico",
+      "installerHeaderIcon": "src/assets/icon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Hirsch Music Hit Maker",
+      "include": "src/main-process/installer.nsh",
+      "artifactName": "Hirsch-Music-Hit-Maker-v3.22.14-Setup.exe"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "martinbinderhirsch-sys",
+        "repo": "hirsch-music-hit-maker-v3",
+        "releaseType": "release"
+      }
+    ]
+  },
+  "devDependencies": {
+    "electron": "^28.3.3",
+    "electron-builder": "^24.13.3"
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.3"
+  }
+}

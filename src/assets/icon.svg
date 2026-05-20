@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <rect width="256" height="256" rx="40" fill="#1A1A2E"/>
+  <!-- Antlers -->
+  <path d="M88 100 L76 72 L64 44 L58 24" stroke="#C8A84B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M64 44 L46 36 L38 22" stroke="#C8A84B" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <path d="M76 72 L54 68 L42 56" stroke="#C8A84B" stroke-width="6" stroke-linecap="round" fill="none"/>
+  <path d="M168 100 L180 72 L192 44 L198 24" stroke="#C8A84B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M192 44 L210 36 L218 22" stroke="#C8A84B" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <path d="M180 72 L202 68 L214 56" stroke="#C8A84B" stroke-width="6" stroke-linecap="round" fill="none"/>
+  <!-- Neck -->
+  <path d="M100 148 L88 100 M156 148 L168 100" stroke="#C8A84B" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <!-- Head -->
+  <ellipse cx="128" cy="162" rx="40" ry="44" fill="#C8A84B"/>
+  <!-- Snout -->
+  <ellipse cx="128" cy="186" rx="24" ry="18" fill="#B8923A"/>
+  <!-- Ears -->
+  <path d="M88 152 L66 124 L90 146" fill="#C8A84B"/>
+  <path d="M168 152 L190 124 L166 146" fill="#C8A84B"/>
+  <!-- Eyes -->
+  <circle cx="112" cy="156" r="8" fill="#1A1A2E"/>
+  <circle cx="144" cy="156" r="8" fill="#1A1A2E"/>
+  <circle cx="114.5" cy="153.5" r="2.5" fill="white"/>
+  <circle cx="146.5" cy="153.5" r="2.5" fill="white"/>
+  <!-- Nose -->
+  <ellipse cx="128" cy="192" rx="10" ry="7" fill="#8B6914"/>
+  <!-- Music note -->
+  <text x="128" y="235" text-anchor="middle" font-size="28" fill="#C8A84B">♪</text>
+</svg>
