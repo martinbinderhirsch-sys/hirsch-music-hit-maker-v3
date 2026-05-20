@@ -11,7 +11,7 @@ app.commandLine.appendSwitch('disable-gpu-driver-bug-workarounds');
 
 // ─── Konfiguration ────────────────────────────────────────────────
 const APP_VERSION = app.getVersion(); // kommt aus package.json
-const LOCAL_HTML  = path.join(__dirname, 'src', 'index.html');
+const LOCAL_HTML  = path.join(__dirname, 'src', 'renderer', 'index.html');
 
 // ─── Auto-Updater ─────────────────────────────────────────────────
 const { autoUpdater } = require('electron-updater');
