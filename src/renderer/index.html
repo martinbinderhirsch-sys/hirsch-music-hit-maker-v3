@@ -19,13 +19,13 @@
 <link rel="author" href="https://www.perplexity.ai/computer">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hirsch Music Hit Maker v3.26.4</title>
+<title>Hirsch Music Hit Maker v3.26.5</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════
-   HIRSCH MUSIC HIT MAKER v3.26.4 — PREMIUM DARK DESIGN
+   HIRSCH MUSIC HIT MAKER v3.26.5 — PREMIUM DARK DESIGN
    ═══════════════════════════════════════════ */
 
 :root {
@@ -248,7 +248,7 @@ body {
 }
 
 .sidebar-footer::after {
-  content: 'v3.26.4';
+  content: 'v3.26.5';
   font-size: 10px;
   color: var(--text3);
   letter-spacing: 0.05em;
@@ -2359,7 +2359,7 @@ tbody td {
 }
 
 /* ═══════════════════════════════════════════
-   PROFESSIONAL REDESIGN POLISH — v3.26.4
+   PROFESSIONAL REDESIGN POLISH — v3.26.5
    TopMediai-inspired: clean, minimal, sharp
 ═══════════════════════════════════════════ */
 
@@ -2910,7 +2910,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
 .master-verdict-advice { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; }
 .master-verdict-advice li { font-size: 12px; color: #fff; background: rgba(255,255,255,0.05); border-left: 3px solid rgba(255,255,255,0.4); padding: 6px 10px; border-radius: 6px; }
 
-/* v3.26.4 — Vergleichsmodus */
+/* v3.26.5 — Vergleichsmodus */
 .comparison-panel {
   margin-top: 14px;
   padding: 14px;
@@ -2965,6 +2965,34 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
   padding: 6px 10px;
   border-radius: 6px;
 }
+
+
+/* ── v3.26.5: Lebenssituation-Chips ── */
+.sit-chip {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  border: 1.5px solid var(--border);
+  background: var(--surface2);
+  color: var(--text2);
+  transition: all 0.15s;
+  user-select: none;
+}
+.sit-chip:hover { border-color: #38bdf8; color: #e0f2fe; }
+.sit-chip.selected {
+  background: rgba(56,189,248,0.18);
+  border-color: #38bdf8;
+  color: #e0f2fe;
+  font-weight: 600;
+}
+.sit-cat-header.cat-love   { color: #f9a8d4 !important; }
+.sit-cat-header.cat-loss   { color: #c4b5fd !important; }
+.sit-cat-header.cat-self   { color: #86efac !important; }
+.sit-cat-header.cat-family { color: #fde68a !important; }
+.sit-cat-header.cat-work   { color: #fdba74 !important; }
+.sit-cat-header.cat-world  { color: #67e8f9 !important; }
+.sit-cat-header.cat-daily  { color: #a5b4fc !important; }
 
 </style>
 </head>
@@ -3144,6 +3172,18 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
                 <button class="btn btn-secondary" style="width:100%;justify-content:flex-start;" onclick="openMoodModal('lyrics')">🎭 <span data-de="Stimmung wählen…" data-en="Pick mood…">Stimmung wählen…</span></button>
                 <div id="lyrics-mood-display" class="chip-display mt-2"></div>
               </div>
+            </div>
+
+            <!-- Lebenssituation (volle Breite unter Stimmung) -->
+            <div class="form-group">
+              <label data-de="🎬 Lebenssituation" data-en="🎬 Life Situation">🎬 Lebenssituation</label>
+              <button class="btn btn-secondary" style="width:100%;justify-content:flex-start;" onclick="openSituationModal('lyrics')">
+                🎬 <span data-de="Situation wählen…" data-en="Pick situation…">Situation wählen…</span>
+              </button>
+              <div id="lyrics-situation-display" class="chip-display mt-2"></div>
+            </div>
+
+            <div class="form-row">
               <div class="form-group">
                 <label data-de="Struktur" data-en="Structure">Struktur</label>
                 <button id="structure-picker-btn" class="btn btn-secondary" style="width:100%;justify-content:flex-start;text-align:left;" onclick="openStructureModal()">
@@ -3439,8 +3479,8 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           <div id="emotionWarningList" class="emotion-warning-list">—</div>
         </div>
 
-        <!-- Output Discipline Panel (v3.26.4) -->
-        <!-- Master Verdict Panel (v3.26.4) -->
+        <!-- Output Discipline Panel (v3.26.5) -->
+        <!-- Master Verdict Panel (v3.26.5) -->
         <div id="masterVerdictPanel" class="master-verdict-panel" style="display:none;">
           <div class="master-verdict-tier" id="masterVerdictTier">—</div>
           <div class="master-verdict-line" id="masterVerdictLine">—</div>
@@ -3452,7 +3492,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           <ul id="masterVerdictAdvice" class="master-verdict-advice"></ul>
         </div>
 
-        <!-- v3.26.4 — Vergleichsmodus -->
+        <!-- v3.26.5 — Vergleichsmodus -->
         <div id="comparisonPanel" class="comparison-panel" style="display:none;">
           <div class="comparison-head">
             <h3>📐 Referenz-Vergleich</h3>
@@ -3516,7 +3556,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           </div>
         </div>
 
-        <!-- Self Score Panel (v3.26.4) -->
+        <!-- Self Score Panel (v3.26.5) -->
         <div id="selfScorePanel" class="self-score-panel" style="display:none;">
           <div class="self-score-head">
             <h3>🎯 Ehrliches Selbst-Urteil</h3>
@@ -3571,7 +3611,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           <div id="referenceBankResults" class="reference-bank-results">— Noch keine Songs geladen. Warte auf Loader-Dateien. —</div>
         </div>
 
-        <!-- Intentional Break Panel (v3.26.4) -->
+        <!-- Intentional Break Panel (v3.26.5) -->
         <div id="intentBreakPanel" class="intent-break-panel" style="display:none;">
           <div class="intent-break-head">
             <h3>🎼 Bewusster Regelbruch</h3>
@@ -3580,7 +3620,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           <ul id="intentBreakList" class="intent-break-list"></ul>
         </div>
 
-        <!-- Risk Lock Panel (v3.26.4) -->
+        <!-- Risk Lock Panel (v3.26.5) -->
         <div id="riskLockPanel" class="risk-lock-panel" style="display:none;">
           <div class="risk-lock-head">
             <h3>🎲 Risiko-Lock</h3>
@@ -3592,7 +3632,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           </div>
         </div>
 
-        <!-- Audience Model Panel (v3.26.4) -->
+        <!-- Audience Model Panel (v3.26.5) -->
         <div id="audiencePanel" class="audience-panel" style="display:none;">
           <div class="audience-head">
             <h3>👂 Hörerseite</h3>
@@ -4664,7 +4704,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
 
   <!-- Footer hidden — status bar at bottom handles this -->
   <footer class="app-footer" style="display:none;">
-    Hirsch Music Hit Maker v3.26.4 — Made with ♪ · 49 Genres · 24.000+ Songs · 1920–2026 by Hirsch Music Production and Perplexity Computer
+    Hirsch Music Hit Maker v3.26.5 — Made with ♪ · 49 Genres · 24.000+ Songs · 1920–2026 by Hirsch Music Production and Perplexity Computer
     <br>
     <a href="https://www.perplexity.ai/computer" target="_blank" rel="noopener noreferrer">Created with Perplexity Computer</a>
   </footer>
@@ -4911,6 +4951,122 @@ const INSTR_STRUCT_HINTS = {
   'v-c-v-c-b-c':         'BPM 100–130 · 4/4 Takt · klassisch',
   'ballad-build':        'BPM 60–80 · 4/4 · langsam aufbauend',
 };
+
+// ══════════════════════════════════════════════════════
+// v3.26.5 — LEBENSSITUATIONEN
+// ══════════════════════════════════════════════════════
+const LIFE_SITUATIONS = [
+  // Liebe & Beziehung
+  { value:'first_love',          de:'Erste Liebe',                  en:'First love' },
+  { value:'long_love',           de:'Lange Liebe',                  en:'Long-lasting love' },
+  { value:'new_relationship',    de:'Neue Beziehung',               en:'New relationship' },
+  { value:'breakup_fresh',       de:'Frische Trennung',             en:'Fresh breakup' },
+  { value:'breakup_dignified',   de:'Trennung mit Würde',           en:'Dignified breakup' },
+  { value:'reunion',             de:'Wiedersehen',                  en:'Reunion' },
+  { value:'unfaithful',          de:'Untreue',                      en:'Infidelity' },
+  { value:'secret_love',         de:'Heimliche Liebe',              en:'Secret love' },
+  { value:'long_distance',       de:'Fernbeziehung',                en:'Long-distance love' },
+  { value:'jealousy',            de:'Eifersucht',                   en:'Jealousy' },
+  { value:'love_after_loss',     de:'Liebe nach Verlust',           en:'Love after loss' },
+  { value:'unrequited_love',     de:'Unerwiderte Liebe',            en:'Unrequited love' },
+  // Verlust & Abschied
+  { value:'death',               de:'Tod',                          en:'Death' },
+  { value:'illness',             de:'Krankheit',                    en:'Illness' },
+  { value:'care_giving',         de:'Pflege',                       en:'Caregiving' },
+  { value:'old_age',             de:'Hohes Alter',                  en:'Old age' },
+  { value:'dying_with',          de:'Sterbebegleitung',             en:'Sitting with the dying' },
+  { value:'funeral',             de:'Beerdigung',                   en:'Funeral' },
+  { value:'emigration',          de:'Auswanderung',                 en:'Emigration' },
+  { value:'moving_away',         de:'Wegzug',                       en:'Moving away' },
+  { value:'homecoming',          de:'Heimkehr',                     en:'Homecoming' },
+  { value:'child_leaving',       de:'Auszug eines Kindes',          en:'Child leaving home' },
+  { value:'end_of_friendship',   de:'Ende einer Freundschaft',      en:'End of a friendship' },
+  { value:'lost_pet',            de:'Verlust eines Tieres',         en:'Losing a pet' },
+  // Selbst & Innenwelt
+  { value:'self_doubt',          de:'Selbstzweifel',                en:'Self-doubt' },
+  { value:'new_start',           de:'Neuanfang',                    en:'New beginning' },
+  { value:'regret',              de:'Reue',                         en:'Regret' },
+  { value:'pride',               de:'Stolz',                        en:'Pride' },
+  { value:'burnout',             de:'Burnout',                      en:'Burnout' },
+  { value:'identity_search',     de:'Identitätssuche',              en:'Search for identity' },
+  { value:'being_different',     de:'Anderssein',                   en:'Being different' },
+  { value:'addiction',           de:'Sucht',                        en:'Addiction' },
+  { value:'recovery',            de:'Befreiung aus Sucht',          en:'Recovery' },
+  { value:'self_destruction',    de:'Selbstzerstörung',             en:'Self-destruction' },
+  { value:'healing',             de:'Heilung',                      en:'Healing' },
+  { value:'aging',               de:'Älterwerden',                  en:'Growing older' },
+  { value:'forgiveness_self',    de:'Selbstvergebung',              en:'Self-forgiveness' },
+  // Familie & Generationen
+  { value:'parents',             de:'Eltern',                       en:'Parents' },
+  { value:'childhood',           de:'Kindheit',                     en:'Childhood' },
+  { value:'siblings',            de:'Geschwister',                  en:'Siblings' },
+  { value:'grandparents',        de:'Großeltern',                   en:'Grandparents' },
+  { value:'family_secret',       de:'Familiengeheimnis',            en:'Family secret' },
+  { value:'family_reconcile',    de:'Versöhnung in der Familie',    en:'Family reconciliation' },
+  { value:'generation_clash',    de:'Generationenkonflikt',         en:'Generational clash' },
+  { value:'inheritance',         de:'Erbe',                         en:'Inheritance' },
+  // Arbeit, Geld, Existenz
+  { value:'job_lost',            de:'Job verloren',                 en:'Lost job' },
+  { value:'job_found',           de:'Job gefunden',                 en:'Found job' },
+  { value:'promotion',           de:'Beförderung',                  en:'Promotion' },
+  { value:'money_trouble',       de:'Geldnot',                      en:'Money trouble' },
+  { value:'success',             de:'Erfolg',                       en:'Success' },
+  { value:'work_burnout',        de:'Burnout im Job',               en:'Work burnout' },
+  { value:'class_struggle',      de:'Klassenunterschiede',          en:'Class struggle' },
+  { value:'working_class_pride', de:'Stolz der arbeitenden Klasse', en:'Working-class pride' },
+  // Welt & Gesellschaft
+  { value:'war',                 de:'Krieg',                        en:'War' },
+  { value:'peace',               de:'Frieden',                      en:'Peace' },
+  { value:'political_anger',     de:'Politische Wut',               en:'Political anger' },
+  { value:'protest',             de:'Protest',                      en:'Protest' },
+  { value:'migration',           de:'Migration',                    en:'Migration' },
+  { value:'home_country',        de:'Heimat',                       en:'Home country' },
+  { value:'social_injustice',    de:'Soziale Ungerechtigkeit',      en:'Social injustice' },
+  { value:'faith',               de:'Glaube',                       en:'Faith' },
+  { value:'doubt_faith',         de:'Zweifel am Glauben',           en:'Doubting faith' },
+  { value:'digital_life',        de:'Digitales Leben',              en:'Digital life' },
+  { value:'ai_age',              de:'Künstliche Intelligenz',       en:'AI age' },
+  { value:'climate_grief',       de:'Klimatrauer',                  en:'Climate grief' },
+  // Alltag, Stadt, Land
+  { value:'city_life',           de:'Stadt',                        en:'City life' },
+  { value:'country_life',        de:'Land',                         en:'Countryside life' },
+  { value:'neighborhood',        de:'Nachbarschaft',                en:'Neighborhood' },
+  { value:'travel',              de:'Reise',                        en:'Travel' },
+  { value:'wanderlust',          de:'Fernweh',                      en:'Wanderlust' },
+  { value:'homesick',            de:'Heimweh',                      en:'Homesickness' },
+  { value:'small_moment',        de:'Kleiner Alltagsmoment',        en:'Small everyday moment' },
+  { value:'sleepless_night',     de:'Nacht und Schlaflosigkeit',    en:'Sleepless night' },
+  { value:'on_the_road',         de:'Unterwegs sein',               en:'On the road' },
+];
+
+const LIFE_SITUATION_CATS = [
+  { key:'love',   de:'Liebe & Beziehung 💞',         en:'Love & Relationships 💞',
+    values:['first_love','long_love','new_relationship','breakup_fresh','breakup_dignified',
+            'reunion','unfaithful','secret_love','long_distance','jealousy',
+            'love_after_loss','unrequited_love'] },
+  { key:'loss',   de:'Verlust & Abschied 🕯️',         en:'Loss & Farewell 🕯️',
+    values:['death','illness','care_giving','old_age','dying_with','funeral',
+            'emigration','moving_away','homecoming','child_leaving','end_of_friendship','lost_pet'] },
+  { key:'self',   de:'Selbst & Innenwelt 🌿',          en:'Self & Inner World 🌿',
+    values:['self_doubt','new_start','regret','pride','burnout','identity_search',
+            'being_different','addiction','recovery','self_destruction','healing',
+            'aging','forgiveness_self'] },
+  { key:'family', de:'Familie & Generationen 👨‍👩‍👧', en:'Family & Generations 👨‍👩‍👧',
+    values:['parents','childhood','siblings','grandparents','family_secret',
+            'family_reconcile','generation_clash','inheritance'] },
+  { key:'work',   de:'Arbeit, Geld, Existenz 🔨',      en:'Work, Money, Existence 🔨',
+    values:['job_lost','job_found','promotion','money_trouble','success',
+            'work_burnout','class_struggle','working_class_pride'] },
+  { key:'world',  de:'Welt & Gesellschaft 🌍',          en:'World & Society 🌍',
+    values:['war','peace','political_anger','protest','migration','home_country',
+            'social_injustice','faith','doubt_faith','digital_life','ai_age','climate_grief'] },
+  { key:'daily',  de:'Alltag, Stadt, Land 🏙️',          en:'Daily Life, City, Country 🏙️',
+    values:['city_life','country_life','neighborhood','travel','wanderlust','homesick',
+            'small_moment','sleepless_night','on_the_road'] },
+];
+
+const situationState = { lyrics: [] };
+var activeSituationContext = null;
 
 var instrState = [];  // gewählte Instrumente
 
@@ -5771,6 +5927,10 @@ function buildFullExportContent() {
   if(SONG.lyricsTitle)    sections.push(de?`TITEL: ${SONG.lyricsTitle}`:`TITLE: ${SONG.lyricsTitle}`);
   if(genreNames.length)   sections.push(de?`GENRE: ${genreNames.join(' + ')}`:`GENRE: ${genreNames.join(' + ')}`);
   if(moodNames.length)    sections.push(de?`STIMMUNG: ${moodNames.join(' · ')}`:`MOOD: ${moodNames.join(' · ')}`);
+  // v3.26.5: Lebenssituation
+  const sitArr = (window.situationState && window.situationState['lyrics']) ? window.situationState['lyrics'] : (SONG.situation || []);
+  const sitNames = sitArr.map(v => { const s = (typeof LIFE_SITUATIONS!=='undefined') ? LIFE_SITUATIONS.find(x=>x.value===v) : null; return s?s[currentLang]:v; });
+  if(sitNames.length) sections.push(de?`LEBENSSITUATION: ${sitNames.join(' · ')}`:`LIFE SITUATION: ${sitNames.join(' · ')}`);
   if(SONG.structure)      sections.push(de?`STRUKTUR: ${SONG.structure}`:`STRUCTURE: ${SONG.structure}`);
   if(SONG.bpm)            sections.push(`BPM: ${SONG.bpm} | KEY: ${SONG.key || '—'} | ERA: ${SONG.era || '—'}`);
   if(SONG.year)           sections.push(de?`ERSCHEINUNGSJAHR: ${SONG.year}`:`RELEASE YEAR: ${SONG.year}`);
@@ -6114,7 +6274,7 @@ function generateLyrics() {
 }
 
 // ═══════════════════════════════════════════════════════
-// HIRSCH MUSIC HIT MAKER v3.26.4 — LYRICS LIBRARY
+// HIRSCH MUSIC HIT MAKER v3.26.5 — LYRICS LIBRARY
 // Große Textbibliothek: DE + EN, alle Genres, alle Sektionen
 // Intelligente Kombination via Mood + Theme-Keywords
 // ═══════════════════════════════════════════════════════
@@ -7251,8 +7411,8 @@ function buildLyrics(theme, genre, mood, lang, structure, notes, rhymeScheme, ve
   const verseLabel = (!verseCount||verseCount==='auto') ? (de?'Auto':'Auto') : (de?`${verseCount} Strophen`:`${verseCount} Verses`);
 
   result += de
-    ? `\n\n───────────────────────────\nGenre: ${genre.toUpperCase()} | Mood: ${mood}\nSprache: ${lang.toUpperCase()} | Struktur: ${structName}\nReimschema: ${rhymeLabel} | Strophen: ${verseLabel} | Dauer: ${durStr}\nHirsch Music Hit Maker v3.26.4`
-    : `\n\n───────────────────────────\nGenre: ${genre.toUpperCase()} | Mood: ${mood}\nLanguage: ${lang.toUpperCase()} | Structure: ${structName}\nRhyme: ${rhymeLabel} | Verses: ${verseLabel} | Duration: ${durStr}\nHirsch Music Hit Maker v3.26.4`;
+    ? `\n\n───────────────────────────\nGenre: ${genre.toUpperCase()} | Mood: ${mood}\nSprache: ${lang.toUpperCase()} | Struktur: ${structName}\nReimschema: ${rhymeLabel} | Strophen: ${verseLabel} | Dauer: ${durStr}\nHirsch Music Hit Maker v3.26.5`
+    : `\n\n───────────────────────────\nGenre: ${genre.toUpperCase()} | Mood: ${mood}\nLanguage: ${lang.toUpperCase()} | Structure: ${structName}\nRhyme: ${rhymeLabel} | Verses: ${verseLabel} | Duration: ${durStr}\nHirsch Music Hit Maker v3.26.5`;
 
   return result;
 }
@@ -7853,8 +8013,9 @@ function generateVocalRec() {
 
   // ── 2. Kontext sammeln ─────────────────────────────────────────
   updateVocalsPreview();
-  const genres   = genreState['lyrics'].length ? genreState['lyrics'] : ['pop'];
-  const moods    = moodState['lyrics'];
+  const genres     = genreState['lyrics'].length ? genreState['lyrics'] : ['pop'];
+  const moods      = moodState['lyrics'];
+  const situations = (window.situationState && window.situationState['lyrics']) ? window.situationState['lyrics'] : [];
   const hintEl   = document.getElementById('vocal-style-hint');
   const perfEl   = document.getElementById('vocal-perf-hint');
   const vocalHint = hintEl?.value?.trim() || '';
@@ -7868,6 +8029,11 @@ function generateVocalRec() {
       if (g) return g[de ? 'de' : 'en'];
     }
     return v;
+  }).join(', ');
+
+  const situationNames = situations.map(v => {
+    const s = (typeof LIFE_SITUATIONS !== 'undefined') ? LIFE_SITUATIONS.find(x => x.value === v) : null;
+    return s ? s[de ? 'de' : 'en'] : v;
   }).join(', ');
 
   const moodNames = moods.map(v => {
@@ -8232,7 +8398,7 @@ function exportTXT() {
   }).join(', ') || '—';
   const moodStr = SONG.moods.map(v => { const m=MOODS.find(x=>x.value===v); return m?m[currentLang]:v; }).join(', ') || '—';
   const content = [
-    `HIRSCH MUSIC HIT MAKER v3.26.4`,
+    `HIRSCH MUSIC HIT MAKER v3.26.5`,
     `Projekt: ${name}`,
     `Datum: ${new Date().toLocaleDateString('de-AT')}`,
     `${'═'.repeat(40)}`,
@@ -8243,7 +8409,7 @@ function exportTXT() {
     (getActiveLyricsForExport ? getActiveLyricsForExport() : lastLyrics) ? `LYRICS:\n${getActiveLyricsForExport ? getActiveLyricsForExport() : lastLyrics}` : '',
     lastBeatPrompts.suno ? `\nBEAT PROMPTS:\n── SUNO ──\n${lastBeatPrompts.suno}\n\n── UDIO ──\n${lastBeatPrompts.udio}\n\n── TOPMEDIAI ──\n${lastBeatPrompts.topm}` : '',
     `\n${'═'.repeat(40)}`,
-    `Hirsch Music Hit Maker v3.26.4 — Made with ♪`,
+    `Hirsch Music Hit Maker v3.26.5 — Made with ♪`,
     `by Hirsch Music Production and Perplexity Computer`
   ].filter(Boolean).join('\n');
 
@@ -8258,7 +8424,7 @@ function exportTXT() {
 function exportJSON() {
   const name = document.getElementById('export-name').value || 'hirsch-song';
   const data = {
-    app: "Hirsch Music Hit Maker v3.26.4",
+    app: "Hirsch Music Hit Maker v3.26.5",
     project: name,
     date: new Date().toISOString(),
     song: {
@@ -9415,7 +9581,7 @@ function updateExportFormat(format) {
       let txt = '# ' + (SONG.lyricsTitle || SONG.theme || 'Song') + '\n\n';
       txt += '**Genre:** ' + genres + ' | **BPM:** ' + bpm + ' | **Key:** ' + key + '\n\n';
       txt += '---\n\n' + activeLyrics.replace(/═+/g,'---').replace(/─+/g,'---');
-      txt += '\n\n---\n*Created with Hirsch Music Hit Maker v3.26.4*';
+      txt += '\n\n---\n*Created with Hirsch Music Hit Maker v3.26.5*';
       md.textContent = txt;
     }
   } else if(format === 'daw') {
@@ -11532,7 +11698,7 @@ console.log('🤖 Hirsch Music AI Engine geladen — OpenAI GPT-4o bereit');
 
 
 // ═══════════════════════════════════════════════════════════════════════
-// ✨ HIRSCH MUSIC v3.26.4 — ALLE VERBESSERUNGEN
+// ✨ HIRSCH MUSIC v3.26.5 — ALLE VERBESSERUNGEN
 // ═══════════════════════════════════════════════════════════════════════
 
 // ─────────────────────────────────────────────
@@ -11677,7 +11843,7 @@ window.exportAsPDF = function() {
       <div class="header">
         <div class="logo">
           <span style="font-size:1.5rem;">🦌</span>
-          <span class="logo-text">Hirsch Music Hit Maker v3.26.4</span>
+          <span class="logo-text">Hirsch Music Hit Maker v3.26.5</span>
         </div>
         <h1>${title}</h1>
         <div class="meta">
@@ -11695,7 +11861,7 @@ window.exportAsPDF = function() {
       
       ${notes ? `<div class="notes"><strong>Notizen:</strong><br>${notes}</div>` : ''}
       
-      <div class="footer">Erstellt mit Hirsch Music Hit Maker v3.26.4 · hirsch-music.at · ${date}</div>
+      <div class="footer">Erstellt mit Hirsch Music Hit Maker v3.26.5 · hirsch-music.at · ${date}</div>
     <\/body>
     <\/html>
   `;
@@ -11742,7 +11908,7 @@ Datum:   ${date}
 ${lyrics}
 
 ───────────────────────────
-Erstellt mit Hirsch Music Hit Maker v3.26.4
+Erstellt mit Hirsch Music Hit Maker v3.26.5
 `;
   const blob = new Blob([txt], {type:'text/plain;charset=utf-8'});
   const url = URL.createObjectURL(blob);
@@ -12358,7 +12524,7 @@ window.deleteSongFromHistory = function(id) {
   }, 600);
 })();
 
-console.log('✨ Hirsch Music v3.26.4 — Alle Verbesserungen geladen');
+console.log('✨ Hirsch Music v3.26.5 — Alle Verbesserungen geladen');
 
 // ═══════════════════════════════════════════════════════════════════════
 // 💰 KOSTEN-TRACKER — GPT-4o API Nutzung
@@ -16264,8 +16430,8 @@ console.log('✨ Fusion Auto-Improve geladen');
       tab: 'lyrics',
       title_de: '🎭 Songwriter-Stil / KI-Persona',
       title_en: '🎭 Songwriter Style / AI Persona',
-      text_de: 'v3.26.4: Gib einen Künstler-Stil ein z.B. "Taylor Swift" oder "Rammstein". Die KI schreibt dann im Stil dieses Künstlers. Klicke auf 🎭 für 60+ Vorschläge.',
-      text_en: 'v3.26.4: Enter an artist style e.g. "Taylor Swift" or "Rammstein". The AI writes in that artist\u2019s style. Click \uD83C\uDFAD for 60+ suggestions.',
+      text_de: 'v3.26.5: Gib einen Künstler-Stil ein z.B. "Taylor Swift" oder "Rammstein". Die KI schreibt dann im Stil dieses Künstlers. Klicke auf 🎭 für 60+ Vorschläge.',
+      text_en: 'v3.26.5: Enter an artist style e.g. "Taylor Swift" or "Rammstein". The AI writes in that artist\u2019s style. Click \uD83C\uDFAD for 60+ suggestions.',
       tip_de: '🎭 Tipp: Kombiniere z.B. "Ed Sheeran, Country-Stil" für einzigartigen Cross-Genre Sound.',
       tip_en: '🎭 Tip: Combine e.g. "Ed Sheeran, Country style" for unique cross-genre sound.',
       position: 'bottom'
@@ -16275,8 +16441,8 @@ console.log('✨ Fusion Auto-Improve geladen');
       tab: 'export',
       title_de: '🎨 Album-Cover Generator',
       title_en: '🎨 Album Cover Generator',
-      text_de: 'v3.26.4: Im Export-Tab unten findest du den Album-Cover Generator. Wähle Stil und Format — DALL-E 3 generiert in ~15 Sekunden ein professionelles Cover.',
-      text_en: 'v3.26.4: In the Export tab at the bottom is the Album Cover Generator. Choose style and format — DALL-E 3 generates a professional cover in ~15 seconds.',
+      text_de: 'v3.26.5: Im Export-Tab unten findest du den Album-Cover Generator. Wähle Stil und Format — DALL-E 3 generiert in ~15 Sekunden ein professionelles Cover.',
+      text_en: 'v3.26.5: In the Export tab at the bottom is the Album Cover Generator. Choose style and format — DALL-E 3 generates a professional cover in ~15 seconds.',
       tip_de: '⚠️ Verbraucht ca. 1 API-Credit (~$0.04) pro Bild.',
       tip_en: '⚠️ Uses approx. 1 API credit (~$0.04) per image.',
       position: 'right'
@@ -16286,8 +16452,8 @@ console.log('✨ Fusion Auto-Improve geladen');
       tab: 'workbench',
       title_de: '📜 Generierungs-Verlauf',
       title_en: '📜 Generation History',
-      text_de: 'v3.26.4: Im Workbench-Tab werden automatisch die letzten 10 Generierungen gespeichert — mit Datum, Genre und Vorschau. Klicke ↩ um eine Version wiederherzustellen.',
-      text_en: 'v3.26.4: In the Workbench tab, the last 10 generations are saved automatically — with date, genre and preview. Click ↩ to restore a version.',
+      text_de: 'v3.26.5: Im Workbench-Tab werden automatisch die letzten 10 Generierungen gespeichert — mit Datum, Genre und Vorschau. Klicke ↩ um eine Version wiederherzustellen.',
+      text_en: 'v3.26.5: In the Workbench tab, the last 10 generations are saved automatically — with date, genre and preview. Click ↩ to restore a version.',
       tip_de: '💡 Der Verlauf bleibt auch nach einem Neustart erhalten (Desktop-App).',
       tip_en: '💡 History persists even after restart (Desktop app).',
       position: 'right'
@@ -17784,7 +17950,7 @@ ${textB.substring(0,800)}`;
       genre ? (isDE ? 'Genre: ' : 'Genre: ') + genre : '',
       bpm   ? 'BPM: ' + bpm : '',
       key   ? (isDE ? 'Tonart: ' : 'Key: ') + key : '',
-      (isDE ? 'Erstellt mit Hirsch Music Hit Maker v3.26.4' : 'Created with Hirsch Music Hit Maker v3.26.4'),
+      (isDE ? 'Erstellt mit Hirsch Music Hit Maker v3.26.5' : 'Created with Hirsch Music Hit Maker v3.26.5'),
     ].filter(Boolean).join('  |  ');
 
     const rtf = `{\rtf1\ansi\deff0
@@ -17797,7 +17963,7 @@ ${textB.substring(0,800)}`;
 ${escapeRtf(lyrics)}
 \par\par
 \fs16\cf1 ─────────────────────────────────────────\par\cf0
-\fs14\i Hirsch Music Hit Maker v3.26.4 — ${new Date().toLocaleDateString(isDE?'de-AT':'en-US')}\i0
+\fs14\i Hirsch Music Hit Maker v3.26.5 — ${new Date().toLocaleDateString(isDE?'de-AT':'en-US')}\i0
 }`;
 
     const blob = new Blob([rtf], { type: 'application/msword' });
@@ -17832,7 +17998,7 @@ ${escapeRtf(lyrics)}
       '<\/style><\/head><body>',
       '<h1>' + title.replace(/</g,'&lt;') + '<\/h1>',
       '<pre>' + lyrics.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '<\/pre>',
-      '<div class="footer">Hirsch Music Hit Maker v3.26.4 — Made with \u266a<\/div>',
+      '<div class="footer">Hirsch Music Hit Maker v3.26.5 — Made with \u266a<\/div>',
       '<\/body><\/html>'
     ].join('\n');
     const win = window.open('', '_blank', 'width=700,height=900');
@@ -18532,7 +18698,7 @@ window.printLyrics = function() {
     '<\/head><body>',
     '<h1>' + songTitle + '<\/h1>',
     '<pre>' + text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '<\/pre>',
-    '<div class="footer">Hirsch Music Hit Maker v3.26.4 — Made with ♪<\/div>',
+    '<div class="footer">Hirsch Music Hit Maker v3.26.5 — Made with ♪<\/div>',
     '<\/body><\/html>'
   ].join('\n');
   printWin.document.write(printHTML);
@@ -22039,7 +22205,7 @@ ${versions.map((v,i)=>'=== Draft '+(i+1)+' ===\n'+v.substring(0,600)).join('\n\n
   }
   if(!finalLyrics||finalLyrics.trim().length<30) finalLyrics=versions[0];
 
-  // ── v3.26.4: Output Discipline Check ──────────────────────────
+  // ── v3.26.5: Output Discipline Check ──────────────────────────
   let _odResult = null;
   try {
     if (typeof _validateOutputDiscipline === 'function' && typeof _extractSignalKeywords === 'function') {
@@ -22055,7 +22221,7 @@ ${versions.map((v,i)=>'=== Draft '+(i+1)+' ===\n'+v.substring(0,600)).join('\n\n
       }
       _odResult = { outputDiscipline: { before: _odBefore, after: _odAfter, repaired: _odFinal !== finalLyrics }, emotionSignalBundle };
     }
-  } catch(e) { console.warn('[v3.26.4] discipline check error', e); }
+  } catch(e) { console.warn('[v3.26.5] discipline check error', e); }
   window._lastGenerateResult = _odResult;
 
   // ── OUTPUT ────────────────────────────────────────────────────
@@ -22098,7 +22264,7 @@ ${versions.map((v,i)=>'=== Draft '+(i+1)+' ===\n'+v.substring(0,600)).join('\n\n
   if(typeof renderRiskLock==='function') renderRiskLock(typeof result!=='undefined'?result:window._lastGenerateResult||null);
   if(typeof renderAudience==='function') renderAudience(typeof result!=='undefined'?result:window._lastGenerateResult||null);
   if(typeof renderMasterVerdict==='function') renderMasterVerdict(typeof result!=='undefined'?result:window._lastGenerateResult||null);
-  // v3.26.4: Vergleichsmodus
+  // v3.26.5: Vergleichsmodus
   (function(){
     const _r = typeof result !== 'undefined' ? result : (window._lastGenerateResult || null);
     const _b = typeof emotionSignalBundle !== 'undefined' ? emotionSignalBundle : (window._activeEmotionBundle || null);
@@ -22551,7 +22717,7 @@ function renderMasterVerdict(result) {
 
   if (tierEl) {
     tierEl.textContent = mv.tierLabel;
-    // v3.26.4: realistic vs. aspirational sub-label
+    // v3.26.5: realistic vs. aspirational sub-label
     let subEl = document.getElementById('masterVerdictTierSub');
     if (!subEl) {
       subEl = document.createElement('div');
@@ -22592,7 +22758,7 @@ function renderMasterVerdict(result) {
 }
 window.renderMasterVerdict = renderMasterVerdict;
 
-// v3.26.4 — renderComparison
+// v3.26.5 — renderComparison
 function renderComparison(result) {
   var panel = document.getElementById('comparisonPanel');
   if (!panel) return;
@@ -22619,6 +22785,94 @@ function renderComparison(result) {
   panel.style.display = 'block';
 }
 window.renderComparison = renderComparison;
+
+// ══ v3.26.5 — LEBENSSITUATION MODAL FUNCTIONS ══
+function openSituationModal(context) {
+  activeSituationContext = context || 'lyrics';
+  const lang = currentLang;
+  document.getElementById('situation-modal-title').textContent =
+    '🎬 ' + (lang==='de' ? 'Lebenssituation wählen' : 'Pick life situation');
+  document.getElementById('situation-clear-label').textContent =
+    lang==='de' ? 'Alle löschen' : 'Clear all';
+  document.getElementById('situation-apply-label').textContent =
+    lang==='de' ? 'Anwenden' : 'Apply';
+  const body = document.getElementById('situation-modal-body');
+  body.innerHTML = '';
+  LIFE_SITUATION_CATS.forEach(cat => {
+    const section = document.createElement('div');
+    section.className = 'mood-cat-section';
+    const header = document.createElement('div');
+    header.className = 'mood-cat-header sit-cat-header cat-' + cat.key;
+    header.textContent = cat[lang];
+    section.appendChild(header);
+    const row = document.createElement('div');
+    row.className = 'mood-chips-row';
+    cat.values.forEach(val => {
+      const sit = LIFE_SITUATIONS.find(s => s.value === val);
+      if (!sit) return;
+      const chip = document.createElement('div');
+      chip.className = 'sit-chip';
+      chip.textContent = sit[lang];
+      chip.dataset.value = val;
+      if ((situationState[activeSituationContext]||[]).includes(val)) chip.classList.add('selected');
+      chip.onclick = () => {
+        if (!situationState[activeSituationContext]) situationState[activeSituationContext] = [];
+        const arr = situationState[activeSituationContext];
+        const idx = arr.indexOf(val);
+        if (idx===-1) { arr.push(val); chip.classList.add('selected'); }
+        else { arr.splice(idx,1); chip.classList.remove('selected'); }
+        _updateSituationSelection(currentLang);
+      };
+      row.appendChild(chip);
+    });
+    section.appendChild(row);
+    body.appendChild(section);
+  });
+  _updateSituationSelection(lang);
+  document.getElementById('situation-modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function _updateSituationSelection(lang) {
+  const el = document.getElementById('situation-modal-selection');
+  if (!el) return;
+  const arr = situationState[activeSituationContext] || [];
+  if (!arr.length) { el.textContent = lang==='de'?'Keine Situation gewählt':'No situation selected'; return; }
+  el.textContent = (lang==='de'?'Gewählt: ':'Selected: ')
+    + arr.map(v=>{ const s=LIFE_SITUATIONS.find(x=>x.value===v); return s?s[lang]:v; }).join(' · ');
+}
+function closeSituationModal() {
+  document.getElementById('situation-modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  const ctx = activeSituationContext || 'lyrics';
+  const el = document.getElementById(ctx+'-situation-display');
+  if (el) {
+    el.innerHTML = '';
+    (situationState[ctx]||[]).forEach(val => {
+      const sit = LIFE_SITUATIONS.find(s=>s.value===val);
+      if (!sit) return;
+      const chip = document.createElement('span');
+      chip.className = 'chip';
+      chip.style.cssText = 'background:rgba(56,189,248,0.15);border:1px solid rgba(56,189,248,0.4);color:#e0f2fe;font-size:0.75rem;padding:3px 10px;border-radius:12px;';
+      chip.textContent = sit[currentLang];
+      el.appendChild(chip);
+    });
+  }
+  activeSituationContext = null;
+}
+function closeSituationModalOutside(e) {
+  if (e.target===document.getElementById('situation-modal-overlay')) closeSituationModal();
+}
+function clearSituationModal() {
+  if (!activeSituationContext) return;
+  situationState[activeSituationContext] = [];
+  document.querySelectorAll('#situation-modal-body .sit-chip').forEach(c=>c.classList.remove('selected'));
+  _updateSituationSelection(currentLang);
+}
+window.openSituationModal=openSituationModal;
+window.closeSituationModal=closeSituationModal;
+window.closeSituationModalOutside=closeSituationModalOutside;
+window.clearSituationModal=clearSituationModal;
+
 
 window._formatScoreLine       = _formatScoreLine;
 window._flattenHitGroups      = _flattenHitGroups;
@@ -24689,6 +24943,22 @@ if (typeof _origRenderLibRow === 'function') {
   <script src="referenceBank.songs.09.js"></script>
   <script src="referenceBank.songs.10.js"></script>
   <script src="referenceBank.songs.11.js"></script>
+
+<!-- ══ LEBENSSITUATION MODAL (v3.26.5) ══ -->
+<div id="situation-modal-overlay" class="modal-overlay" onclick="closeSituationModalOutside(event)">
+  <div class="modal-box" style="max-width:660px;width:95%;">
+    <div class="modal-header">
+      <h3 id="situation-modal-title">🎬 Lebenssituation wählen</h3>
+      <button class="btn btn-xs btn-outline" onclick="closeSituationModal()">✕</button>
+    </div>
+    <div class="modal-body" id="situation-modal-body"></div>
+    <div class="modal-footer">
+      <span class="modal-footer-info" id="situation-modal-selection" data-de="Keine Situation gewählt" data-en="No situation selected">Keine Situation gewählt</span>
+      <button class="btn btn-sm btn-outline" onclick="clearSituationModal()"><span id="situation-clear-label">Alle löschen</span></button>
+      <button class="btn btn-sm btn-primary" onclick="closeSituationModal()"><span id="situation-apply-label">Anwenden</span></button>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
