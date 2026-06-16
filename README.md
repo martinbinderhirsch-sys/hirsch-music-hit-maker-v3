@@ -94,3 +94,4 @@ npm run dist
 ## Zielbild
 
 Der Hirsch Music Hit Maker soll sich zu einer belastbaren, klar strukturierten Songwriting-Workbench entwickeln – mit sauberer Trennung zwischen Oberfläche, sicherer Bridge, nativer Desktop-Logik und fachlichen Musikmodulen.
+
