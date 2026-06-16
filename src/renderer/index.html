@@ -19,13 +19,13 @@
 <link rel="author" href="https://www.perplexity.ai/computer">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hirsch Music Hit Maker v3.26.6</title>
+<title>Hirsch Music Hit Maker v3.26.7</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════
-   HIRSCH MUSIC HIT MAKER v3.26.6 — PREMIUM DARK DESIGN
+   HIRSCH MUSIC HIT MAKER v3.26.7 — PREMIUM DARK DESIGN
    ═══════════════════════════════════════════ */
 
 :root {
@@ -248,7 +248,7 @@ body {
 }
 
 .sidebar-footer::after {
-  content: 'v3.26.6';
+  content: 'v3.26.7';
   font-size: 10px;
   color: var(--text3);
   letter-spacing: 0.05em;
@@ -2359,7 +2359,7 @@ tbody td {
 }
 
 /* ═══════════════════════════════════════════
-   PROFESSIONAL REDESIGN POLISH — v3.26.6
+   PROFESSIONAL REDESIGN POLISH — v3.26.7
    TopMediai-inspired: clean, minimal, sharp
 ═══════════════════════════════════════════ */
 
@@ -2910,7 +2910,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
 .master-verdict-advice { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; }
 .master-verdict-advice li { font-size: 12px; color: #fff; background: rgba(255,255,255,0.05); border-left: 3px solid rgba(255,255,255,0.4); padding: 6px 10px; border-radius: 6px; }
 
-/* v3.26.6 — Vergleichsmodus */
+/* v3.26.7 — Vergleichsmodus */
 .comparison-panel {
   margin-top: 14px;
   padding: 14px;
@@ -2967,7 +2967,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
 }
 
 
-/* ── v3.26.6: Lebenssituation-Chips ── */
+/* ── v3.26.7: Lebenssituation-Chips ── */
 .sit-chip {
   padding: 5px 12px;
   border-radius: 20px;
@@ -3334,7 +3334,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
                 <button class="btn btn-xs btn-outline" onclick="checkSyllables()">📊 <span data-de="Silben" data-en="Syllables">Silben</span></button>
                 <span id="syllable-display" class="syllable-display" style="display:none;font-size:0.75rem;color:var(--text3);padding:2px 6px;background:var(--surface2);border-radius:4px;"></span>
                 <button class="btn btn-xs btn-outline" onclick="copyOutput('lyrics-output')">📋 <span data-de="Kopieren" data-en="Copy">Kopieren</span></button>
-                <button class="btn btn-xs btn-outline" onclick="printLyrics()">🖨️ <span data-de="Drucken" data-en="Print">Drucken</span></button>
+                <button class="btn btn-xs btn-outline" data-action-print="1">🖨️ <span data-de="Drucken" data-en="Print">Drucken</span></button>
                 <button class="btn btn-xs" onclick="spellCheckLyrics()" id="spellcheck-btn"
                   style="background:rgba(139,90,246,0.15);color:#a78bfa;border:1px solid rgba(139,90,246,0.3);"
                   title="Manuelle Rechtschreibprüfung">
@@ -3479,8 +3479,8 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           <div id="emotionWarningList" class="emotion-warning-list">—</div>
         </div>
 
-        <!-- Output Discipline Panel (v3.26.6) -->
-        <!-- Master Verdict Panel (v3.26.6) -->
+        <!-- Output Discipline Panel (v3.26.7) -->
+        <!-- Master Verdict Panel (v3.26.7) -->
         <div id="masterVerdictPanel" class="master-verdict-panel" style="display:none;">
           <div class="master-verdict-tier" id="masterVerdictTier">—</div>
           <div class="master-verdict-line" id="masterVerdictLine">—</div>
@@ -3492,7 +3492,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           <ul id="masterVerdictAdvice" class="master-verdict-advice"></ul>
         </div>
 
-        <!-- v3.26.6 — Vergleichsmodus -->
+        <!-- v3.26.7 — Vergleichsmodus -->
         <div id="comparisonPanel" class="comparison-panel" style="display:none;">
           <div class="comparison-head">
             <h3>📐 Referenz-Vergleich</h3>
@@ -3556,7 +3556,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           </div>
         </div>
 
-        <!-- Self Score Panel (v3.26.6) -->
+        <!-- Self Score Panel (v3.26.7) -->
         <div id="selfScorePanel" class="self-score-panel" style="display:none;">
           <div class="self-score-head">
             <h3>🎯 Ehrliches Selbst-Urteil</h3>
@@ -3611,7 +3611,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           <div id="referenceBankResults" class="reference-bank-results">— Noch keine Songs geladen. Warte auf Loader-Dateien. —</div>
         </div>
 
-        <!-- Intentional Break Panel (v3.26.6) -->
+        <!-- Intentional Break Panel (v3.26.7) -->
         <div id="intentBreakPanel" class="intent-break-panel" style="display:none;">
           <div class="intent-break-head">
             <h3>🎼 Bewusster Regelbruch</h3>
@@ -3620,7 +3620,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           <ul id="intentBreakList" class="intent-break-list"></ul>
         </div>
 
-        <!-- Risk Lock Panel (v3.26.6) -->
+        <!-- Risk Lock Panel (v3.26.7) -->
         <div id="riskLockPanel" class="risk-lock-panel" style="display:none;">
           <div class="risk-lock-head">
             <h3>🎲 Risiko-Lock</h3>
@@ -3632,7 +3632,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           </div>
         </div>
 
-        <!-- Audience Model Panel (v3.26.6) -->
+        <!-- Audience Model Panel (v3.26.7) -->
         <div id="audiencePanel" class="audience-panel" style="display:none;">
           <div class="audience-head">
             <h3>👂 Hörerseite</h3>
@@ -4116,7 +4116,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           <div class="form-group">
             <label data-de="Song-Name" data-en="Song Name">Song-Name</label>
             <input type="text" id="export-name" placeholder="Mein Song" 
-              oninput="if(window.SONG) window.SONG.lyricsTitle=this.value;">
+              data-bind-song-title="true">
           </div>
           <div class="form-group">
             <label data-de="Notizen" data-en="Notes">Notizen</label>
@@ -4129,66 +4129,61 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
       <div id="export-sync-info" class="text-muted mb-4" style="font-size:0.78rem;"></div>
 
       <div class="card">
-        <div class="export-format-tabs">
-          <button class="export-format-tab active" onclick="switchExportFormat('markdown', this)">📝 Markdown</button>
-          <button class="export-format-tab" onclick="switchExportFormat('daw', this)">🎛️ DAW</button>
-          <button class="export-format-tab" onclick="switchExportFormat('suno', this)">🎵 Suno</button>
+        <div class="export-format-tabs" id="export-format-tabs">
+          <button class="export-format-tab active" data-format="markdown">📝 Markdown</button>
+          <button class="export-format-tab" data-format="daw">🎛️ DAW</button>
+          <button class="export-format-tab" data-format="suno">🎵 Suno</button>
         </div>
 
         <div id="efp-markdown" class="export-format-panel active" style="display:block;">
           <div id="export-markdown-preview" class="prompt-box"><span class="output-placeholder">Markdown-Preview</span></div>
-          <button class="btn btn-sm btn-outline mt-2" onclick="copyExportFormat('markdown')">📋 <span data-de="Kopieren" data-en="Copy">Kopieren</span></button>
+          <button class="btn btn-sm btn-outline mt-2" data-copy-format="markdown">📋 <span data-de="Kopieren" data-en="Copy">Kopieren</span></button>
         </div>
 
         <div id="efp-daw" class="export-format-panel">
           <div id="export-daw-preview" class="prompt-box"><span class="output-placeholder">DAW-Preview</span></div>
-          <button class="btn btn-sm btn-outline mt-2" onclick="copyExportFormat('daw')">📋 <span data-de="Kopieren" data-en="Copy">Kopieren</span></button>
+          <button class="btn btn-sm btn-outline mt-2" data-copy-format="daw">📋 <span data-de="Kopieren" data-en="Copy">Kopieren</span></button>
         </div>
 
         <div id="efp-suno" class="export-format-panel">
           <div id="export-suno-preview" class="prompt-box"><span class="output-placeholder">Suno-Preview</span></div>
-          <button class="btn btn-sm btn-outline mt-2" onclick="copyExportFormat('suno')">📋 <span data-de="Kopieren" data-en="Copy">Kopieren</span></button>
+          <button class="btn btn-sm btn-outline mt-2" data-copy-format="suno">📋 <span data-de="Kopieren" data-en="Copy">Kopieren</span></button>
         </div>
       </div>
 
       <div class="card">
         <div class="card-title" data-de="📦 Alle Prompts zusammen" data-en="📦 All Prompts Combined">📦 Alle Prompts zusammen</div>
         <div id="export-all-prompts" class="prompt-box"><span class="output-placeholder" data-de="Alle generierten Prompts erscheinen hier" data-en="All generated prompts appear here">Alle generierten Prompts erscheinen hier</span></div>
-        <button class="btn btn-sm btn-outline mt-2" onclick="copyOutput('export-all-prompts')">📋 <span data-de="Alles kopieren" data-en="Copy all">Alles kopieren</span></button>
+        <button class="btn btn-sm btn-outline mt-2" data-copy-output="export-all-prompts">📋 <span data-de="Alles kopieren" data-en="Copy all">Alles kopieren</span></button>
       </div>
 
       <!-- ── Downloads & Cover ── -->
       <div class="card">
         <div class="card-title" data-de="⬇️ Herunterladen &amp; Cover" data-en="⬇️ Download &amp; Cover">⬇️ Herunterladen &amp; Cover</div>
         
-        <!-- Download Grid -->
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px;">
-          <!-- DOCX -->
-          <button onclick="exportAsDOCX()" style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px 10px;cursor:pointer;text-align:center;transition:all 0.12s;color:var(--text);" onmouseover="this.style.borderColor='#2b579a'" onmouseout="this.style.borderColor='var(--border)'">
+        <!-- Download Grid — v3.26.7: kein onclick/onmouseover mehr, binding via JS -->
+        <div id="export-download-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px;">
+          <button class="export-dl-btn" data-action="docx" data-hover="#2b579a" style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px 10px;cursor:pointer;text-align:center;transition:all 0.12s;color:var(--text);">
             <div style="font-size:1.6rem;margin-bottom:6px;">📄</div>
             <div style="font-weight:700;font-size:0.82rem;">Word / DOCX</div>
             <div style="font-size:0.68rem;color:var(--text3);margin-top:2px;" data-de="Microsoft Word" data-en="Microsoft Word">Microsoft Word</div>
           </button>
-          <!-- PDF -->
-          <button onclick="exportAsPDF()" style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px 10px;cursor:pointer;text-align:center;transition:all 0.12s;color:var(--text);" onmouseover="this.style.borderColor='#dc2626'" onmouseout="this.style.borderColor='var(--border)'">
+          <button class="export-dl-btn" data-action="pdf" data-hover="#dc2626" style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px 10px;cursor:pointer;text-align:center;transition:all 0.12s;color:var(--text);">
             <div style="font-size:1.6rem;margin-bottom:6px;">📕</div>
             <div style="font-weight:700;font-size:0.82rem;">PDF</div>
             <div style="font-size:0.68rem;color:var(--text3);margin-top:2px;" data-de="Druckfertig" data-en="Print-ready">Druckfertig</div>
           </button>
-          <!-- TXT -->
-          <button onclick="exportAsTXT()" style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px 10px;cursor:pointer;text-align:center;transition:all 0.12s;color:var(--text);" onmouseover="this.style.borderColor='#059669'" onmouseout="this.style.borderColor='var(--border)'">
+          <button class="export-dl-btn" data-action="txt" data-hover="#059669" style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px 10px;cursor:pointer;text-align:center;transition:all 0.12s;color:var(--text);">
             <div style="font-size:1.6rem;margin-bottom:6px;">📝</div>
             <div style="font-weight:700;font-size:0.82rem;">TXT</div>
             <div style="font-size:0.68rem;color:var(--text3);margin-top:2px;" data-de="Reine Textdatei" data-en="Plain text file">Reine Textdatei</div>
           </button>
-          <!-- Print -->
-          <button onclick="printLyrics()" style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px 10px;cursor:pointer;text-align:center;transition:all 0.12s;color:var(--text);" onmouseover="this.style.borderColor='#6b7280'" onmouseout="this.style.borderColor='var(--border)'">
+          <button class="export-dl-btn" data-action="print" data-hover="#6b7280" style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px 10px;cursor:pointer;text-align:center;transition:all 0.12s;color:var(--text);">
             <div style="font-size:1.6rem;margin-bottom:6px;">🖨️</div>
             <div style="font-weight:700;font-size:0.82rem;" data-de="Drucken" data-en="Print">Drucken</div>
             <div style="font-size:0.68rem;color:var(--text3);margin-top:2px;" data-de="Direkt drucken" data-en="Print directly">Direkt drucken</div>
           </button>
-          <!-- Album Cover -->
-          <button onclick="generateAlbumCover()" style="background:linear-gradient(135deg,rgba(124,58,237,0.1),rgba(168,85,247,0.1));border:1px solid rgba(124,58,237,0.3);border-radius:12px;padding:14px 10px;cursor:pointer;text-align:center;transition:all 0.12s;color:var(--text);" onmouseover="this.style.borderColor='#7c3aed'" onmouseout="this.style.borderColor='rgba(124,58,237,0.3)'">
+          <button class="export-dl-btn" data-action="cover" data-hover="#7c3aed" data-hover-default="rgba(124,58,237,0.3)" style="background:linear-gradient(135deg,rgba(124,58,237,0.1),rgba(168,85,247,0.1));border:1px solid rgba(124,58,237,0.3);border-radius:12px;padding:14px 10px;cursor:pointer;text-align:center;transition:all 0.12s;color:var(--text);">
             <div style="font-size:1.6rem;margin-bottom:6px;">🎨</div>
             <div style="font-weight:700;font-size:0.82rem;" data-de="Album Cover" data-en="Album Cover">Album Cover</div>
             <div style="font-size:0.68rem;color:#a78bfa;margin-top:2px;">DALL-E 3</div>
@@ -4704,7 +4699,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
 
   <!-- Footer hidden — status bar at bottom handles this -->
   <footer class="app-footer" style="display:none;">
-    Hirsch Music Hit Maker v3.26.6 — Made with ♪ · 49 Genres · 24.000+ Songs · 1920–2026 by Hirsch Music Production and Perplexity Computer
+    Hirsch Music Hit Maker v3.26.7 — Made with ♪ · 49 Genres · 24.000+ Songs · 1920–2026 by Hirsch Music Production and Perplexity Computer
     <br>
     <a href="https://www.perplexity.ai/computer" target="_blank" rel="noopener noreferrer">Created with Perplexity Computer</a>
   </footer>
@@ -4953,7 +4948,7 @@ const INSTR_STRUCT_HINTS = {
 };
 
 // ══════════════════════════════════════════════════════
-// v3.26.6 — LEBENSSITUATIONEN
+// v3.26.7 — LEBENSSITUATIONEN
 // ══════════════════════════════════════════════════════
 const LIFE_SITUATIONS = [
   // Liebe & Beziehung
@@ -5927,7 +5922,7 @@ function buildFullExportContent() {
   if(SONG.lyricsTitle)    sections.push(de?`TITEL: ${SONG.lyricsTitle}`:`TITLE: ${SONG.lyricsTitle}`);
   if(genreNames.length)   sections.push(de?`GENRE: ${genreNames.join(' + ')}`:`GENRE: ${genreNames.join(' + ')}`);
   if(moodNames.length)    sections.push(de?`STIMMUNG: ${moodNames.join(' · ')}`:`MOOD: ${moodNames.join(' · ')}`);
-  // v3.26.6: Lebenssituation
+  // v3.26.7: Lebenssituation
   const sitArr = (window.situationState && window.situationState['lyrics']) ? window.situationState['lyrics'] : (SONG.situation || []);
   const sitNames = sitArr.map(v => { const s = (typeof LIFE_SITUATIONS!=='undefined') ? LIFE_SITUATIONS.find(x=>x.value===v) : null; return s?s[currentLang]:v; });
   if(sitNames.length) sections.push(de?`LEBENSSITUATION: ${sitNames.join(' · ')}`:`LIFE SITUATION: ${sitNames.join(' · ')}`);
@@ -6274,7 +6269,7 @@ function generateLyrics() {
 }
 
 // ═══════════════════════════════════════════════════════
-// HIRSCH MUSIC HIT MAKER v3.26.6 — LYRICS LIBRARY
+// HIRSCH MUSIC HIT MAKER v3.26.7 — LYRICS LIBRARY
 // Große Textbibliothek: DE + EN, alle Genres, alle Sektionen
 // Intelligente Kombination via Mood + Theme-Keywords
 // ═══════════════════════════════════════════════════════
@@ -7411,8 +7406,8 @@ function buildLyrics(theme, genre, mood, lang, structure, notes, rhymeScheme, ve
   const verseLabel = (!verseCount||verseCount==='auto') ? (de?'Auto':'Auto') : (de?`${verseCount} Strophen`:`${verseCount} Verses`);
 
   result += de
-    ? `\n\n───────────────────────────\nGenre: ${genre.toUpperCase()} | Mood: ${mood}\nSprache: ${lang.toUpperCase()} | Struktur: ${structName}\nReimschema: ${rhymeLabel} | Strophen: ${verseLabel} | Dauer: ${durStr}\nHirsch Music Hit Maker v3.26.6`
-    : `\n\n───────────────────────────\nGenre: ${genre.toUpperCase()} | Mood: ${mood}\nLanguage: ${lang.toUpperCase()} | Structure: ${structName}\nRhyme: ${rhymeLabel} | Verses: ${verseLabel} | Duration: ${durStr}\nHirsch Music Hit Maker v3.26.6`;
+    ? `\n\n───────────────────────────\nGenre: ${genre.toUpperCase()} | Mood: ${mood}\nSprache: ${lang.toUpperCase()} | Struktur: ${structName}\nReimschema: ${rhymeLabel} | Strophen: ${verseLabel} | Dauer: ${durStr}\nHirsch Music Hit Maker v3.26.7`
+    : `\n\n───────────────────────────\nGenre: ${genre.toUpperCase()} | Mood: ${mood}\nLanguage: ${lang.toUpperCase()} | Structure: ${structName}\nRhyme: ${rhymeLabel} | Verses: ${verseLabel} | Duration: ${durStr}\nHirsch Music Hit Maker v3.26.7`;
 
   return result;
 }
@@ -8398,7 +8393,7 @@ function exportTXT() {
   }).join(', ') || '—';
   const moodStr = SONG.moods.map(v => { const m=MOODS.find(x=>x.value===v); return m?m[currentLang]:v; }).join(', ') || '—';
   const content = [
-    `HIRSCH MUSIC HIT MAKER v3.26.6`,
+    `HIRSCH MUSIC HIT MAKER v3.26.7`,
     `Projekt: ${name}`,
     `Datum: ${new Date().toLocaleDateString('de-AT')}`,
     `${'═'.repeat(40)}`,
@@ -8409,7 +8404,7 @@ function exportTXT() {
     (getActiveLyricsForExport ? getActiveLyricsForExport() : lastLyrics) ? `LYRICS:\n${getActiveLyricsForExport ? getActiveLyricsForExport() : lastLyrics}` : '',
     lastBeatPrompts.suno ? `\nBEAT PROMPTS:\n── SUNO ──\n${lastBeatPrompts.suno}\n\n── UDIO ──\n${lastBeatPrompts.udio}\n\n── TOPMEDIAI ──\n${lastBeatPrompts.topm}` : '',
     `\n${'═'.repeat(40)}`,
-    `Hirsch Music Hit Maker v3.26.6 — Made with ♪`,
+    `Hirsch Music Hit Maker v3.26.7 — Made with ♪`,
     `by Hirsch Music Production and Perplexity Computer`
   ].filter(Boolean).join('\n');
 
@@ -8424,7 +8419,7 @@ function exportTXT() {
 function exportJSON() {
   const name = document.getElementById('export-name').value || 'hirsch-song';
   const data = {
-    app: "Hirsch Music Hit Maker v3.26.6",
+    app: "Hirsch Music Hit Maker v3.26.7",
     project: name,
     date: new Date().toISOString(),
     song: {
@@ -9581,7 +9576,7 @@ function updateExportFormat(format) {
       let txt = '# ' + (SONG.lyricsTitle || SONG.theme || 'Song') + '\n\n';
       txt += '**Genre:** ' + genres + ' | **BPM:** ' + bpm + ' | **Key:** ' + key + '\n\n';
       txt += '---\n\n' + activeLyrics.replace(/═+/g,'---').replace(/─+/g,'---');
-      txt += '\n\n---\n*Created with Hirsch Music Hit Maker v3.26.6*';
+      txt += '\n\n---\n*Created with Hirsch Music Hit Maker v3.26.7*';
       md.textContent = txt;
     }
   } else if(format === 'daw') {
@@ -11698,7 +11693,7 @@ console.log('🤖 Hirsch Music AI Engine geladen — OpenAI GPT-4o bereit');
 
 
 // ═══════════════════════════════════════════════════════════════════════
-// ✨ HIRSCH MUSIC v3.26.6 — ALLE VERBESSERUNGEN
+// ✨ HIRSCH MUSIC v3.26.7 — ALLE VERBESSERUNGEN
 // ═══════════════════════════════════════════════════════════════════════
 
 // ─────────────────────────────────────────────
@@ -11843,7 +11838,7 @@ window.exportAsPDF = function() {
       <div class="header">
         <div class="logo">
           <span style="font-size:1.5rem;">🦌</span>
-          <span class="logo-text">Hirsch Music Hit Maker v3.26.6</span>
+          <span class="logo-text">Hirsch Music Hit Maker v3.26.7</span>
         </div>
         <h1>${title}</h1>
         <div class="meta">
@@ -11861,7 +11856,7 @@ window.exportAsPDF = function() {
       
       ${notes ? `<div class="notes"><strong>Notizen:</strong><br>${notes}</div>` : ''}
       
-      <div class="footer">Erstellt mit Hirsch Music Hit Maker v3.26.6 · hirsch-music.at · ${date}</div>
+      <div class="footer">Erstellt mit Hirsch Music Hit Maker v3.26.7 · hirsch-music.at · ${date}</div>
     <\/body>
     <\/html>
   `;
@@ -11908,7 +11903,7 @@ Datum:   ${date}
 ${lyrics}
 
 ───────────────────────────
-Erstellt mit Hirsch Music Hit Maker v3.26.6
+Erstellt mit Hirsch Music Hit Maker v3.26.7
 `;
   const blob = new Blob([txt], {type:'text/plain;charset=utf-8'});
   const url = URL.createObjectURL(blob);
@@ -11926,26 +11921,36 @@ Erstellt mit Hirsch Music Hit Maker v3.26.6
     const exportTab = document.getElementById('tab-export');
     if(!exportTab || document.getElementById('pdf-export-btn')) return;
     
+    // v3.26.7: createElement statt innerHTML + onclick
     const exportCard = document.createElement('div');
     exportCard.className = 'card';
-    exportCard.style.cssText = 'margin-top:16px;';
-    exportCard.innerHTML = `
-      <div class="card-title">📄 ${currentLang==='de'?'Datei-Export':'File Export'}</div>
-      <p style="font-size:0.82rem;color:var(--text2);margin-bottom:12px;" 
-         data-de="Lade deine Lyrics als Datei herunter oder drucke sie als PDF."
-         data-en="Download your lyrics as a file or print as PDF.">
-        Lade deine Lyrics als Datei herunter oder drucke sie als PDF.
-      </p>
-      <div class="form-actions">
-        
-        <button class="btn btn-secondary" onclick="exportAsTXT()">
-          📥 <span data-de="Als TXT downloaden" data-en="Download as TXT">Als TXT downloaden</span>
-        </button>
-        <button class="btn btn-secondary" onclick="exportAsDOCX()">
-          📝 <span data-de="Als Word (.docx)" data-en="As Word (.docx)">Als Word (.docx)</span>
-        </button>
-      </div>
-    `;
+    exportCard.style.marginTop = '16px';
+
+    const cardTitle = document.createElement('div');
+    cardTitle.className = 'card-title';
+    cardTitle.textContent = '📄 ' + (currentLang==='de' ? 'Datei-Export' : 'File Export');
+
+    const cardDesc = document.createElement('p');
+    cardDesc.style.cssText = 'font-size:0.82rem;color:var(--text2);margin-bottom:12px;';
+    cardDesc.textContent = currentLang==='de'
+      ? 'Lade deine Lyrics als Datei herunter oder drucke sie als PDF.'
+      : 'Download your lyrics as a file or print as PDF.';
+
+    const actions = document.createElement('div');
+    actions.className = 'form-actions';
+
+    const txtBtn = document.createElement('button');
+    txtBtn.className = 'btn btn-secondary';
+    txtBtn.innerHTML = '📥 <span>' + (currentLang==='de' ? 'Als TXT downloaden' : 'Download as TXT') + '</span>';
+    txtBtn.addEventListener('click', function() { if(typeof exportAsTXT==='function') exportAsTXT(); });
+
+    const docxBtn = document.createElement('button');
+    docxBtn.className = 'btn btn-secondary';
+    docxBtn.innerHTML = '📝 <span>' + (currentLang==='de' ? 'Als Word (.docx)' : 'As Word (.docx)') + '</span>';
+    docxBtn.addEventListener('click', function() { if(typeof exportAsDOCX==='function') exportAsDOCX(); });
+
+    actions.append(txtBtn, docxBtn);
+    exportCard.append(cardTitle, cardDesc, actions);
     exportTab.appendChild(exportCard);
 
     // ── Album Cover Generator Card ────────────────────────────
@@ -11990,7 +11995,7 @@ Erstellt mit Hirsch Music Hit Maker v3.26.6
       <div style="font-size:11px;color:var(--text3);margin-bottom:8px;padding:6px 10px;background:rgba(124,58,237,0.08);border-radius:6px;border-left:2px solid #7C3AED;">
         💡 ${isDE_c?'Verbraucht ca. 1 DALL·E 3 API-Credit (~$0.04)':'Uses ~1 DALL·E 3 API credit (~$0.04)'}
       </div>
-      <button onclick="generateAlbumCover()" id="cover-generate-btn"
+      <button id="cover-generate-btn"
         style="width:100%;padding:12px;font-size:0.95rem;font-weight:700;background:linear-gradient(135deg,#7C3AED,#A78BFA);color:#fff;border:none;border-radius:8px;cursor:pointer;transition:all 0.2s;">
         🎨 ${isDE_c?'Cover generieren':'Generate Cover'}
       </button>
@@ -12146,29 +12151,57 @@ window.showSimilarSongs = function(idx) {
     document.body.appendChild(panel);
   }
   
-  panel.innerHTML = `
-    <div style="padding:14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
-      <strong style="font-size:0.88rem;">🎵 Ähnliche Songs</strong>
-      <button onclick="document.getElementById('similar-songs-panel').style.display='none'" 
-              style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:1rem;">✕</button>
-    </div>
-    <div style="padding:8px;">
-      <div style="font-size:0.72rem;color:var(--text3);padding:4px 6px 8px;">
-        Ähnlich wie: <strong>${song.t}</strong> · ${song.g} · ${song.b}BPM · ${song.k}
-      </div>
-      ${similar.map((s, i) => `
-        <div style="display:flex;align-items:center;gap:8px;padding:8px 6px;border-radius:6px;cursor:pointer;transition:background 0.15s;"
-             onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background=''"
-             onclick="useLibSong(${_libData.indexOf(s)});document.getElementById('similar-songs-panel').style.display='none';">
-          <div style="flex:1;min-width:0;">
-            <div style="font-size:0.82rem;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.t}</div>
-            <div style="font-size:0.72rem;color:var(--text3);">${s.a} · ${s.b||'?'}BPM · ${s.k||'?'}</div>
-          </div>
-          <span style="font-size:0.65rem;background:rgba(124,58,237,0.1);color:var(--accent2);padding:2px 6px;border-radius:4px;white-space:nowrap;">${s.g}</span>
-        </div>
-      `).join('')}
-    </div>
-  `;
+  // v3.26.7: Clean DOM rendering — no onclick/onmouseover
+  panel.innerHTML = '';
+  
+  // Header
+  const header = document.createElement('div');
+  header.style.cssText = 'padding:14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;';
+  const title = document.createElement('strong');
+  title.style.fontSize = '0.88rem';
+  title.textContent = '🎵 ' + (currentLang==='de' ? 'Ähnliche Songs' : 'Similar Songs');
+  const closeBtn = document.createElement('button');
+  closeBtn.style.cssText = 'background:none;border:none;cursor:pointer;color:var(--text3);font-size:1rem;';
+  closeBtn.textContent = '✕';
+  closeBtn.addEventListener('click', function() { panel.style.display = 'none'; });
+  header.append(title, closeBtn);
+  
+  // Info line
+  const body = document.createElement('div');
+  body.style.padding = '8px';
+  const info = document.createElement('div');
+  info.style.cssText = 'font-size:0.72rem;color:var(--text3);padding:4px 6px 8px;';
+  info.innerHTML = (currentLang==='de'?'Ähnlich wie: ':'Similar to: ') + '<strong>' + (song.t||'') + '</strong> · ' + (song.g||'') + ' · ' + (song.b||'?') + 'BPM · ' + (song.k||'?');
+  body.appendChild(info);
+
+  // Song rows
+  similar.forEach(function(s) {
+    const realIdx = (_libData||[]).indexOf(s);
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;gap:8px;padding:8px 6px;border-radius:6px;cursor:pointer;transition:background 0.15s;';
+    row.addEventListener('mouseenter', function() { row.style.background = 'var(--surface2)'; });
+    row.addEventListener('mouseleave', function() { row.style.background = ''; });
+    row.addEventListener('click', function() {
+      if(typeof useLibSong === 'function') useLibSong(realIdx);
+      panel.style.display = 'none';
+    });
+    const info2 = document.createElement('div');
+    info2.style.cssText = 'flex:1;min-width:0;';
+    const name = document.createElement('div');
+    name.style.cssText = 'font-size:0.82rem;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;';
+    name.textContent = s.t || '';
+    const meta = document.createElement('div');
+    meta.style.cssText = 'font-size:0.72rem;color:var(--text3);';
+    meta.textContent = (s.a||'') + ' · ' + (s.b||'?') + 'BPM · ' + (s.k||'?');
+    info2.append(name, meta);
+    const badge = document.createElement('span');
+    badge.style.cssText = 'font-size:0.65rem;background:rgba(124,58,237,0.1);color:var(--accent2);padding:2px 6px;border-radius:4px;white-space:nowrap;';
+    badge.textContent = s.g || '';
+    row.append(info2, badge);
+    body.appendChild(row);
+  });
+  
+  panel.append(header, body);
   panel.style.display = 'block';
 };
 
@@ -12346,11 +12379,11 @@ window.toggleFavoriteFilter = function() {
         </div>
         
         <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-          <button onclick="document.getElementById('onboarding-overlay').remove();openGenreModal('lyrics');" 
+          <button data-onboarding-action="genre" 
             style="background:var(--accent);border:none;color:#fff;padding:12px 24px;border-radius:10px;font-size:0.95rem;font-weight:600;cursor:pointer;">
             🚀 ${currentLang==='de'?'Los geht\'s!':'Let\'s go!'}
           </button>
-          <button onclick="document.getElementById('onboarding-overlay').remove();" 
+          <button data-onboarding-action="close" 
             style="background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:12px 20px;border-radius:10px;font-size:0.9rem;cursor:pointer;">
             ${currentLang==='de'?'Selbst erkunden':'Explore myself'}
           </button>
@@ -12524,7 +12557,7 @@ window.deleteSongFromHistory = function(id) {
   }, 600);
 })();
 
-console.log('✨ Hirsch Music v3.26.6 — Alle Verbesserungen geladen');
+console.log('✨ Hirsch Music v3.26.7 — Alle Verbesserungen geladen');
 
 // ═══════════════════════════════════════════════════════════════════════
 // 💰 KOSTEN-TRACKER — GPT-4o API Nutzung
@@ -16430,8 +16463,8 @@ console.log('✨ Fusion Auto-Improve geladen');
       tab: 'lyrics',
       title_de: '🎭 Songwriter-Stil / KI-Persona',
       title_en: '🎭 Songwriter Style / AI Persona',
-      text_de: 'v3.26.6: Gib einen Künstler-Stil ein z.B. "Taylor Swift" oder "Rammstein". Die KI schreibt dann im Stil dieses Künstlers. Klicke auf 🎭 für 60+ Vorschläge.',
-      text_en: 'v3.26.6: Enter an artist style e.g. "Taylor Swift" or "Rammstein". The AI writes in that artist\u2019s style. Click \uD83C\uDFAD for 60+ suggestions.',
+      text_de: 'v3.26.7: Gib einen Künstler-Stil ein z.B. "Taylor Swift" oder "Rammstein". Die KI schreibt dann im Stil dieses Künstlers. Klicke auf 🎭 für 60+ Vorschläge.',
+      text_en: 'v3.26.7: Enter an artist style e.g. "Taylor Swift" or "Rammstein". The AI writes in that artist\u2019s style. Click \uD83C\uDFAD for 60+ suggestions.',
       tip_de: '🎭 Tipp: Kombiniere z.B. "Ed Sheeran, Country-Stil" für einzigartigen Cross-Genre Sound.',
       tip_en: '🎭 Tip: Combine e.g. "Ed Sheeran, Country style" for unique cross-genre sound.',
       position: 'bottom'
@@ -16441,8 +16474,8 @@ console.log('✨ Fusion Auto-Improve geladen');
       tab: 'export',
       title_de: '🎨 Album-Cover Generator',
       title_en: '🎨 Album Cover Generator',
-      text_de: 'v3.26.6: Im Export-Tab unten findest du den Album-Cover Generator. Wähle Stil und Format — DALL-E 3 generiert in ~15 Sekunden ein professionelles Cover.',
-      text_en: 'v3.26.6: In the Export tab at the bottom is the Album Cover Generator. Choose style and format — DALL-E 3 generates a professional cover in ~15 seconds.',
+      text_de: 'v3.26.7: Im Export-Tab unten findest du den Album-Cover Generator. Wähle Stil und Format — DALL-E 3 generiert in ~15 Sekunden ein professionelles Cover.',
+      text_en: 'v3.26.7: In the Export tab at the bottom is the Album Cover Generator. Choose style and format — DALL-E 3 generates a professional cover in ~15 seconds.',
       tip_de: '⚠️ Verbraucht ca. 1 API-Credit (~$0.04) pro Bild.',
       tip_en: '⚠️ Uses approx. 1 API credit (~$0.04) per image.',
       position: 'right'
@@ -16452,8 +16485,8 @@ console.log('✨ Fusion Auto-Improve geladen');
       tab: 'workbench',
       title_de: '📜 Generierungs-Verlauf',
       title_en: '📜 Generation History',
-      text_de: 'v3.26.6: Im Workbench-Tab werden automatisch die letzten 10 Generierungen gespeichert — mit Datum, Genre und Vorschau. Klicke ↩ um eine Version wiederherzustellen.',
-      text_en: 'v3.26.6: In the Workbench tab, the last 10 generations are saved automatically — with date, genre and preview. Click ↩ to restore a version.',
+      text_de: 'v3.26.7: Im Workbench-Tab werden automatisch die letzten 10 Generierungen gespeichert — mit Datum, Genre und Vorschau. Klicke ↩ um eine Version wiederherzustellen.',
+      text_en: 'v3.26.7: In the Workbench tab, the last 10 generations are saved automatically — with date, genre and preview. Click ↩ to restore a version.',
       tip_de: '💡 Der Verlauf bleibt auch nach einem Neustart erhalten (Desktop-App).',
       tip_en: '💡 History persists even after restart (Desktop app).',
       position: 'right'
@@ -17950,7 +17983,7 @@ ${textB.substring(0,800)}`;
       genre ? (isDE ? 'Genre: ' : 'Genre: ') + genre : '',
       bpm   ? 'BPM: ' + bpm : '',
       key   ? (isDE ? 'Tonart: ' : 'Key: ') + key : '',
-      (isDE ? 'Erstellt mit Hirsch Music Hit Maker v3.26.6' : 'Created with Hirsch Music Hit Maker v3.26.6'),
+      (isDE ? 'Erstellt mit Hirsch Music Hit Maker v3.26.7' : 'Created with Hirsch Music Hit Maker v3.26.7'),
     ].filter(Boolean).join('  |  ');
 
     const rtf = `{\rtf1\ansi\deff0
@@ -17963,7 +17996,7 @@ ${textB.substring(0,800)}`;
 ${escapeRtf(lyrics)}
 \par\par
 \fs16\cf1 ─────────────────────────────────────────\par\cf0
-\fs14\i Hirsch Music Hit Maker v3.26.6 — ${new Date().toLocaleDateString(isDE?'de-AT':'en-US')}\i0
+\fs14\i Hirsch Music Hit Maker v3.26.7 — ${new Date().toLocaleDateString(isDE?'de-AT':'en-US')}\i0
 }`;
 
     const blob = new Blob([rtf], { type: 'application/msword' });
@@ -17998,7 +18031,7 @@ ${escapeRtf(lyrics)}
       '<\/style><\/head><body>',
       '<h1>' + title.replace(/</g,'&lt;') + '<\/h1>',
       '<pre>' + lyrics.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '<\/pre>',
-      '<div class="footer">Hirsch Music Hit Maker v3.26.6 — Made with \u266a<\/div>',
+      '<div class="footer">Hirsch Music Hit Maker v3.26.7 — Made with \u266a<\/div>',
       '<\/body><\/html>'
     ].join('\n');
     const win = window.open('', '_blank', 'width=700,height=900');
@@ -18698,7 +18731,7 @@ window.printLyrics = function() {
     '<\/head><body>',
     '<h1>' + songTitle + '<\/h1>',
     '<pre>' + text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '<\/pre>',
-    '<div class="footer">Hirsch Music Hit Maker v3.26.6 — Made with ♪<\/div>',
+    '<div class="footer">Hirsch Music Hit Maker v3.26.7 — Made with ♪<\/div>',
     '<\/body><\/html>'
   ].join('\n');
   printWin.document.write(printHTML);
@@ -22205,7 +22238,7 @@ ${versions.map((v,i)=>'=== Draft '+(i+1)+' ===\n'+v.substring(0,600)).join('\n\n
   }
   if(!finalLyrics||finalLyrics.trim().length<30) finalLyrics=versions[0];
 
-  // ── v3.26.6: Output Discipline Check ──────────────────────────
+  // ── v3.26.7: Output Discipline Check ──────────────────────────
   let _odResult = null;
   try {
     if (typeof _validateOutputDiscipline === 'function' && typeof _extractSignalKeywords === 'function') {
@@ -22221,7 +22254,7 @@ ${versions.map((v,i)=>'=== Draft '+(i+1)+' ===\n'+v.substring(0,600)).join('\n\n
       }
       _odResult = { outputDiscipline: { before: _odBefore, after: _odAfter, repaired: _odFinal !== finalLyrics }, emotionSignalBundle };
     }
-  } catch(e) { console.warn('[v3.26.6] discipline check error', e); }
+  } catch(e) { console.warn('[v3.26.7] discipline check error', e); }
   window._lastGenerateResult = _odResult;
 
   // ── OUTPUT ────────────────────────────────────────────────────
@@ -22264,7 +22297,7 @@ ${versions.map((v,i)=>'=== Draft '+(i+1)+' ===\n'+v.substring(0,600)).join('\n\n
   if(typeof renderRiskLock==='function') renderRiskLock(typeof result!=='undefined'?result:window._lastGenerateResult||null);
   if(typeof renderAudience==='function') renderAudience(typeof result!=='undefined'?result:window._lastGenerateResult||null);
   if(typeof renderMasterVerdict==='function') renderMasterVerdict(typeof result!=='undefined'?result:window._lastGenerateResult||null);
-  // v3.26.6: Vergleichsmodus
+  // v3.26.7: Vergleichsmodus
   (function(){
     const _r = typeof result !== 'undefined' ? result : (window._lastGenerateResult || null);
     const _b = typeof emotionSignalBundle !== 'undefined' ? emotionSignalBundle : (window._activeEmotionBundle || null);
@@ -22717,7 +22750,7 @@ function renderMasterVerdict(result) {
 
   if (tierEl) {
     tierEl.textContent = mv.tierLabel;
-    // v3.26.6: realistic vs. aspirational sub-label
+    // v3.26.7: realistic vs. aspirational sub-label
     let subEl = document.getElementById('masterVerdictTierSub');
     if (!subEl) {
       subEl = document.createElement('div');
@@ -22758,7 +22791,7 @@ function renderMasterVerdict(result) {
 }
 window.renderMasterVerdict = renderMasterVerdict;
 
-// v3.26.6 — renderComparison
+// v3.26.7 — renderComparison
 function renderComparison(result) {
   var panel = document.getElementById('comparisonPanel');
   if (!panel) return;
@@ -22786,7 +22819,7 @@ function renderComparison(result) {
 }
 window.renderComparison = renderComparison;
 
-// ══ v3.26.6 — LEBENSSITUATION MODAL FUNCTIONS ══
+// ══ v3.26.7 — LEBENSSITUATION MODAL FUNCTIONS ══
 function openSituationModal(context) {
   activeSituationContext = context || 'lyrics';
   const lang = currentLang;
@@ -24944,7 +24977,7 @@ if (typeof _origRenderLibRow === 'function') {
   <script src="referenceBank.songs.10.js"></script>
   <script src="referenceBank.songs.11.js"></script>
 
-<!-- ══ LEBENSSITUATION MODAL (v3.26.6) ══ -->
+<!-- ══ LEBENSSITUATION MODAL (v3.26.7) ══ -->
 <div id="situation-modal-overlay" class="modal-overlay" onclick="closeSituationModalOutside(event)">
   <div class="modal-box" style="max-width:660px;width:95%;">
     <div class="modal-header">
@@ -24961,8 +24994,157 @@ if (typeof _origRenderLibRow === 'function') {
 </div>
 
 
+
+<script>
+// ══════════════════════════════════════════════════════════════════
+// v3.26.7 — HirschModules: Event-Binding für gereinigte UI-Elemente
+// Kein onclick mehr im HTML. Binding hier zentral.
+// ══════════════════════════════════════════════════════════════════
+window.HirschModules = window.HirschModules || {};
+
+// ── Export UI Module ─────────────────────────────────────────────
+window.HirschModules.exportUI = (function() {
+  const ACTION_MAP = {
+    docx:  () => typeof exportAsDOCX      === 'function' && exportAsDOCX(),
+    pdf:   () => typeof exportAsPDF       === 'function' && exportAsPDF(),
+    txt:   () => typeof exportAsTXT       === 'function' && exportAsTXT(),
+    print: () => typeof printLyrics       === 'function' && printLyrics(),
+    cover: () => typeof generateAlbumCover=== 'function' && generateAlbumCover(),
+  };
+
+  function bindDownloadGrid() {
+    const grid = document.getElementById('export-download-grid');
+    if (!grid || grid.dataset.bound) return;
+    grid.querySelectorAll('.export-dl-btn').forEach(function(btn) {
+      const action = btn.dataset.action;
+      const hoverColor = btn.dataset.hover || 'var(--accent)';
+      const defaultColor = btn.dataset.hoverDefault || 'var(--border)';
+      btn.addEventListener('click', function() {
+        const fn = ACTION_MAP[action];
+        if (fn) fn();
+        else console.warn('[HirschModules.exportUI] Unknown action:', action);
+      });
+      btn.addEventListener('mouseenter', function() { btn.style.borderColor = hoverColor; });
+      btn.addEventListener('mouseleave', function() { btn.style.borderColor = defaultColor; });
+    });
+    grid.dataset.bound = '1';
+  }
+
+  function bindFormatTabs() {
+    const tabs = document.getElementById('export-format-tabs');
+    if (!tabs || tabs.dataset.bound) return;
+    tabs.querySelectorAll('.export-format-tab').forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        const fmt = tab.dataset.format;
+        if (typeof switchExportFormat === 'function') switchExportFormat(fmt, tab);
+      });
+    });
+    tabs.dataset.bound = '1';
+  }
+
+  function bindCopyButtons() {
+    document.querySelectorAll('[data-copy-format]').forEach(function(btn) {
+      if (btn.dataset.bound) return;
+      btn.addEventListener('click', function() {
+        if (typeof copyExportFormat === 'function') copyExportFormat(btn.dataset.copyFormat);
+      });
+      btn.dataset.bound = '1';
+    });
+    document.querySelectorAll('[data-copy-output]').forEach(function(btn) {
+      if (btn.dataset.bound) return;
+      btn.addEventListener('click', function() {
+        if (typeof copyOutput === 'function') copyOutput(btn.dataset.copyOutput);
+      });
+      btn.dataset.bound = '1';
+    });
+  }
+
+  function bindExportName() {
+    const inp = document.getElementById('export-name');
+    if (!inp || inp.dataset.bound) return;
+    inp.addEventListener('input', function() {
+      if (window.SONG) window.SONG.lyricsTitle = inp.value;
+    });
+    inp.dataset.bound = '1';
+  }
+
+  function bindCoverBtn() {
+    const btn = document.getElementById('cover-generate-btn');
+    if (btn && !btn.dataset.bound) {
+      btn.addEventListener('click', function() {
+        if (typeof generateAlbumCover === 'function') generateAlbumCover();
+      });
+      btn.dataset.bound = '1';
+    }
+    // Print buttons via data-action-print
+    document.querySelectorAll('[data-action-print]').forEach(function(b) {
+      if (b.dataset.bound) return;
+      b.addEventListener('click', function() {
+        if (typeof printLyrics === 'function') printLyrics();
+      });
+      b.dataset.bound = '1';
+    });
+  }
+
+  function init() {
+    bindDownloadGrid();
+    bindFormatTabs();
+    bindCopyButtons();
+    bindExportName();
+    bindCoverBtn();
+  }
+
+  return { init, bindDownloadGrid, bindFormatTabs };
+})();
+
+// ── Onboarding UI Module ─────────────────────────────────────────
+window.HirschModules.onboardingUI = (function() {
+  function bindButtons() {
+    const overlay = document.getElementById('onboarding-overlay');
+    if (!overlay || overlay.dataset.bound) return;
+    overlay.querySelectorAll('[data-onboarding-action]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const action = btn.dataset.onboardingAction;
+        overlay.remove();
+        if (action === 'genre' && typeof openGenreModal === 'function') {
+          openGenreModal('lyrics');
+        }
+      });
+    });
+    overlay.dataset.bound = '1';
+  }
+  return { bindButtons };
+})();
+
+// ── Init: alle Module beim Tab-Wechsel + Start binden ────────────
+(function() {
+  function bindAll() {
+    window.HirschModules.exportUI.init();
+    window.HirschModules.onboardingUI.bindButtons();
+  }
+
+  // Sofort binden
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindAll);
+  } else {
+    bindAll();
+  }
+
+  // Auch nach Tab-Wechsel neu binden (falls Tab lazy gerendert)
+  const origSwitch = window.switchTab;
+  if (typeof origSwitch === 'function') {
+    window.switchTab = function(tab) {
+      origSwitch(tab);
+      setTimeout(bindAll, 50); // kurz warten bis DOM aktuell
+    };
+  }
+})();
+
+console.log('[HirschModules] ✅ v3.26.7 geladen');
+</script>
+
 <!-- ══════════════════════════════════════════════════════════════════
-     v3.26.6 — HirschApp Namespace + generateLyricsController
+     v3.26.7 — HirschApp Namespace + generateLyricsController
      Strukturelle Verbesserung: Kein globaler Wildwuchs mehr.
      Alle lose window.* Funktionen sind hier sauber gruppiert.
      ══════════════════════════════════════════════════════════════════ -->
@@ -25032,7 +25214,7 @@ if (typeof _origRenderLibRow === 'function') {
     undo:        () => window.fusionImproveUndo?.(),
   };
 
-  console.log('[HirschApp] ✅ Namespace v3.26.6 geladen');
+  console.log('[HirschApp] ✅ Namespace v3.26.7 geladen');
 })();
 
 // ══════════════════════════════════════════════════════════════════
@@ -25087,7 +25269,7 @@ window.generateLyricsController = async function(mode) {
 window.HirschApp.lyrics.controller = window.generateLyricsController;
 
 // ══════════════════════════════════════════════════════════════════
-// initApp — Zentraler App-Startpunkt (v3.26.6)
+// initApp — Zentraler App-Startpunkt (v3.26.7)
 // Ersetzt verstreute DOMContentLoaded + setTimeout Initialisierungen
 // ══════════════════════════════════════════════════════════════════
 (function() {
