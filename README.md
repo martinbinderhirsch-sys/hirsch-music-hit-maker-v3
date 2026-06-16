@@ -26,7 +26,6 @@ Aktuellster sichtbarer Release: v3.26.5.
 - HTML
 - NSIS Installer
 - GitHub Releases
-
 ## Projektaufbau
 
 - `main.js` – Electron Main Process, native Funktionen, App-Start, IPC
@@ -35,7 +34,6 @@ Aktuellster sichtbarer Release: v3.26.5.
 - `package.json` – Skripte, Metadaten, Abhängigkeiten
 - `build-release.sh` – Release-Build
 - `installer.nsh` – Windows-Installer-Anpassungen
-
 ## Architektur in Kurzform
 
 Die App folgt einer klassischen Electron-Architektur:
@@ -43,7 +41,6 @@ Die App folgt einer klassischen Electron-Architektur:
 1. UI und Benutzerfluss im Frontend (`src/`)
 2. Sichere Freigaben über `preload.js`
 3. Native, dateibasierte und sensible Abläufe über `main.js`
-
 Wichtig: API-Keys und sicherheitsrelevante Funktionen gehören nicht direkt in die UI, sondern in die abgesicherte IPC-/Main-Schicht.
 
 ## Entwicklung
