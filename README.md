@@ -78,11 +78,10 @@ npm run dist
 
 ## Aktuelle Baustellen
 
-- noch keine öffentliche Grunddokumentation
-- Repo-About aktuell nicht synchron mit dem realen Release-Stand
-- Produktlogik und UI wahrscheinlich noch zu eng gekoppelt
+- öffentliche Grunddokumentation ist angelegt, aber noch ausbaufähig
+- Produktlogik und UI sind wahrscheinlich noch zu eng gekoppelt
 - Architekturwissen steckt stark implizit in einzelnen Dateien
-
+- Modultrennung zwischen UI, sicherer Bridge und nativer Desktop-Logik ist noch nicht sauber genug
 ## Nächste Ziele
 
 - Dokumentation und Architektur weiter klären
