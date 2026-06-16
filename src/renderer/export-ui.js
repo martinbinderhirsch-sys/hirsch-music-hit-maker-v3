@@ -125,12 +125,108 @@ window.HirschModules.onboardingUI = (function() {
   return { bindButtons };
 })();
 
+// ══════════════════════════════════════════════════════════════════
+// v3.27.1 — HirschModules.formFields
+// Einheitliches Binding-System für onchange + oninput Felder
+// Ersetzt alle Inline-onchange/oninput durch data-field-action
+// ══════════════════════════════════════════════════════════════════
+window.HirschModules.formFields = (function() {
+
+  // ── Aktions-Mapping ─────────────────────────────────────────────
+  const ACTIONS = {
+
+    // Lyrics-Tab: syncFromLyrics() bei Texteingabe + Selects
+    'sync-lyrics': function(el) {
+      if (typeof syncFromLyrics === 'function') syncFromLyrics();
+    },
+
+    // Intensity-Slider: Display-Wert aktualisieren
+    'update-intensity-display': function(el) {
+      var disp = document.getElementById('lyrics-intensity-val');
+      if (disp) disp.textContent = el.value;
+    },
+
+    // Beat-Tab: BPM-Slider (Fill + Display + syncFromBeat)
+    'sync-beat-bpm': function(el) {
+      var mid = document.getElementById('bpm-range-mid');
+      if (mid) mid.textContent = el.value + ' BPM';
+      var val = document.getElementById('bpm-val');
+      if (val) val.textContent = el.value;
+      if (typeof updateBPMSliderFill === 'function') updateBPMSliderFill();
+      if (typeof syncFromBeat === 'function') syncFromBeat();
+    },
+
+    // Beat-Tab: Key + Era Selects
+    'sync-beat': function(el) {
+      if (typeof syncFromBeat === 'function') syncFromBeat();
+    },
+
+    // Library: Suchfeld + Genre-Filter
+    'filter-library': function(el) {
+      if (typeof filterLibrary === 'function') filterLibrary();
+    },
+    'filter-library-genre': function(el) {
+      if (typeof filterLibrary === 'function') filterLibrary();
+      if (typeof libGenreChanged === 'function') libGenreChanged();
+    },
+
+    // Workbench: Projektdatei laden
+    'load-project-file': function(el) {
+      if (typeof wbLoadProjectFile === 'function') wbLoadProjectFile(el);
+    },
+
+    // Modal-Suchfelder
+    'filter-genre-modal': function(el) {
+      if (typeof filterGenreModal === 'function') filterGenreModal(el.value);
+    },
+    'filter-structure-modal': function(el) {
+      if (typeof filterStructureModal === 'function') filterStructureModal(el.value);
+    },
+    'filter-persona': function(el) {
+      if (typeof filterPersonaItems === 'function') filterPersonaItems(el.value);
+    },
+    'filter-vocal-hint': function(el) {
+      if (typeof filterVocalHintModal === 'function') filterVocalHintModal(el.value);
+    },
+    'filter-vocal-perf': function(el) {
+      if (typeof filterVocalPerfModal === 'function') filterVocalPerfModal(el.value);
+    },
+    'filter-theme-modal': function(el) {
+      if (typeof filterThemeModal === 'function') filterThemeModal(el.value);
+    },
+    'filter-vocal-style': function(el) {
+      if (typeof filterVocalStyles === 'function') filterVocalStyles(el.value);
+    },
+  };
+
+  // ── Binding ─────────────────────────────────────────────────────
+  function bind(root) {
+    root = root || document;
+    root.querySelectorAll('[data-field-action]').forEach(function(el) {
+      if (el.dataset.fieldBound) return;
+      var action = el.dataset.fieldAction;
+      var fn = ACTIONS[action];
+      if (!fn) {
+        console.warn('[HirschModules.formFields] Unbekannte Action:', action);
+        return;
+      }
+      // Selects + file inputs: onchange; alle anderen: oninput
+      var evt = (el.tagName === 'SELECT' || el.type === 'file') ? 'change' : 'input';
+      el.addEventListener(evt, function() { fn(el); });
+      el.dataset.fieldBound = '1';
+    });
+  }
+
+  return { bind, ACTIONS };
+})();
+
 // ── Init: alle Module beim Tab-Wechsel + Start binden ────────────
 (function() {
   function bindAll() {
     window.HirschModules.exportUI.init();
     window.HirschModules.onboardingUI.bindButtons();
     window.HirschModules.formActions.bind();
+    window.HirschModules.formFields.bind();
     bindTabButtons();
     bindHeaderButtons();
     if (window.HirschModules.libraryUI) window.HirschModules.libraryUI.bindFilterControls();
@@ -265,4 +361,4 @@ window.HirschModules.formActions = (function() {
   }
 })();
 
-console.log('[HirschModules] ✅ v3.26.7 geladen');
+console.log('[HirschModules] ✅ v3.27.1 geladen');

@@ -3144,7 +3144,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
             <div class="form-group">
               <label data-de="Thema / Inspiration" data-en="Theme / Inspiration">Thema / Inspiration</label>
               <div style="display:flex;gap:6px;">
-                <input type="text" id="lyrics-theme" placeholder="z.B. Freiheit auf der offenen Straße" oninput="syncFromLyrics()" style="flex:1;">
+                <input type="text" id="lyrics-theme" placeholder="z.B. Freiheit auf der offenen Straße" data-field-action="sync-lyrics" style="flex:1;">
                 <button data-form-action="open-theme" class="btn btn-secondary" style="padding:0 12px;flex-shrink:0;font-size:0.88rem;" title="Thema-Vorschläge">
                   💡
                 </button>
@@ -3159,7 +3159,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
               </div>
               <div class="form-group">
                 <label data-de="Sprache" data-en="Language">Sprache</label>
-                <select id="lyrics-lang" onchange="syncFromLyrics()">
+                <select id="lyrics-lang" data-field-action="sync-lyrics">
                   <option value="de">Deutsch</option>
                   <option value="en">English</option>
                 </select>
@@ -3189,14 +3189,14 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
                 <button id="structure-picker-btn" class="btn btn-secondary" style="width:100%;justify-content:flex-start;text-align:left;" data-form-action="open-structure">
                   📋 <span id="structure-picker-label" data-de="Struktur wählen…" data-en="Pick structure…">Struktur wählen…</span>
                 </button>
-                <select id="lyrics-structure" onchange="syncFromLyrics()" style="display:none;"></select>
+                <select id="lyrics-structure" data-field-action="sync-lyrics" style="display:none;"></select>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
                 <label data-de="🎵 Reimschema" data-en="🎵 Rhyme Scheme">🎵 Reimschema</label>
-                <select id="lyrics-rhyme-scheme" onchange="syncFromLyrics()" style="width:100%;">
+                <select id="lyrics-rhyme-scheme" data-field-action="sync-lyrics" style="width:100%;">
                   <option value="auto" data-de="KI wählt automatisch" data-en="AI chooses automatically">KI wählt automatisch</option>
                   <option value="aabb" data-de="AABB — paarweise (aa bb)" data-en="AABB — paired (aa bb)">AABB — paarweise (aa bb)</option>
                   <option value="abab" data-de="ABAB — wechselnd (ab ab)" data-en="ABAB — alternating (ab ab)">ABAB — wechselnd (ab ab)</option>
@@ -3207,7 +3207,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
               </div>
               <div class="form-group">
                 <label data-de="📝 Strophen" data-en="📝 Verses">📝 Strophen</label>
-                <select id="lyrics-verse-count" onchange="syncFromLyrics()" style="width:100%;">
+                <select id="lyrics-verse-count" data-field-action="sync-lyrics" style="width:100%;">
                   <option value="auto" data-de="Struktur bestimmt" data-en="Structure determines">Struktur bestimmt</option>
                   <option value="1" data-de="1 Strophe" data-en="1 Verse">1 Strophe</option>
                   <option value="2" selected data-de="2 Strophen" data-en="2 Verses">2 Strophen</option>
@@ -3284,7 +3284,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
             <div class="form-group">
               <label data-de="💔 Emotionale Intensität" data-en="💔 Emotional Intensity">💔 Emotionale Intensität</label>
               <div style="display:flex;align-items:center;gap:10px;">
-                <input type="range" id="lyrics-intensity" min="1" max="10" value="7" style="flex:1;" oninput="document.getElementById('lyrics-intensity-val').textContent=this.value;">
+                <input type="range" id="lyrics-intensity" min="1" max="10" value="7" style="flex:1;" data-field-action="update-intensity-display">
                 <span id="lyrics-intensity-val" style="font-size:13px;font-weight:700;color:var(--accent2);min-width:16px;text-align:right;">7</span>
               </div>
               <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text3);margin-top:2px;">
@@ -3767,7 +3767,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
             <div style="position:relative;">
               <input type="range" id="beat-bpm" min="60" max="200" value="120"
                 style="width:100%;accent-color:var(--gold);"
-                oninput="document.getElementById('bpm-val').textContent=this.value; var mid=document.getElementById('bpm-range-mid'); if(mid) mid.textContent=this.value+' BPM'; updateBPMSliderFill(); syncFromBeat();">
+                data-field-action="sync-beat-bpm">
               <div style="display:flex;justify-content:space-between;margin-top:4px;">
                 <span style="font-size:10px;color:var(--text3);font-weight:600;">60 BPM</span>
                 <span id="bpm-range-mid" style="font-size:10px;color:var(--text3);font-weight:600;">120 BPM</span>
@@ -3782,7 +3782,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           <div class="form-group">
             <label data-de="Tonart" data-en="Key">Tonart</label>
             <div style="display:flex;gap:8px;">
-              <select id="beat-key" style="flex:1;" onchange="syncFromBeat()">
+              <select id="beat-key" style="flex:1;" data-field-action="sync-beat">
                 <option>C Major</option><option>C Minor</option>
                 <option>C# Major</option><option>C# Minor</option>
                 <option>D Major</option><option>D Minor</option>
@@ -3801,7 +3801,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           </div>
           <div class="form-group">
             <label data-de="Ära / Stil" data-en="Era / Style">Ära / Stil</label>
-            <select id="beat-era" onchange="syncFromBeat()">
+            <select id="beat-era" data-field-action="sync-beat">
               <option value="modern" data-de="Modern (2010+)" data-en="Modern (2010+)">Modern (2010+)</option>
               <option value="00s">2000er / Y2K</option>
               <option value="90s">90er / Retro</option>
@@ -4278,7 +4278,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           <button class="btn btn-secondary btn-sm" onclick="wbDownloadProjectJSON()">📥 <span data-de="JSON Export" data-en="JSON Export">JSON Export</span></button>
           <label class="btn btn-secondary btn-sm" style="cursor:pointer;">
             📂 <span data-de="JSON Import" data-en="JSON Import">JSON Import</span>
-            <input type="file" accept=".json" onchange="wbLoadProjectFile(this)" style="display:none;">
+            <input type="file" accept=".json" data-field-action="load-project-file" style="display:none;">
           </label>
         </div>
         <div id="wb-saved-list" class="mt-4"></div>
@@ -4315,7 +4315,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
             <input type="text" id="lib-search"
               style="padding-left:30px;width:100%;font-size:0.9rem;"
               placeholder="Titel oder Künstler suchen..."
-              oninput="filterLibrary()">
+              data-field-action="filter-library">
           </div>
           <div style="font-size:12px;color:var(--accent2);font-weight:700;white-space:nowrap;">
             <span id="lib-count">24.000</span> Songs
@@ -4341,7 +4341,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
         </div>
 
         <!-- Hidden select für Kompatibilität -->
-        <select id="lib-genre-filter" style="display:none;" onchange="filterLibrary();libGenreChanged()">
+        <select id="lib-genre-filter" style="display:none;" data-field-action="filter-library-genre">
           <option value="">Alle Genres</option>
         </select>
       </div>
@@ -4719,7 +4719,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
       <button class="btn btn-xs btn-outline" data-form-action="close-genre">✕</button>
     </div>
     <div class="modal-search">
-      <input type="text" id="genre-modal-search" placeholder="Genre suchen..." oninput="filterGenreModal(this.value)" autocomplete="off" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:0.9rem;">
+      <input type="text" id="genre-modal-search" placeholder="Genre suchen..." data-field-action="filter-genre-modal" autocomplete="off" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:0.9rem;">
     </div>
     <div class="modal-body" id="genre-modal-body"></div>
     <div class="modal-footer">
@@ -4742,7 +4742,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
     <div style="padding:12px 16px 0;">
       <input type="text" id="structure-modal-search"
         placeholder="Struktur suchen..."
-        oninput="filterStructureModal(this.value)"
+        data-field-action="filter-structure-modal"
         autocomplete="off"
         style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:0.9rem;">
     </div>
@@ -14153,7 +14153,7 @@ console.log('✨ Fusion Auto-Improve geladen');
         <div style="padding:10px 16px;border-bottom:1px solid var(--border);flex-shrink:0;">
           <input type="text" id="persona-search-input"
             placeholder="Künstler suchen..."
-            oninput="filterPersonaItems(this.value)"
+            data-field-action="filter-persona"
             autocomplete="off"
             style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:0.88rem;">
         </div>
@@ -20780,7 +20780,7 @@ window.regenWithImprovements = async function() {
       <button onclick="closeVocalHintModal()" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:1.2rem;padding:4px;">✕</button>
     </div>
     <div style="padding:10px 16px;border-bottom:1px solid var(--border);flex-shrink:0;">
-      <input type="text" id="vocal-hint-search" placeholder="Suchen..." oninput="filterVocalHintModal(this.value)"
+      <input type="text" id="vocal-hint-search" placeholder="Suchen..." data-field-action="filter-vocal-hint"
         style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:0.88rem;">
     </div>
     <div id="vocal-hint-modal-body" class="modal-body"></div>
@@ -20802,7 +20802,7 @@ window.regenWithImprovements = async function() {
       <button onclick="closeVocalPerfModal()" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:1.2rem;padding:4px;">✕</button>
     </div>
     <div style="padding:10px 16px;border-bottom:1px solid var(--border);flex-shrink:0;">
-      <input type="text" id="vocal-perf-search" placeholder="Suchen..." oninput="filterVocalPerfModal(this.value)"
+      <input type="text" id="vocal-perf-search" placeholder="Suchen..." data-field-action="filter-vocal-perf"
         style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:0.88rem;">
     </div>
     <div id="vocal-perf-modal-body" class="modal-body"></div>
@@ -20825,7 +20825,7 @@ window.regenWithImprovements = async function() {
       <button onclick="closeThemeModal()" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:1.2rem;padding:4px;">✕</button>
     </div>
     <div style="padding:10px 16px;border-bottom:1px solid var(--border);flex-shrink:0;">
-      <input type="text" id="theme-search" placeholder="Thema suchen..." oninput="filterThemeModal(this.value)"
+      <input type="text" id="theme-search" placeholder="Thema suchen..." data-field-action="filter-theme-modal"
         style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:0.88rem;">
     </div>
     <div id="theme-modal-body" class="modal-body"></div>
@@ -21885,7 +21885,7 @@ console.log('[Artist DNA] ' + Object.keys(window.ARTIST_DNA).length + ' artists 
       <button onclick="closeVocalStyleModal()" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:1.2rem;padding:4px;">✕</button>
     </div>
     <div style="padding:10px 16px;border-bottom:1px solid var(--border);">
-      <input type="text" id="vocal-style-search" placeholder="Stil suchen..." oninput="filterVocalStyles(this.value)"
+      <input type="text" id="vocal-style-search" placeholder="Stil suchen..." data-field-action="filter-vocal-style"
         style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:0.88rem;">
     </div>
     <div id="vocal-style-modal-body" class="modal-body"></div>
