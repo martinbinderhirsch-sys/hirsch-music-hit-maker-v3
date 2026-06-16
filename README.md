@@ -41,47 +41,52 @@ Aktuellster sichtbarer Release: v3.26.5.
 Die App folgt einer klassischen Electron-Architektur:
 
 1. UI und Benutzerfluss im Frontend (`src/`)
-2. sichere Freigaben über `preload.js`
-3. native, dateibasierte und sensible Abläufe über `main.js`
+2. Sichere Freigaben über `preload.js`
+3. Native, dateibasierte und sensible Abläufe über `main.js`
 
 Wichtig: API-Keys und sicherheitsrelevante Funktionen gehören nicht direkt in die UI, sondern in die abgesicherte IPC-/Main-Schicht.
 
 ## Entwicklung
 
 ### Installation
+
 ```bash
 npm install
 ```
 
 ### Start
+
 ```bash
 npm start
 ```
 
 ### Build
+
 ```bash
 npm run build
 ```
 
 ### Distribution
+
 ```bash
 npm run dist
 ```
 
 ## Aktuelle Stärken
 
-- reale Desktop-App mit Electron
-- echte Release-Historie
+- Reale Desktop-App mit Electron
+- Echte Release-Historie
 - Multi-KI-Ansatz
-- strukturierte Songwriting-Workflows
+- Strukturierte Songwriting-Workflows
 - Ausbau der Sicherheitslogik über IPC
 
 ## Aktuelle Baustellen
 
-- öffentliche Grunddokumentation ist angelegt, aber noch ausbaufähig
+- Öffentliche Grunddokumentation ist angelegt, aber noch ausbaufähig
 - Produktlogik und UI sind wahrscheinlich noch zu eng gekoppelt
 - Architekturwissen steckt stark implizit in einzelnen Dateien
 - Modultrennung zwischen UI, sicherer Bridge und nativer Desktop-Logik ist noch nicht sauber genug
+
 ## Nächste Ziele
 
 - Dokumentation und Architektur weiter klären
