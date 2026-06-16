@@ -19,13 +19,13 @@
 <link rel="author" href="https://www.perplexity.ai/computer">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hirsch Music Hit Maker v3.26.9</title>
+<title>Hirsch Music Hit Maker v3.27.0</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════
-   HIRSCH MUSIC HIT MAKER v3.26.9 — PREMIUM DARK DESIGN
+   HIRSCH MUSIC HIT MAKER v3.27.0 — PREMIUM DARK DESIGN
    ═══════════════════════════════════════════ */
 
 :root {
@@ -248,7 +248,7 @@ body {
 }
 
 .sidebar-footer::after {
-  content: 'v3.26.9';
+  content: 'v3.27.0';
   font-size: 10px;
   color: var(--text3);
   letter-spacing: 0.05em;
@@ -2359,7 +2359,7 @@ tbody td {
 }
 
 /* ═══════════════════════════════════════════
-   PROFESSIONAL REDESIGN POLISH — v3.26.9
+   PROFESSIONAL REDESIGN POLISH — v3.27.0
    TopMediai-inspired: clean, minimal, sharp
 ═══════════════════════════════════════════ */
 
@@ -2910,7 +2910,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
 .master-verdict-advice { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; }
 .master-verdict-advice li { font-size: 12px; color: #fff; background: rgba(255,255,255,0.05); border-left: 3px solid rgba(255,255,255,0.4); padding: 6px 10px; border-radius: 6px; }
 
-/* v3.26.9 — Vergleichsmodus */
+/* v3.27.0 — Vergleichsmodus */
 .comparison-panel {
   margin-top: 14px;
   padding: 14px;
@@ -2967,7 +2967,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
 }
 
 
-/* ── v3.26.9: Lebenssituation-Chips ── */
+/* ── v3.27.0: Lebenssituation-Chips ── */
 .sit-chip {
   padding: 5px 12px;
   border-radius: 20px;
@@ -3145,7 +3145,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
               <label data-de="Thema / Inspiration" data-en="Theme / Inspiration">Thema / Inspiration</label>
               <div style="display:flex;gap:6px;">
                 <input type="text" id="lyrics-theme" placeholder="z.B. Freiheit auf der offenen Straße" oninput="syncFromLyrics()" style="flex:1;">
-                <button onclick="openThemeModal()" class="btn btn-secondary" style="padding:0 12px;flex-shrink:0;font-size:0.88rem;" title="Thema-Vorschläge">
+                <button data-form-action="open-theme" class="btn btn-secondary" style="padding:0 12px;flex-shrink:0;font-size:0.88rem;" title="Thema-Vorschläge">
                   💡
                 </button>
               </div>
@@ -3154,7 +3154,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
             <div class="form-row">
               <div class="form-group">
                 <label data-de="Genre" data-en="Genre">Genre</label>
-                <button class="btn btn-secondary" style="width:100%;justify-content:flex-start;" onclick="openGenreModal('lyrics')">🎸 <span data-de="Genre wählen…" data-en="Pick genre…">Genre wählen…</span></button>
+                <button class="btn btn-secondary" style="width:100%;justify-content:flex-start;" data-form-action="open-genre" data-target="lyrics">🎸 <span data-de="Genre wählen…" data-en="Pick genre…">Genre wählen…</span></button>
                 <div id="lyrics-genre-display" class="chip-display mt-2"></div>
               </div>
               <div class="form-group">
@@ -3169,7 +3169,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
             <div class="form-row">
               <div class="form-group">
                 <label data-de="Stimmung" data-en="Mood">Stimmung</label>
-                <button class="btn btn-secondary" style="width:100%;justify-content:flex-start;" onclick="openMoodModal('lyrics')">🎭 <span data-de="Stimmung wählen…" data-en="Pick mood…">Stimmung wählen…</span></button>
+                <button class="btn btn-secondary" style="width:100%;justify-content:flex-start;" data-form-action="open-mood" data-target="lyrics">🎭 <span data-de="Stimmung wählen…" data-en="Pick mood…">Stimmung wählen…</span></button>
                 <div id="lyrics-mood-display" class="chip-display mt-2"></div>
               </div>
             </div>
@@ -3177,7 +3177,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
             <!-- Lebenssituation (volle Breite unter Stimmung) -->
             <div class="form-group">
               <label data-de="🎬 Lebenssituation" data-en="🎬 Life Situation">🎬 Lebenssituation</label>
-              <button class="btn btn-secondary" style="width:100%;justify-content:flex-start;" onclick="openSituationModal('lyrics')">
+              <button class="btn btn-secondary" style="width:100%;justify-content:flex-start;" data-form-action="open-situation" data-target="lyrics">
                 🎬 <span data-de="Situation wählen…" data-en="Pick situation…">Situation wählen…</span>
               </button>
               <div id="lyrics-situation-display" class="chip-display mt-2"></div>
@@ -3186,7 +3186,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
             <div class="form-row">
               <div class="form-group">
                 <label data-de="Struktur" data-en="Structure">Struktur</label>
-                <button id="structure-picker-btn" class="btn btn-secondary" style="width:100%;justify-content:flex-start;text-align:left;" onclick="openStructureModal()">
+                <button id="structure-picker-btn" class="btn btn-secondary" style="width:100%;justify-content:flex-start;text-align:left;" data-form-action="open-structure">
                   📋 <span id="structure-picker-label" data-de="Struktur wählen…" data-en="Pick structure…">Struktur wählen…</span>
                 </button>
                 <select id="lyrics-structure" onchange="syncFromLyrics()" style="display:none;"></select>
@@ -3220,7 +3220,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
             <!-- Gesangs-Stil + Stimm-Toggle (volle Breite) -->
             <div class="form-group">
               <label data-de="🎤 Gesangs-Stil" data-en="🎤 Vocal Style">🎤 Gesangs-Stil</label>
-              <button class="btn btn-secondary" id="vocal-style-btn" style="width:100%;justify-content:flex-start;" onclick="openVocalStyleModal()">
+              <button class="btn btn-secondary" id="vocal-style-btn" style="width:100%;justify-content:flex-start;" data-form-action="open-vocal-style">
                 🎤 <span id="vocal-style-btn-label" data-de="Stil wählen…" data-en="Pick style…">Stil wählen…</span>
               </button>
               <!-- Stimme: Lead & Background Toggle -->
@@ -3260,7 +3260,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
             <!-- Instrumentierung (volle Breite, eigene Zeile) -->
             <div class="form-group">
               <label data-de="🎺 Instrumentierung" data-en="🎺 Instrumentation">🎺 Instrumentierung</label>
-              <button id="instr-open-btn" class="btn btn-secondary" style="width:100%;justify-content:flex-start;" onclick="openInstrumentalModal()">🎺 <span id="instr-btn-label" data-de="Instrumente wählen" data-en="Pick instruments">Instrumente wählen</span></button>
+              <button id="instr-open-btn" class="btn btn-secondary" style="width:100%;justify-content:flex-start;" data-form-action="open-instrumental">🎺 <span id="instr-btn-label" data-de="Instrumente wählen" data-en="Pick instruments">Instrumente wählen</span></button>
               <!-- Gewählte Instrumente als Chips -->
               <div id="instr-chips-display" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;min-height:0;"></div>
             </div>
@@ -3270,7 +3270,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
               <!-- Hidden input für Kompatibilität mit altem Code -->
               <input type="hidden" id="lyrics-persona" value="">
               <!-- Multi-Chip Anzeige -->
-              <div id="persona-chips-display" style="display:flex;flex-wrap:wrap;gap:5px;min-height:34px;padding:4px 6px;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;align-items:center;cursor:pointer;" onclick="openPersonaModal()">
+              <div id="persona-chips-display" style="display:flex;flex-wrap:wrap;gap:5px;min-height:34px;padding:4px 6px;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;align-items:center;cursor:pointer;" data-form-action="open-persona">
                 <span id="persona-placeholder" style="font-size:0.82rem;color:var(--text3);" data-de="z.B. Taylor Swift, Bob Dylan…" data-en="e.g. Taylor Swift, Bob Dylan…">z.B. Taylor Swift, Bob Dylan…</span>
               </div>
               <div id="persona-display" style="font-size:11px;color:var(--text3);margin-top:4px;"></div>
@@ -3307,12 +3307,12 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
             </div>
 
             <div class="form-actions">
-              <button class="btn btn-primary btn-generate" id="lyrics-gen-btn" title="GPT-4o · ca. 5 Sek." onclick="generateLyrics()" style="width:100%;padding:13px;font-size:1rem;font-weight:700;background:linear-gradient(135deg,#7C3AED,#A855F7,#7C3AED);color:#FFFFFF;border:none;border-radius:8px;cursor:pointer;letter-spacing:0.02em;transition:all 0.2s;margin-top:4px;">
+              <button class="btn btn-primary btn-generate" id="lyrics-gen-btn" title="GPT-4o · ca. 5 Sek." data-form-action="generate-lyrics" style="width:100%;padding:13px;font-size:1rem;font-weight:700;background:linear-gradient(135deg,#7C3AED,#A855F7,#7C3AED);color:#FFFFFF;border:none;border-radius:8px;cursor:pointer;letter-spacing:0.02em;transition:all 0.2s;margin-top:4px;">
                 <span class="btn-icon">🎵</span>
                 <span class="btn-text" data-de="Lyrics generieren" data-en="Generate Lyrics">Lyrics generieren</span>
                 <span class="btn-spinner" style="display:none;">⏳</span>
               </button>
-              <button class="btn btn-secondary btn-generate" id="lyrics-gen-7ki-btn" onclick="generateLyrics7KI()"
+              <button class="btn btn-secondary btn-generate" id="lyrics-gen-7ki-btn" data-form-action="generate-7ki"
                 style="width:100%;padding:11px;font-size:0.9rem;font-weight:700;background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);border:2px solid var(--gold-dim);color:var(--gold);border-radius:8px;cursor:pointer;margin-top:6px;letter-spacing:0.03em;"
                 title="9 KIs schreiben parallel — Claude synthetisiert die beste Version · ca. 30–60 Sek.">
                 🌟 <span data-de="Beste Qualität — 9 KIs" data-en="Best Quality — 9 AIs">Beste Qualität — 9 KIs</span>
@@ -3333,7 +3333,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
               <div class="card-title-actions">
                 <button class="btn btn-xs btn-outline" onclick="checkSyllables()">📊 <span data-de="Silben" data-en="Syllables">Silben</span></button>
                 <span id="syllable-display" class="syllable-display" style="display:none;font-size:0.75rem;color:var(--text3);padding:2px 6px;background:var(--surface2);border-radius:4px;"></span>
-                <button class="btn btn-xs btn-outline" onclick="copyOutput('lyrics-output')">📋 <span data-de="Kopieren" data-en="Copy">Kopieren</span></button>
+                <button class="btn btn-xs btn-outline" data-form-action="copy-output" data-target="lyrics-output">📋 <span data-de="Kopieren" data-en="Copy">Kopieren</span></button>
                 <button class="btn btn-xs btn-outline" data-action-print="1">🖨️ <span data-de="Drucken" data-en="Print">Drucken</span></button>
                 <button class="btn btn-xs" onclick="spellCheckLyrics()" id="spellcheck-btn"
                   style="background:rgba(139,90,246,0.15);color:#a78bfa;border:1px solid rgba(139,90,246,0.3);"
@@ -3479,8 +3479,8 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           <div id="emotionWarningList" class="emotion-warning-list">—</div>
         </div>
 
-        <!-- Output Discipline Panel (v3.26.9) -->
-        <!-- Master Verdict Panel (v3.26.9) -->
+        <!-- Output Discipline Panel (v3.27.0) -->
+        <!-- Master Verdict Panel (v3.27.0) -->
         <div id="masterVerdictPanel" class="master-verdict-panel" style="display:none;">
           <div class="master-verdict-tier" id="masterVerdictTier">—</div>
           <div class="master-verdict-line" id="masterVerdictLine">—</div>
@@ -3492,7 +3492,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           <ul id="masterVerdictAdvice" class="master-verdict-advice"></ul>
         </div>
 
-        <!-- v3.26.9 — Vergleichsmodus -->
+        <!-- v3.27.0 — Vergleichsmodus -->
         <div id="comparisonPanel" class="comparison-panel" style="display:none;">
           <div class="comparison-head">
             <h3>📐 Referenz-Vergleich</h3>
@@ -3556,7 +3556,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           </div>
         </div>
 
-        <!-- Self Score Panel (v3.26.9) -->
+        <!-- Self Score Panel (v3.27.0) -->
         <div id="selfScorePanel" class="self-score-panel" style="display:none;">
           <div class="self-score-head">
             <h3>🎯 Ehrliches Selbst-Urteil</h3>
@@ -3611,7 +3611,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           <div id="referenceBankResults" class="reference-bank-results">— Noch keine Songs geladen. Warte auf Loader-Dateien. —</div>
         </div>
 
-        <!-- Intentional Break Panel (v3.26.9) -->
+        <!-- Intentional Break Panel (v3.27.0) -->
         <div id="intentBreakPanel" class="intent-break-panel" style="display:none;">
           <div class="intent-break-head">
             <h3>🎼 Bewusster Regelbruch</h3>
@@ -3620,7 +3620,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           <ul id="intentBreakList" class="intent-break-list"></ul>
         </div>
 
-        <!-- Risk Lock Panel (v3.26.9) -->
+        <!-- Risk Lock Panel (v3.27.0) -->
         <div id="riskLockPanel" class="risk-lock-panel" style="display:none;">
           <div class="risk-lock-head">
             <h3>🎲 Risiko-Lock</h3>
@@ -3632,7 +3632,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           </div>
         </div>
 
-        <!-- Audience Model Panel (v3.26.9) -->
+        <!-- Audience Model Panel (v3.27.0) -->
         <div id="audiencePanel" class="audience-panel" style="display:none;">
           <div class="audience-head">
             <h3>👂 Hörerseite</h3>
@@ -3829,7 +3829,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           </div>
           <div class="form-group">
             <label data-de="Stimmung" data-en="Mood">Stimmung</label>
-            <button class="btn btn-secondary" style="width:100%;justify-content:flex-start;" onclick="openMoodModal('beat')">🎭 <span data-de="Stimmung wählen…" data-en="Pick mood…">Stimmung wählen…</span></button>
+            <button class="btn btn-secondary" style="width:100%;justify-content:flex-start;" data-form-action="open-mood" data-target="beat">🎭 <span data-de="Stimmung wählen…" data-en="Pick mood…">Stimmung wählen…</span></button>
             <div id="beat-mood-display" class="chip-display mt-2"></div>
           </div>
         </div>
@@ -3845,7 +3845,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
         </div>
 
         <div class="form-actions">
-          <button class="btn btn-primary" onclick="generateBeatPrompt()" style="width:100%;padding:13px;font-size:1rem;font-weight:700;background:linear-gradient(135deg,#7C3AED,#A855F7,#7C3AED);color:#FFFFFF;border:none;border-radius:8px;cursor:pointer;margin-top:8px;margin-bottom:8px;">🥁 <span data-de="Beat-Prompt generieren" data-en="Generate Beat Prompt">Beat-Prompt generieren</span></button>
+          <button class="btn btn-primary" data-form-action="generate-beat" style="width:100%;padding:13px;font-size:1rem;font-weight:700;background:linear-gradient(135deg,#7C3AED,#A855F7,#7C3AED);color:#FFFFFF;border:none;border-radius:8px;cursor:pointer;margin-top:8px;margin-bottom:8px;">🥁 <span data-de="Beat-Prompt generieren" data-en="Generate Beat Prompt">Beat-Prompt generieren</span></button>
         </div>
       </div>
 
@@ -3858,7 +3858,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           <label>Suno Prompt</label>
           <div id="beat-suno" class="prompt-box"><span class="output-placeholder" data-de="Suno-Prompt erscheint hier" data-en="Suno prompt appears here">Suno-Prompt erscheint hier</span></div>
           <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;">
-            <button class="btn btn-xs btn-outline" onclick="copyOutput('beat-suno')">📋 Copy</button>
+            <button class="btn btn-xs btn-outline" data-form-action="copy-output" data-target="beat-suno">📋 Copy</button>
             <button class="btn btn-xs btn-primary" onclick="openInSuno()" style="background:#10a37f;border:none;" data-de="🔗 In Suno öffnen" data-en="🔗 Open in Suno">🔗 Suno.com</button>
           </div>
         </div>
@@ -3867,7 +3867,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           <label>Udio Prompt</label>
           <div id="beat-udio" class="prompt-box"><span class="output-placeholder" data-de="Udio-Prompt erscheint hier" data-en="Udio prompt appears here">Udio-Prompt erscheint hier</span></div>
           <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;">
-            <button class="btn btn-xs btn-outline" onclick="copyOutput('beat-udio')">📋 Copy</button>
+            <button class="btn btn-xs btn-outline" data-form-action="copy-output" data-target="beat-udio">📋 Copy</button>
             <button class="btn btn-xs btn-primary" onclick="openInUdio()" style="background:#4285f4;border:none;" data-de="🔗 In Udio öffnen" data-en="🔗 Open in Udio">🔗 Udio.com</button>
           </div>
         </div>
@@ -3877,7 +3877,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           <label>TopMediai Prompt</label>
           <div id="beat-topm" class="prompt-box"><span class="output-placeholder" data-de="TopMediai-Prompt erscheint hier" data-en="TopMediai prompt appears here">TopMediai-Prompt erscheint hier</span></div>
           <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;">
-            <button class="btn btn-xs btn-outline" onclick="copyOutput('beat-topm')">📋 Copy</button>
+            <button class="btn btn-xs btn-outline" data-form-action="copy-output" data-target="beat-topm">📋 Copy</button>
             <button class="btn btn-xs btn-primary" onclick="openInTopMediai()" title="TopMediai.com öffnen" style="background:#d97706;border:none;" data-de="▶ TopMediai öffnen" data-en="▶ Open TopMediai">▶ TopMediai</button>
           </div>
         </div>
@@ -3997,7 +3997,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
             <div style="font-size:11px;font-weight:700;color:#4285f4;margin-bottom:4px;">🎵 <span data-de="Suno Melodie-Prompt" data-en="Suno Melody Prompt">Suno Melodie-Prompt</span></div>
             <div id="melody-suno" class="prompt-box"></div>
             <div style="display:flex;gap:5px;margin-top:5px;">
-              <button class="btn btn-xs btn-outline" onclick="copyOutput('melody-suno')">📋 Copy</button>
+              <button class="btn btn-xs btn-outline" data-form-action="copy-output" data-target="melody-suno">📋 Copy</button>
               <button class="btn btn-xs" onclick="openInSuno()" style="background:#10a37f;color:#fff;border:none;">▶ Suno</button>
             </div>
           </div>
@@ -4006,7 +4006,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
             <div style="font-size:11px;font-weight:700;color:#4285f4;margin-bottom:4px;">🎵 <span data-de="Udio Melodie-Prompt" data-en="Udio Melody Prompt">Udio Melodie-Prompt</span></div>
             <div id="melody-udio" class="prompt-box"></div>
             <div style="display:flex;gap:5px;margin-top:5px;">
-              <button class="btn btn-xs btn-outline" onclick="copyOutput('melody-udio')">📋 Copy</button>
+              <button class="btn btn-xs btn-outline" data-form-action="copy-output" data-target="melody-udio">📋 Copy</button>
               <button class="btn btn-xs" onclick="openInUdio()" style="background:#4285f4;color:#fff;border:none;">▶ Udio</button>
             </div>
           </div>
@@ -4161,7 +4161,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
       <div class="card">
         <div class="card-title" data-de="⬇️ Herunterladen &amp; Cover" data-en="⬇️ Download &amp; Cover">⬇️ Herunterladen &amp; Cover</div>
         
-        <!-- Download Grid — v3.26.9: kein onclick/onmouseover mehr, binding via JS -->
+        <!-- Download Grid — v3.27.0: kein onclick/onmouseover mehr, binding via JS -->
         <div id="export-download-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px;">
           <button class="export-dl-btn" data-action="docx" data-hover="#2b579a" style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px 10px;cursor:pointer;text-align:center;transition:all 0.12s;color:var(--text);">
             <div style="font-size:1.6rem;margin-bottom:6px;">📄</div>
@@ -4243,7 +4243,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
           <label data-de="Anweisung (optional)" data-en="Instruction (optional)">Anweisung (optional)</label>
           <textarea id="superki-instruction" rows="3" style="width:100%;resize:vertical;" placeholder="z.B. Analysiere die Lyrics auf Singbarkeit und gib Verbesserungsvorschläge — oder leer lassen für Standard-Analyse"></textarea>
         </div>
-        <button class="btn btn-primary" onclick="generateSuperKI()">🧠 <span data-de="Analyse starten" data-en="Start Analysis">Analyse starten</span></button>
+        <button class="btn btn-primary" data-form-action="generate-superki">🧠 <span data-de="Analyse starten" data-en="Start Analysis">Analyse starten</span></button>
         <!-- Super-KI vollständige Ausgabe — scrollbarer Container -->
         <div id="superki-all-output" style="margin-top:16px;">
           <div id="superki-output" class="output-box" contenteditable="false"
@@ -4699,7 +4699,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
 
   <!-- Footer hidden — status bar at bottom handles this -->
   <footer class="app-footer" style="display:none;">
-    Hirsch Music Hit Maker v3.26.9 — Made with ♪ · 49 Genres · 24.000+ Songs · 1920–2026 by Hirsch Music Production and Perplexity Computer
+    Hirsch Music Hit Maker v3.27.0 — Made with ♪ · 49 Genres · 24.000+ Songs · 1920–2026 by Hirsch Music Production and Perplexity Computer
     <br>
     <a href="https://www.perplexity.ai/computer" target="_blank" rel="noopener noreferrer">Created with Perplexity Computer</a>
   </footer>
@@ -4712,11 +4712,11 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
 <!-- Genre Modal -->
 
 <!-- ═══ GESANGS-STIL MODAL ═══ -->
-<div id="genre-modal-overlay" class="modal-overlay" onclick="closeGenreModalOutside(event)">
+<div id="genre-modal-overlay" class="modal-overlay" data-modal-close-outside="genre">
   <div class="modal-box modal-md">
     <div class="modal-header">
       <h3 id="genre-modal-title">🎸 Genre wählen</h3>
-      <button class="btn btn-xs btn-outline" onclick="closeGenreModal()">✕</button>
+      <button class="btn btn-xs btn-outline" data-form-action="close-genre">✕</button>
     </div>
     <div class="modal-search">
       <input type="text" id="genre-modal-search" placeholder="Genre suchen..." oninput="filterGenreModal(this.value)" autocomplete="off" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:0.9rem;">
@@ -4725,7 +4725,7 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
     <div class="modal-footer">
       <span class="modal-footer-info" id="genre-modal-selection">Kein Genre gewählt</span>
       <button class="btn btn-sm btn-outline" onclick="clearGenreModal()"><span id="genre-clear-label">Alle löschen</span></button>
-      <button class="btn btn-sm btn-primary" onclick="closeGenreModal()"><span id="genre-apply-label">Anwenden</span></button>
+      <button class="btn btn-sm btn-primary" data-form-action="close-genre"><span id="genre-apply-label">Anwenden</span></button>
     </div>
   </div>
 </div>
@@ -4733,11 +4733,11 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
 <!-- Mood Modal -->
 
 <!-- ═══ STRUKTUR MODAL ═══ -->
-<div id="structure-modal-overlay" class="modal-overlay" onclick="if(event.target===this)closeStructureModal()">
+<div id="structure-modal-overlay" class="modal-overlay" data-modal-close-outside="structure">
   <div class="modal-box" style="max-width:700px;width:95vw;">
     <div class="modal-header">
       <h3>📋 <span id="structure-modal-title">Struktur wählen</span></h3>
-      <button class="modal-close" onclick="closeStructureModal()">✕</button>
+      <button class="modal-close" data-form-action="close-structure">✕</button>
     </div>
     <div style="padding:12px 16px 0;">
       <input type="text" id="structure-modal-search"
@@ -4749,40 +4749,40 @@ tbody tr:nth-child(even) { background: rgba(17,17,24,0.6); }
     <div class="modal-body" id="structure-modal-body" style="max-height:60vh;overflow-y:auto;padding:12px 16px;"></div>
     <div class="modal-footer">
       <span id="structure-modal-selection" style="font-size:0.82rem;color:var(--text3);">Keine Struktur gewählt</span>
-      <button class="btn btn-sm btn-primary" onclick="closeStructureModal()">
+      <button class="btn btn-sm btn-primary" data-form-action="close-structure">
         <span id="structure-apply-label">Anwenden</span>
       </button>
     </div>
   </div>
 </div>
 
-<div id="mood-modal-overlay" class="modal-overlay" onclick="closeMoodModalOutside(event)">
+<div id="mood-modal-overlay" class="modal-overlay" data-modal-close-outside="mood">
   <div class="modal-box modal-md">
     <div class="modal-header">
       <h3 id="mood-modal-title">🎭 Stimmung wählen</h3>
-      <button class="btn btn-xs btn-outline" onclick="closeMoodModal()">✕</button>
+      <button class="btn btn-xs btn-outline" data-form-action="close-mood">✕</button>
     </div>
     <div class="modal-body" id="mood-modal-body"></div>
     <div class="modal-footer">
       <span class="modal-footer-info" id="mood-modal-selection">Keine Stimmung gewählt</span>
-      <button class="btn btn-sm btn-outline" onclick="clearMoodModal()"><span id="mood-clear-label">Alle löschen</span></button>
-      <button class="btn btn-sm btn-primary" onclick="closeMoodModal()"><span id="mood-apply-label">Anwenden</span></button>
+      <button class="btn btn-sm btn-outline" data-form-action="clear-mood"><span id="mood-clear-label">Alle löschen</span></button>
+      <button class="btn btn-sm btn-primary" data-form-action="close-mood"><span id="mood-apply-label">Anwenden</span></button>
     </div>
   </div>
 </div>
 
 <!-- Instrumental Modal -->
-<div id="instr-modal-overlay" class="modal-overlay" onclick="closeInstrModalOutside(event)">
+<div id="instr-modal-overlay" class="modal-overlay" data-modal-close-outside="instr">
   <div class="modal-box modal-md">
     <div class="modal-header">
       <h3 id="instr-modal-title">🎺 Instrumental Vorschlag</h3>
-      <button class="btn btn-xs btn-outline" onclick="closeInstrumentalModal()">✕</button>
+      <button class="btn btn-xs btn-outline" data-form-action="close-instrumental">✕</button>
     </div>
     <div class="modal-body" id="instr-modal-body"></div>
     <div class="modal-footer">
       <span class="modal-footer-info" id="instr-modal-info">Keine Instrumente gewählt</span>
       <button class="btn btn-sm btn-outline" onclick="clearInstrModal()"><span id="instr-clear-label">Alle abwählen</span></button>
-      <button class="btn btn-sm btn-primary" onclick="closeInstrumentalModal()"><span id="instr-apply-label">Anwenden</span></button>
+      <button class="btn btn-sm btn-primary" data-form-action="close-instrumental"><span id="instr-apply-label">Anwenden</span></button>
     </div>
   </div>
 </div>
@@ -4948,7 +4948,7 @@ const INSTR_STRUCT_HINTS = {
 };
 
 // ══════════════════════════════════════════════════════
-// v3.26.9 — LEBENSSITUATIONEN
+// v3.27.0 — LEBENSSITUATIONEN
 // ══════════════════════════════════════════════════════
 const LIFE_SITUATIONS = [
   // Liebe & Beziehung
@@ -5922,7 +5922,7 @@ function buildFullExportContent() {
   if(SONG.lyricsTitle)    sections.push(de?`TITEL: ${SONG.lyricsTitle}`:`TITLE: ${SONG.lyricsTitle}`);
   if(genreNames.length)   sections.push(de?`GENRE: ${genreNames.join(' + ')}`:`GENRE: ${genreNames.join(' + ')}`);
   if(moodNames.length)    sections.push(de?`STIMMUNG: ${moodNames.join(' · ')}`:`MOOD: ${moodNames.join(' · ')}`);
-  // v3.26.9: Lebenssituation
+  // v3.27.0: Lebenssituation
   const sitArr = (window.situationState && window.situationState['lyrics']) ? window.situationState['lyrics'] : (SONG.situation || []);
   const sitNames = sitArr.map(v => { const s = (typeof LIFE_SITUATIONS!=='undefined') ? LIFE_SITUATIONS.find(x=>x.value===v) : null; return s?s[currentLang]:v; });
   if(sitNames.length) sections.push(de?`LEBENSSITUATION: ${sitNames.join(' · ')}`:`LIFE SITUATION: ${sitNames.join(' · ')}`);
@@ -6269,7 +6269,7 @@ function generateLyrics() {
 }
 
 // ═══════════════════════════════════════════════════════
-// HIRSCH MUSIC HIT MAKER v3.26.9 — LYRICS LIBRARY
+// HIRSCH MUSIC HIT MAKER v3.27.0 — LYRICS LIBRARY
 // Große Textbibliothek: DE + EN, alle Genres, alle Sektionen
 // Intelligente Kombination via Mood + Theme-Keywords
 // ═══════════════════════════════════════════════════════
@@ -7406,8 +7406,8 @@ function buildLyrics(theme, genre, mood, lang, structure, notes, rhymeScheme, ve
   const verseLabel = (!verseCount||verseCount==='auto') ? (de?'Auto':'Auto') : (de?`${verseCount} Strophen`:`${verseCount} Verses`);
 
   result += de
-    ? `\n\n───────────────────────────\nGenre: ${genre.toUpperCase()} | Mood: ${mood}\nSprache: ${lang.toUpperCase()} | Struktur: ${structName}\nReimschema: ${rhymeLabel} | Strophen: ${verseLabel} | Dauer: ${durStr}\nHirsch Music Hit Maker v3.26.9`
-    : `\n\n───────────────────────────\nGenre: ${genre.toUpperCase()} | Mood: ${mood}\nLanguage: ${lang.toUpperCase()} | Structure: ${structName}\nRhyme: ${rhymeLabel} | Verses: ${verseLabel} | Duration: ${durStr}\nHirsch Music Hit Maker v3.26.9`;
+    ? `\n\n───────────────────────────\nGenre: ${genre.toUpperCase()} | Mood: ${mood}\nSprache: ${lang.toUpperCase()} | Struktur: ${structName}\nReimschema: ${rhymeLabel} | Strophen: ${verseLabel} | Dauer: ${durStr}\nHirsch Music Hit Maker v3.27.0`
+    : `\n\n───────────────────────────\nGenre: ${genre.toUpperCase()} | Mood: ${mood}\nLanguage: ${lang.toUpperCase()} | Structure: ${structName}\nRhyme: ${rhymeLabel} | Verses: ${verseLabel} | Duration: ${durStr}\nHirsch Music Hit Maker v3.27.0`;
 
   return result;
 }
@@ -8393,7 +8393,7 @@ function exportTXT() {
   }).join(', ') || '—';
   const moodStr = SONG.moods.map(v => { const m=MOODS.find(x=>x.value===v); return m?m[currentLang]:v; }).join(', ') || '—';
   const content = [
-    `HIRSCH MUSIC HIT MAKER v3.26.9`,
+    `HIRSCH MUSIC HIT MAKER v3.27.0`,
     `Projekt: ${name}`,
     `Datum: ${new Date().toLocaleDateString('de-AT')}`,
     `${'═'.repeat(40)}`,
@@ -8404,7 +8404,7 @@ function exportTXT() {
     (getActiveLyricsForExport ? getActiveLyricsForExport() : lastLyrics) ? `LYRICS:\n${getActiveLyricsForExport ? getActiveLyricsForExport() : lastLyrics}` : '',
     lastBeatPrompts.suno ? `\nBEAT PROMPTS:\n── SUNO ──\n${lastBeatPrompts.suno}\n\n── UDIO ──\n${lastBeatPrompts.udio}\n\n── TOPMEDIAI ──\n${lastBeatPrompts.topm}` : '',
     `\n${'═'.repeat(40)}`,
-    `Hirsch Music Hit Maker v3.26.9 — Made with ♪`,
+    `Hirsch Music Hit Maker v3.27.0 — Made with ♪`,
     `by Hirsch Music Production and Perplexity Computer`
   ].filter(Boolean).join('\n');
 
@@ -8419,7 +8419,7 @@ function exportTXT() {
 function exportJSON() {
   const name = document.getElementById('export-name').value || 'hirsch-song';
   const data = {
-    app: "Hirsch Music Hit Maker v3.26.9",
+    app: "Hirsch Music Hit Maker v3.27.0",
     project: name,
     date: new Date().toISOString(),
     song: {
@@ -9576,7 +9576,7 @@ function updateExportFormat(format) {
       let txt = '# ' + (SONG.lyricsTitle || SONG.theme || 'Song') + '\n\n';
       txt += '**Genre:** ' + genres + ' | **BPM:** ' + bpm + ' | **Key:** ' + key + '\n\n';
       txt += '---\n\n' + activeLyrics.replace(/═+/g,'---').replace(/─+/g,'---');
-      txt += '\n\n---\n*Created with Hirsch Music Hit Maker v3.26.9*';
+      txt += '\n\n---\n*Created with Hirsch Music Hit Maker v3.27.0*';
       md.textContent = txt;
     }
   } else if(format === 'daw') {
@@ -12548,7 +12548,7 @@ console.log('✨ Fusion Auto-Improve geladen');
         tempo ? `<span style="background:rgba(0,0,0,0.06);color:var(--text3);padding:1px 6px;border-radius:8px;font-size:0.68rem;">${tempo}</span>` : ''
       ].filter(Boolean).join(' ');
 
-      // v3.26.9: createElement statt innerHTML + onclick
+      // v3.27.0: createElement statt innerHTML + onclick
       const tr2 = document.createElement('tr');
       tr2.style.cssText = 'cursor:pointer;transition:background 0.15s;';
       tr2.addEventListener('mouseenter', function() { tr2.style.background = 'rgba(124,58,237,0.06)'; });
@@ -13685,8 +13685,8 @@ console.log('✨ Fusion Auto-Improve geladen');
       tab: 'lyrics',
       title_de: '🎭 Songwriter-Stil / KI-Persona',
       title_en: '🎭 Songwriter Style / AI Persona',
-      text_de: 'v3.26.9: Gib einen Künstler-Stil ein z.B. "Taylor Swift" oder "Rammstein". Die KI schreibt dann im Stil dieses Künstlers. Klicke auf 🎭 für 60+ Vorschläge.',
-      text_en: 'v3.26.9: Enter an artist style e.g. "Taylor Swift" or "Rammstein". The AI writes in that artist\u2019s style. Click \uD83C\uDFAD for 60+ suggestions.',
+      text_de: 'v3.27.0: Gib einen Künstler-Stil ein z.B. "Taylor Swift" oder "Rammstein". Die KI schreibt dann im Stil dieses Künstlers. Klicke auf 🎭 für 60+ Vorschläge.',
+      text_en: 'v3.27.0: Enter an artist style e.g. "Taylor Swift" or "Rammstein". The AI writes in that artist\u2019s style. Click \uD83C\uDFAD for 60+ suggestions.',
       tip_de: '🎭 Tipp: Kombiniere z.B. "Ed Sheeran, Country-Stil" für einzigartigen Cross-Genre Sound.',
       tip_en: '🎭 Tip: Combine e.g. "Ed Sheeran, Country style" for unique cross-genre sound.',
       position: 'bottom'
@@ -13696,8 +13696,8 @@ console.log('✨ Fusion Auto-Improve geladen');
       tab: 'export',
       title_de: '🎨 Album-Cover Generator',
       title_en: '🎨 Album Cover Generator',
-      text_de: 'v3.26.9: Im Export-Tab unten findest du den Album-Cover Generator. Wähle Stil und Format — DALL-E 3 generiert in ~15 Sekunden ein professionelles Cover.',
-      text_en: 'v3.26.9: In the Export tab at the bottom is the Album Cover Generator. Choose style and format — DALL-E 3 generates a professional cover in ~15 seconds.',
+      text_de: 'v3.27.0: Im Export-Tab unten findest du den Album-Cover Generator. Wähle Stil und Format — DALL-E 3 generiert in ~15 Sekunden ein professionelles Cover.',
+      text_en: 'v3.27.0: In the Export tab at the bottom is the Album Cover Generator. Choose style and format — DALL-E 3 generates a professional cover in ~15 seconds.',
       tip_de: '⚠️ Verbraucht ca. 1 API-Credit (~$0.04) pro Bild.',
       tip_en: '⚠️ Uses approx. 1 API credit (~$0.04) per image.',
       position: 'right'
@@ -13707,8 +13707,8 @@ console.log('✨ Fusion Auto-Improve geladen');
       tab: 'workbench',
       title_de: '📜 Generierungs-Verlauf',
       title_en: '📜 Generation History',
-      text_de: 'v3.26.9: Im Workbench-Tab werden automatisch die letzten 10 Generierungen gespeichert — mit Datum, Genre und Vorschau. Klicke ↩ um eine Version wiederherzustellen.',
-      text_en: 'v3.26.9: In the Workbench tab, the last 10 generations are saved automatically — with date, genre and preview. Click ↩ to restore a version.',
+      text_de: 'v3.27.0: Im Workbench-Tab werden automatisch die letzten 10 Generierungen gespeichert — mit Datum, Genre und Vorschau. Klicke ↩ um eine Version wiederherzustellen.',
+      text_en: 'v3.27.0: In the Workbench tab, the last 10 generations are saved automatically — with date, genre and preview. Click ↩ to restore a version.',
       tip_de: '💡 Der Verlauf bleibt auch nach einem Neustart erhalten (Desktop-App).',
       tip_en: '💡 History persists even after restart (Desktop app).',
       position: 'right'
@@ -15205,7 +15205,7 @@ ${textB.substring(0,800)}`;
       genre ? (isDE ? 'Genre: ' : 'Genre: ') + genre : '',
       bpm   ? 'BPM: ' + bpm : '',
       key   ? (isDE ? 'Tonart: ' : 'Key: ') + key : '',
-      (isDE ? 'Erstellt mit Hirsch Music Hit Maker v3.26.9' : 'Created with Hirsch Music Hit Maker v3.26.9'),
+      (isDE ? 'Erstellt mit Hirsch Music Hit Maker v3.27.0' : 'Created with Hirsch Music Hit Maker v3.27.0'),
     ].filter(Boolean).join('  |  ');
 
     const rtf = `{\rtf1\ansi\deff0
@@ -15218,7 +15218,7 @@ ${textB.substring(0,800)}`;
 ${escapeRtf(lyrics)}
 \par\par
 \fs16\cf1 ─────────────────────────────────────────\par\cf0
-\fs14\i Hirsch Music Hit Maker v3.26.9 — ${new Date().toLocaleDateString(isDE?'de-AT':'en-US')}\i0
+\fs14\i Hirsch Music Hit Maker v3.27.0 — ${new Date().toLocaleDateString(isDE?'de-AT':'en-US')}\i0
 }`;
 
     const blob = new Blob([rtf], { type: 'application/msword' });
@@ -15253,7 +15253,7 @@ ${escapeRtf(lyrics)}
       '<\/style><\/head><body>',
       '<h1>' + title.replace(/</g,'&lt;') + '<\/h1>',
       '<pre>' + lyrics.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '<\/pre>',
-      '<div class="footer">Hirsch Music Hit Maker v3.26.9 — Made with \u266a<\/div>',
+      '<div class="footer">Hirsch Music Hit Maker v3.27.0 — Made with \u266a<\/div>',
       '<\/body><\/html>'
     ].join('\n');
     const win = window.open('', '_blank', 'width=700,height=900');
@@ -15953,7 +15953,7 @@ window.printLyrics = function() {
     '<\/head><body>',
     '<h1>' + songTitle + '<\/h1>',
     '<pre>' + text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '<\/pre>',
-    '<div class="footer">Hirsch Music Hit Maker v3.26.9 — Made with ♪<\/div>',
+    '<div class="footer">Hirsch Music Hit Maker v3.27.0 — Made with ♪<\/div>',
     '<\/body><\/html>'
   ].join('\n');
   printWin.document.write(printHTML);
@@ -19460,7 +19460,7 @@ ${versions.map((v,i)=>'=== Draft '+(i+1)+' ===\n'+v.substring(0,600)).join('\n\n
   }
   if(!finalLyrics||finalLyrics.trim().length<30) finalLyrics=versions[0];
 
-  // ── v3.26.9: Output Discipline Check ──────────────────────────
+  // ── v3.27.0: Output Discipline Check ──────────────────────────
   let _odResult = null;
   try {
     if (typeof _validateOutputDiscipline === 'function' && typeof _extractSignalKeywords === 'function') {
@@ -19476,7 +19476,7 @@ ${versions.map((v,i)=>'=== Draft '+(i+1)+' ===\n'+v.substring(0,600)).join('\n\n
       }
       _odResult = { outputDiscipline: { before: _odBefore, after: _odAfter, repaired: _odFinal !== finalLyrics }, emotionSignalBundle };
     }
-  } catch(e) { console.warn('[v3.26.9] discipline check error', e); }
+  } catch(e) { console.warn('[v3.27.0] discipline check error', e); }
   window._lastGenerateResult = _odResult;
 
   // ── OUTPUT ────────────────────────────────────────────────────
@@ -19519,7 +19519,7 @@ ${versions.map((v,i)=>'=== Draft '+(i+1)+' ===\n'+v.substring(0,600)).join('\n\n
   if(typeof renderRiskLock==='function') renderRiskLock(typeof result!=='undefined'?result:window._lastGenerateResult||null);
   if(typeof renderAudience==='function') renderAudience(typeof result!=='undefined'?result:window._lastGenerateResult||null);
   if(typeof renderMasterVerdict==='function') renderMasterVerdict(typeof result!=='undefined'?result:window._lastGenerateResult||null);
-  // v3.26.9: Vergleichsmodus
+  // v3.27.0: Vergleichsmodus
   (function(){
     const _r = typeof result !== 'undefined' ? result : (window._lastGenerateResult || null);
     const _b = typeof emotionSignalBundle !== 'undefined' ? emotionSignalBundle : (window._activeEmotionBundle || null);
@@ -19972,7 +19972,7 @@ function renderMasterVerdict(result) {
 
   if (tierEl) {
     tierEl.textContent = mv.tierLabel;
-    // v3.26.9: realistic vs. aspirational sub-label
+    // v3.27.0: realistic vs. aspirational sub-label
     let subEl = document.getElementById('masterVerdictTierSub');
     if (!subEl) {
       subEl = document.createElement('div');
@@ -20013,7 +20013,7 @@ function renderMasterVerdict(result) {
 }
 window.renderMasterVerdict = renderMasterVerdict;
 
-// v3.26.9 — renderComparison
+// v3.27.0 — renderComparison
 function renderComparison(result) {
   var panel = document.getElementById('comparisonPanel');
   if (!panel) return;
@@ -20041,7 +20041,7 @@ function renderComparison(result) {
 }
 window.renderComparison = renderComparison;
 
-// ══ v3.26.9 — LEBENSSITUATION MODAL FUNCTIONS ══
+// ══ v3.27.0 — LEBENSSITUATION MODAL FUNCTIONS ══
 function openSituationModal(context) {
   activeSituationContext = context || 'lyrics';
   const lang = currentLang;
@@ -22198,13 +22198,13 @@ if (typeof _origRenderLibRow === 'function') {
   <script src="referenceBank.songs.09.js"></script>
   <script src="referenceBank.songs.10.js"></script>
   <script src="referenceBank.songs.11.js"></script>
-  <!-- v3.26.9: Ausgelagerte UI-Module -->
+  <!-- v3.27.0: Ausgelagerte UI-Module -->
     <script src="vocals-ui.js"></script>
   <script src="library-ui.js"></script>
   <script src="workbench-ui.js"></script>
   <script src="export-ui.js"></script>
 
-<!-- ══ LEBENSSITUATION MODAL (v3.26.9) ══ -->
+<!-- ══ LEBENSSITUATION MODAL (v3.27.0) ══ -->
 <div id="situation-modal-overlay" class="modal-overlay" onclick="closeSituationModalOutside(event)">
   <div class="modal-box" style="max-width:660px;width:95%;">
     <div class="modal-header">
@@ -22214,7 +22214,7 @@ if (typeof _origRenderLibRow === 'function') {
     <div class="modal-body" id="situation-modal-body"></div>
     <div class="modal-footer">
       <span class="modal-footer-info" id="situation-modal-selection" data-de="Keine Situation gewählt" data-en="No situation selected">Keine Situation gewählt</span>
-      <button class="btn btn-sm btn-outline" onclick="clearSituationModal()"><span id="situation-clear-label">Alle löschen</span></button>
+      <button class="btn btn-sm btn-outline" data-form-action="clear-situation"><span id="situation-clear-label">Alle löschen</span></button>
       <button class="btn btn-sm btn-primary" onclick="closeSituationModal()"><span id="situation-apply-label">Anwenden</span></button>
     </div>
   </div>
@@ -22224,13 +22224,13 @@ if (typeof _origRenderLibRow === 'function') {
 
 <script>
 // ══════════════════════════════════════════════════════════════════
-// v3.26.9 — HirschModules: Event-Binding für gereinigte UI-Elemente
+// v3.27.0 — HirschModules: Event-Binding für gereinigte UI-Elemente
 // Kein onclick mehr im HTML. Binding hier zentral.
 // ══════════════════════════════════════════════════════════════════
 </script>
 
 <!-- ══════════════════════════════════════════════════════════════════
-     v3.26.9 — HirschApp Namespace + generateLyricsController
+     v3.27.0 — HirschApp Namespace + generateLyricsController
      Strukturelle Verbesserung: Kein globaler Wildwuchs mehr.
      Alle lose window.* Funktionen sind hier sauber gruppiert.
      ══════════════════════════════════════════════════════════════════ -->
@@ -22300,7 +22300,7 @@ if (typeof _origRenderLibRow === 'function') {
     undo:        () => window.fusionImproveUndo?.(),
   };
 
-  console.log('[HirschApp] ✅ Namespace v3.26.9 geladen');
+  console.log('[HirschApp] ✅ Namespace v3.27.0 geladen');
 })();
 
 // ══════════════════════════════════════════════════════════════════
@@ -22355,7 +22355,7 @@ window.generateLyricsController = async function(mode) {
 window.HirschApp.lyrics.controller = window.generateLyricsController;
 
 // ══════════════════════════════════════════════════════════════════
-// initApp — Zentraler App-Startpunkt (v3.26.9)
+// initApp — Zentraler App-Startpunkt (v3.27.0)
 // Ersetzt verstreute DOMContentLoaded + setTimeout Initialisierungen
 // ══════════════════════════════════════════════════════════════════
 (function() {

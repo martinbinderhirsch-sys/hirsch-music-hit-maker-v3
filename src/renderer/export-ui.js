@@ -130,10 +130,88 @@ window.HirschModules.onboardingUI = (function() {
   function bindAll() {
     window.HirschModules.exportUI.init();
     window.HirschModules.onboardingUI.bindButtons();
+    window.HirschModules.formActions.bind();
     bindTabButtons();
     bindHeaderButtons();
     if (window.HirschModules.libraryUI) window.HirschModules.libraryUI.bindFilterControls();
   }
+
+
+// ══════════════════════════════════════════════════════════════════
+// v3.27.0 — HirschModules.formActions
+// Einheitliches Action-System für alle Formular- und Modal-Buttons
+// ══════════════════════════════════════════════════════════════════
+window.HirschModules.formActions = (function() {
+
+  // ── Aktions-Mapping ─────────────────────────────────────────────
+  const ACTIONS = {
+    // Modal openers
+    'open-theme':       (btn) => typeof openThemeModal        === 'function' && openThemeModal(),
+    'open-genre':       (btn) => typeof openGenreModal        === 'function' && openGenreModal(btn.dataset.target || 'lyrics'),
+    'open-mood':        (btn) => typeof openMoodModal         === 'function' && openMoodModal(btn.dataset.target || 'lyrics'),
+    'open-situation':   (btn) => typeof openSituationModal    === 'function' && openSituationModal(btn.dataset.target || 'lyrics'),
+    'open-structure':   (btn) => typeof openStructureModal    === 'function' && openStructureModal(),
+    'open-vocal-style': (btn) => typeof openVocalStyleModal   === 'function' && openVocalStyleModal(),
+    'open-instrumental':(btn) => typeof openInstrumentalModal === 'function' && openInstrumentalModal(),
+    'open-persona':     (btn) => typeof openPersonaModal      === 'function' && openPersonaModal(),
+    // Modal closers
+    'close-genre':      (btn) => typeof closeGenreModal       === 'function' && closeGenreModal(),
+    'close-structure':  (btn) => typeof closeStructureModal   === 'function' && closeStructureModal(),
+    'close-mood':       (btn) => typeof closeMoodModal        === 'function' && closeMoodModal(),
+    'close-instrumental':(btn)=> typeof closeInstrumentalModal=== 'function' && closeInstrumentalModal(),
+    'close-situation':  (btn) => typeof closeSituationModal   === 'function' && closeSituationModal(),
+    // Modal clear
+    'clear-mood':       (btn) => typeof clearMoodModal        === 'function' && clearMoodModal(),
+    'clear-situation':  (btn) => typeof clearSituationModal   === 'function' && clearSituationModal(),
+    // Generate actions
+    'generate-lyrics':  (btn) => typeof generateLyrics        === 'function' && generateLyrics(),
+    'generate-7ki':     (btn) => typeof generateLyrics7KI     === 'function' && generateLyrics7KI(),
+    'generate-beat':    (btn) => typeof generateBeatPrompt    === 'function' && generateBeatPrompt(),
+    'generate-superki': (btn) => typeof generateSuperKI       === 'function' && generateSuperKI(),
+    // Copy actions
+    'copy-output':      (btn) => typeof copyOutput            === 'function' && copyOutput(btn.dataset.target),
+  };
+
+  // ── Modal-Overlay-Closer-Mapping ────────────────────────────────
+  const OVERLAY_CLOSERS = {
+    'genre':     () => typeof closeGenreModal       === 'function' && closeGenreModal(),
+    'instr':     () => typeof closeInstrumentalModal=== 'function' && closeInstrumentalModal(),
+    'mood':      () => typeof closeMoodModal        === 'function' && closeMoodModal(),
+    'structure': () => typeof closeStructureModal   === 'function' && closeStructureModal(),
+    'situation': () => typeof closeSituationModal   === 'function' && closeSituationModal(),
+  };
+
+  // ── Binding ─────────────────────────────────────────────────────
+  function bind(root) {
+    root = root || document;
+
+    // data-form-action buttons
+    root.querySelectorAll('[data-form-action]').forEach(function(btn) {
+      if (btn.dataset.bound) return;
+      var action = btn.dataset.formAction;
+      var fn = ACTIONS[action];
+      if (fn) {
+        btn.addEventListener('click', function() { fn(btn); });
+        btn.dataset.bound = '1';
+      }
+    });
+
+    // data-modal-close-outside overlays
+    root.querySelectorAll('[data-modal-close-outside]').forEach(function(overlay) {
+      if (overlay.dataset.bound) return;
+      var modalKey = overlay.dataset.modalCloseOutside;
+      var fn = OVERLAY_CLOSERS[modalKey];
+      if (fn) {
+        overlay.addEventListener('click', function(e) {
+          if (e.target === overlay) fn();
+        });
+        overlay.dataset.bound = '1';
+      }
+    });
+  }
+
+  return { bind, ACTIONS };
+})();
 
   // ── Tab-Buttons ─────────────────────────────────────────────
   function bindTabButtons() {
