@@ -130,6 +130,44 @@ window.HirschModules.onboardingUI = (function() {
   function bindAll() {
     window.HirschModules.exportUI.init();
     window.HirschModules.onboardingUI.bindButtons();
+    bindTabButtons();
+    bindHeaderButtons();
+    if (window.HirschModules.libraryUI) window.HirschModules.libraryUI.bindFilterControls();
+  }
+
+  // ── Tab-Buttons ─────────────────────────────────────────────
+  function bindTabButtons() {
+    document.querySelectorAll('[data-tab]').forEach(function(btn) {
+      if (btn.dataset.bound) return;
+      btn.addEventListener('click', function() {
+        if (typeof switchTab === 'function') switchTab(btn.dataset.tab, btn);
+      });
+      btn.dataset.bound = '1';
+    });
+  }
+
+  // ── Header-Action-Buttons ────────────────────────────────────
+  const HEADER_ACTIONS = {
+    'save':        () => typeof wbSaveToLocalStorage === 'function' && wbSaveToLocalStorage(),
+    'new-project': () => typeof confirmNewProject    === 'function' && confirmNewProject(),
+    'tutorial':    () => typeof startTutorial        === 'function' && startTutorial(),
+    'shortcuts':   () => typeof toggleShortcuts      === 'function' && toggleShortcuts(),
+    'lang-de':     () => typeof setLang              === 'function' && setLang('de'),
+    'lang-en':     () => typeof setLang              === 'function' && setLang('en'),
+    'theme':       () => typeof toggleTheme          === 'function' && toggleTheme(),
+    'pwa-install': () => typeof pwaInstall           === 'function' && pwaInstall(),
+  };
+
+  function bindHeaderButtons() {
+    document.querySelectorAll('[data-header-action]').forEach(function(btn) {
+      if (btn.dataset.bound) return;
+      const action = btn.dataset.headerAction;
+      const fn = HEADER_ACTIONS[action];
+      if (fn) {
+        btn.addEventListener('click', fn);
+        btn.dataset.bound = '1';
+      }
+    });
   }
 
   // Sofort binden
