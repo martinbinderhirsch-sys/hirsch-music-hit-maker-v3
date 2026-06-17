@@ -6245,9 +6245,7 @@ function generateLyrics() {
     const rhymeScheme = document.getElementById('lyrics-rhyme-scheme')?.value || 'auto';
     const verseCount = document.getElementById('lyrics-verse-count')?.value || 'auto';
     const result = buildLyrics(theme, genre, mood, lang, structure, notes, rhymeScheme, verseCount);
-    lastLyrics = result;
-    // Zentraler State aktualisieren
-    SONG.lyricsText  = result;
+    window.HirschModules.lyricsCore.setLyrics(result);
     // Duration badge
     (function() {
       const wc = result.split(/\s+/).filter(w => w && !w.startsWith('[') && !w.startsWith('═') && !w.startsWith('─') && !w.startsWith('🎵') && !w.startsWith('Genre') && !w.startsWith('Hirsch')).length;
@@ -7703,7 +7701,8 @@ function showLyricsVersion(idx) {
   const el = document.getElementById('lyrics-output');
   const txt = lyricsVersions[idx].text;
   el.innerHTML = window.formatLyricsHTML(txt);
-  lastLyrics = txt;
+  window.HirschModules.lyricsCore.setLyrics(txt);
+  window.HirschModules.lyricsCore.syncSongMirror();
   updateExportPreview();
 }
 
@@ -7736,7 +7735,8 @@ function deleteLyricsVersion() {
     document.getElementById('lyrics-output').innerHTML =
       `<span class="output-placeholder" data-de="Deine Lyrics erscheinen hier..." data-en="Your lyrics will appear here...">
         ${currentLang==='de'?'Deine Lyrics erscheinen hier...':'Your lyrics will appear here...'}</span>`;
-    lastLyrics = '';
+    window.HirschModules.lyricsCore.setLyrics('');
+    window.HirschModules.lyricsCore.syncSongMirror();
     return;
   }
   renderLyricsVersionTabs();
@@ -8452,7 +8452,7 @@ function exportAllPrompts() {
 }
 
 function clearProject() {
-  lastLyrics = ''; lastBeatPrompts = { suno:'', udio:'', topm:'' };
+  window.HirschModules.lyricsCore.setLyrics(''); window.HirschModules.lyricsCore.syncSongMirror(); lastBeatPrompts = { suno:'', udio:'', topm:'' };
   lyricsVersions = []; activeVersionIdx = 0;
   var _el;
   _el = document.getElementById('lyrics-version-tabs'); if(_el) _el.style.display = 'none';
@@ -8533,7 +8533,8 @@ function deleteVersion(idx) {
     document.getElementById('lyrics-version-tabs').style.display = 'none';
     document.getElementById('lyrics-output').innerHTML =
       '<span class="output-placeholder">' + (currentLang==='de'?'Deine Lyrics erscheinen hier...':'Your lyrics will appear here...') + '</span>';
-    lastLyrics = '';
+    window.HirschModules.lyricsCore.setLyrics('');
+    window.HirschModules.lyricsCore.syncSongMirror();
     const bar = document.getElementById('version-bar');
     if(bar) bar.style.display = 'none';
     return;
@@ -9207,8 +9208,9 @@ function checkUrlImport() {
     if(lyricsEl) {
       lyricsEl.innerHTML = window.formatLyricsHTML ? window.formatLyricsHTML(lyricsParam) : lyricsParam;
       lyricsEl.style.display = 'block';
-      lastLyrics = lyricsParam;
-      SONG.lyricsText = lyricsParam;
+      window.HirschModules.lyricsCore.setLyrics(lyricsParam);
+      window.HirschModules.lyricsCore.syncSongMirror();
+      // SONG.lyricsText via syncSongMirror gesetzt
       // Über addLyricsVersion als Version speichern (korrekte Funktion)
       if(typeof window.addLyricsVersion === 'function') {
         window.addLyricsVersion(lyricsParam, title || 'Importiert');
@@ -10878,7 +10880,8 @@ window.toggleFavoriteFilter = function() {
     if (lyricsEl) {
       lyricsEl.innerHTML = window.formatLyricsHTML ? window.formatLyricsHTML(text) : text;
       lyricsEl.style.display = 'block';
-      lastLyrics = text;
+      window.HirschModules.lyricsCore.setLyrics(text);
+      window.HirschModules.lyricsCore.syncSongMirror();
     }
     // Copy title to theme/project fields if available
     if (title) {
@@ -11842,7 +11845,8 @@ Output ONLY the improved complete song lyric — no explanations, no comments.`;
         const lyrText = (typeof lastLyrics !== 'undefined' && lastLyrics) ? lastLyrics : (lyricsEl.innerText || '');
         if (lyrText.trim() === original.trim()) {
           lyricsEl.innerHTML = window.formatLyricsHTML ? window.formatLyricsHTML(improved) : improved;
-          lastLyrics = improved;
+          window.HirschModules.lyricsCore.setLyrics(improved);
+          window.HirschModules.lyricsCore.syncSongMirror();
           lyricsVersions[activeVersionIdx].text = improved;
         }
       }
@@ -14431,7 +14435,8 @@ console.log('✨ Fusion Auto-Improve geladen');
     if (out) {
       out.innerHTML = window.formatLyricsHTML ? window.formatLyricsHTML(entry.lyrics) : entry.lyrics;
       out.style.display = 'block';
-      window.lastLyrics = entry.lyrics;
+      window.HirschModules.lyricsCore.setLyrics(entry.lyrics);
+      window.HirschModules.lyricsCore.syncSongMirror();
     }
     if (typeof addLyricsVersion === 'function') addLyricsVersion(entry.lyrics, entry.meta?.theme);
     showToast(isDE ? '↩ Version wiederhergestellt' : '↩ Version restored');
@@ -14452,7 +14457,7 @@ console.log('✨ Fusion Auto-Improve geladen');
       try {
         const state = {
           ts: Date.now(),
-          lyrics: document.getElementById('lyrics-output')?.textContent || '',
+          lyrics: window.HirschModules.lyricsCore.getLyrics() || '',
           theme: document.getElementById('lyrics-theme')?.value || '',
           genre: document.getElementById('genre-display')?.textContent || '',
           history: window._lyricsHistory
@@ -14487,9 +14492,7 @@ console.log('✨ Fusion Auto-Improve geladen');
     window.generateAll = async function(...args) {
       const result = await _origGenAll.apply(this, args);
       setTimeout(() => {
-        const lyrics = (typeof window.lastLyrics !== 'undefined' && window.lastLyrics)
-          ? window.lastLyrics
-          : (document.getElementById('lyrics-output')?.innerText || '');
+        const lyrics = window.HirschModules.lyricsCore.getLyrics();
         if (lyrics && lyrics.trim().length > 30) {
           const theme = document.getElementById('lyrics-theme')?.value?.trim() || '';
           const genre = (window.genreState?.['lyrics'] || []).join(', ') || 'Pop';
@@ -19456,8 +19459,9 @@ ${versions.map((v,i)=>'=== Draft '+(i+1)+' ===\n'+v.substring(0,600)).join('\n\n
     dur.style.display='inline-block';
   }
 
-  window.lastLyrics=fullResult;
-  if(window.SONG){window.SONG.lyricsText=fullResult;window.SONG.theme=theme;}
+  window.HirschModules.lyricsCore.setLyrics(fullResult);
+  window.HirschModules.lyricsCore.syncSongMirror();
+  if(window.SONG){ window.SONG.theme=theme; }
   if(typeof addLyricsVersion==='function') addLyricsVersion(fullResult);
   if(typeof syncToExport==='function') syncToExport();
   if(typeof updateExportPreview==='function') updateExportPreview();
@@ -20577,9 +20581,9 @@ window.applyImprovement = function(idx) {
   lyricsEl.scrollTop = scrollTop;
   lyricsEl.style.display = 'block';
 
-  // Update global state
-  window.lastLyrics     = newText;
-  if (window.SONG) { window.SONG.lyricsText = newText; }
+  // Update global state via Kern
+  window.HirschModules.lyricsCore.setLyrics(newText);
+  window.HirschModules.lyricsCore.syncSongMirror();
 
   // ── Visual feedback on suggestion card ──
   var suggsList = document.getElementById('suggestions-list');
@@ -20691,8 +20695,8 @@ window.regenWithImprovements = async function() {
     // Apply new text
     lyricsEl.innerText = newText;
     lyricsEl.style.display = 'block';
-    window.lastLyrics = newText;
-    if (window.SONG) window.SONG.lyricsText = newText;
+    window.HirschModules.lyricsCore.setLyrics(newText);
+    window.HirschModules.lyricsCore.syncSongMirror();
 
     // Flash green
     lyricsEl.style.borderColor = '#22c55e';
@@ -21153,8 +21157,8 @@ Write ONLY the lyrics, no explanations, no comments.`;
         outputEl.style.display = 'block';
         outputEl.innerHTML = window.formatLyricsHTML ? window.formatLyricsHTML(result) : result;
       }
-      lastLyrics = result;
-      SONG.lyricsText = result;
+      window.HirschModules.lyricsCore.setLyrics(result);
+      window.HirschModules.lyricsCore.syncSongMirror();
       SONG.lyricsTitle = theme;
       if(typeof addLyricsVersion === 'function') addLyricsVersion(result);
       if(typeof syncToExport === 'function') syncToExport();

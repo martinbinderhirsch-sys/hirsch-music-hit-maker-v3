@@ -17,7 +17,7 @@ let _songHistory = (function() {
 })();
 
 function saveSongToHistory() {
-  const lyrics = ((typeof lastLyrics !== 'undefined' && lastLyrics) ? lastLyrics.trim() : (document.getElementById('lyrics-output')?.innerText?.trim() || ''));
+  const lyrics = (window.HirschModules.lyricsCore.getLyrics().trim() || (document.getElementById('lyrics-output')?.innerText?.trim() || ''));
   if(!lyrics || lyrics.length < 50) return;
   
   const entry = {
@@ -97,8 +97,8 @@ window.loadSongFromHistory = function(id) {
   const hintEl = document.getElementById('lyrics-empty-hint');
   if(outputEl) { outputEl.textContent = song.lyrics; outputEl.style.display='block'; }
   if(hintEl) hintEl.style.display = 'none';
-  lastLyrics = song.lyrics;
-  SONG.lyricsText = song.lyrics;
+  window.HirschModules.lyricsCore.setLyrics(song.lyrics);
+  window.HirschModules.lyricsCore.syncSongMirror();
   
   const nameEl = document.getElementById('export-name');
   if(nameEl) nameEl.value = song.title;

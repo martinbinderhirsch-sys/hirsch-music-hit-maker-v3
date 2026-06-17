@@ -824,8 +824,8 @@ Write a complete, professional song. Follow the rhyme scheme (AABB=paired, ABAB=
         outputEl.style.display = 'block';
         outputEl.innerHTML = window.formatLyricsHTML ? window.formatLyricsHTML(result) : result;
       }
-      lastLyrics = result;
-      SONG.lyricsText = result;
+      window.HirschModules.lyricsCore.setLyrics(result);
+      window.HirschModules.lyricsCore.syncSongMirror();
       SONG.lyricsTitle = theme;
       addLyricsVersion(result);
       syncToExport();
@@ -890,8 +890,8 @@ Write a creatively DIFFERENT version with fresh ideas and new metaphors.`;
     try {
       const result = await hirschAICall(systemPrompt, userPrompt, { maxTokens: 1500, temperature: 0.95 });
       if(outputEl) { outputEl.style.display='block'; outputEl.innerHTML=''; outputEl.textContent = result; }
-      lastLyrics = result;
-      SONG.lyricsText = result;
+      window.HirschModules.lyricsCore.setLyrics(result);
+      window.HirschModules.lyricsCore.syncSongMirror();
       addLyricsVersion(result);
       syncToExport();
       updateExportPreview();
@@ -943,8 +943,8 @@ Write a creatively DIFFERENT version with fresh ideas and new metaphors.`;
     try {
       const result = await hirschAICall(systemPrompt, userPrompt, { maxTokens: 1500, temperature: 0.75 });
       if(outputEl) { outputEl.style.display='block'; outputEl.innerHTML=''; outputEl.textContent = result; }
-      lastLyrics = result;
-      SONG.lyricsText = result;
+      window.HirschModules.lyricsCore.setLyrics(result);
+      window.HirschModules.lyricsCore.syncSongMirror();
       addLyricsVersion(result);
       syncToExport();
       updateExportPreview();
@@ -1308,7 +1308,8 @@ Analyze in detail:
         if (current.includes(oldText)) {
           const updated = current.replace(oldText, newText);
           lyricsEl.innerHTML = window.formatLyricsHTML ? window.formatLyricsHTML(updated) : updated;
-          lastLyrics = updated;
+          window.HirschModules.lyricsCore.setLyrics(updated);
+          window.HirschModules.lyricsCore.syncSongMirror();
           // Also update lyricsVersions
           if (typeof lyricsVersions !== 'undefined' && lyricsVersions.length) {
             lyricsVersions[activeVersionIdx].text = updated;
@@ -1321,7 +1322,8 @@ Analyze in detail:
         const current = (typeof lastLyrics !== 'undefined' && lastLyrics) ? lastLyrics : (lyricsEl.innerText || '');
         const updated = current + (current ? '\n' : '') + newText;
         lyricsEl.innerHTML = window.formatLyricsHTML ? window.formatLyricsHTML(updated) : updated;
-        lastLyrics = updated;
+        window.HirschModules.lyricsCore.setLyrics(updated);
+        window.HirschModules.lyricsCore.syncSongMirror();
         applied = true;
       }
       // Visual: mark card as accepted
@@ -1748,7 +1750,7 @@ console.log('🤖 Hirsch Music AI Engine geladen — OpenAI GPT-4o bereit');
 // FIX 3: PDF + TXT EXPORT
 // ─────────────────────────────────────────────
 window.exportAsPDF = function() {
-  const lyrics = (typeof lastLyrics !== 'undefined' && lastLyrics) ? lastLyrics.trim() : (document.getElementById('lyrics-output')?.innerText?.trim() || '');
+  const lyrics = window.HirschModules.lyricsCore.getLyrics().trim() || (document.getElementById('lyrics-output')?.innerText?.trim() || '');
   const title = document.getElementById('export-name')?.value?.trim() || 
                 document.getElementById('lyrics-theme')?.value?.trim() || 'Mein Song';
   const genre = genreState['lyrics']?.map(v => {
@@ -1835,7 +1837,7 @@ window.exportAsPDF = function() {
 };
 
 window.exportAsTXT = function() {
-  const lyrics = (typeof lastLyrics !== 'undefined' && lastLyrics) ? lastLyrics.trim() : (document.getElementById('lyrics-output')?.innerText?.trim() || '');
+  const lyrics = window.HirschModules.lyricsCore.getLyrics().trim() || (document.getElementById('lyrics-output')?.innerText?.trim() || '');
   const title = document.getElementById('export-name')?.value?.trim() ||
                 document.getElementById('lyrics-theme')?.value?.trim() || 'Mein-Song';
   const genre = (genreState['lyrics'] || []).map(g => typeof g === 'string' ? g : (g.value || g.label || '')).filter(Boolean).join(', ') || '—';
