@@ -266,30 +266,111 @@ function buildMenu() {
   Menu.setApplicationMenu(menu);
 }
 
-// ─── API-Key Store (Hauptprozess — nicht im Renderer-Kontext) ────
-// Keys werden hier gehalten und nie direkt dem Renderer exponiert
-// Der Renderer fragt per IPC an, main.js gibt zurück
+// ─── API-Key Store (nur Hauptprozess) ─────────────────────────────
+// Keys verlassen diesen Prozess nie. Der Renderer sendet Prompts,
+// main.js fuehrt den fetch aus und gibt nur den Text-Output zurueck.
 const _encKeys = {
-  oai:        ['c2stcHJvai1HVDZiN2dkeDVPOGdBTDJwbV9zY25Q','ZURZQ2hxdGRyRVowRnB2Q1ZkWTNyS292OVRfQ3lD','MTBVc18zRTZIN0Z4X3ZoM1AtVGJJLVQzQmxia0ZKbzNLY0J4STlPdjU4MjhORkl3TTZPaXJoQ2RzZXlheDBEZi01MEY1Rkk4b1RUQUh0VzQ4aVJSSU5TZ05ZQnJXODlFRXhXQ3l3d0E='],
-  gemini:     ['QUl6YVN5QThoUlZFNnJi','T1Y2NzBpREc5MGhwRlVEY3ZrdVI0LTJZ'],
-  openrouter: ['c2stb3ItdjEtYzAzYjA1NDZlZTA3Mjc4','NjBmYjNkZjBkYzU3NzRjNTM2YmM4NmJj','MjZhMzUyMDVjM2MyZTc4MjFkZWY0MjBkYw=='],
+  oai: [
+    'c2stcHJvai1HVDZiN2dkeDVPOGdBTDJwbV9zY25Q',
+    'ZURZQ2hxdGRyRVowRnB2Q1ZkWTNyS292OVRfQ3lD',
+    'MTBVc18zRTZIN0Z4X3ZoM1AtVGJJLVQzQmxia0ZKbzNLY0J4STlPdjU4MjhORkl3TTZPaXJoQ2RzZXlheDBEZi01MEY1Rkk4b1RUQUh0VzQ4aVJSSU5TZ05ZQnJXODlFRXhXQ3l3d0E='
+  ],
+  gemini: [
+    'QUl6YVN5QThoUlZFNnJi',
+    'T1Y2NzBpREc5MGhwRlVEY3ZrdVI0LTJZ'
+  ],
+  openrouter: [
+    'c2stb3ItdjEtYzAzYjA1NDZlZTA3Mjc4',
+    'NjBmYjNkZjBkYzU3NzRjNTM2YmM4NmJj',
+    'MjZhMzUyMDVjM2MyZTc4MjFkZWY0MjBkYw=='
+  ],
 };
+
 function _decodeKey(parts) {
   return parts.map(p => Buffer.from(p, 'base64').toString('utf8')).join('');
+}
+
+async function _readJsonSafe(res) {
+  const text = await res.text();
+  try { return text ? JSON.parse(text) : {}; }
+  catch { return { raw: text || '' }; }
+}
+
+async function _providerFetch(url, options) {
+  const res = await fetch(url, options);
+  const data = await _readJsonSafe(res);
+  if (!res.ok) {
+    const msg = data?.error?.message || data?.raw || res.statusText || 'Request failed';
+    throw new Error(msg);
+  }
+  return data;
 }
 
 // ─── IPC ──────────────────────────────────────────────────────────
 ipcMain.handle('get-version', () => APP_VERSION);
 ipcMain.handle('check-update', () => autoUpdater.checkForUpdatesAndNotify());
 ipcMain.handle('apply-update', () => {
-  // Sofort neu starten und installieren
   autoUpdater.quitAndInstall(false, true);
 });
-ipcMain.handle('get-api-key', (event, service) => {
-  // Nur aus dem Renderer-Prozess der eigenen App abrufbar
-  const parts = _encKeys[service];
-  if (!parts) return null;
-  return _decodeKey(parts);
+
+// get-api-key entfernt in v3.27.5 — Renderer erhaelt keine Keys mehr.
+// Stattdessen: ai-request — Main-Prozess fuehrt fetch selbst aus.
+ipcMain.handle('ai-request', async (_event, payload) => {
+  const { provider, model, system = '', user = '', opts = {} } = payload || {};
+  if (!provider) throw new Error('Missing provider');
+
+  if (provider === 'openai') {
+    const key = _decodeKey(_encKeys.oai);
+    const data = await _providerFetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
+      body: JSON.stringify({
+        model: model || 'gpt-4o',
+        max_tokens: opts.maxTokens || 1200,
+        temperature: opts.temperature ?? 0.85,
+        ...(opts.jsonMode ? { response_format: { type: 'json_object' } } : {}),
+        messages: [{ role: 'system', content: system }, { role: 'user', content: user }]
+      })
+    });
+    return { ok: true, text: data?.choices?.[0]?.message?.content?.trim() || '' };
+  }
+
+  if (provider === 'gemini') {
+    const key = _decodeKey(_encKeys.gemini);
+    const useModel = model || 'gemini-2.5-flash-preview-05-20';
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${useModel}:generateContent?key=${key}`;
+    const data = await _providerFetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ role: 'user', parts: [{ text: `${system}\n\n${user}` }] }],
+        generationConfig: { maxOutputTokens: opts.maxTokens || 1200, temperature: opts.temperature ?? 0.85 }
+      })
+    });
+    return { ok: true, text: data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || '' };
+  }
+
+  if (provider === 'openrouter') {
+    const key = _decodeKey(_encKeys.openrouter);
+    const data = await _providerFetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${key}`,
+        'HTTP-Referer': 'https://hirsch-music.app',
+        'X-Title': 'Hirsch Music Hit Maker'
+      },
+      body: JSON.stringify({
+        model,
+        max_tokens: opts.maxTokens || 1200,
+        temperature: opts.temperature ?? 0.85,
+        messages: [{ role: 'system', content: system }, { role: 'user', content: user }]
+      })
+    });
+    return { ok: true, text: data?.choices?.[0]?.message?.content?.trim() || '' };
+  }
+
+  throw new Error(`Unsupported provider: ${provider}`);
 });
 
 // ─── App-Start ─────────────────────────────────────────────────────

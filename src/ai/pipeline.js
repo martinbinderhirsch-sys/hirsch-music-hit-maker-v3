@@ -18,123 +18,44 @@
  * Kern-Prinzip: "Spezifität unter Druck"
  *   Ein wahres Objekt schlägt fünf schöne Adjektive.
  *
- * API-Routen:
- *   - OpenAI GPT-4o  → direkt (api.openai.com)
- *   - Gemini Flash   → direkt (generativelanguage.googleapis.com)
- *   - OpenRouter     → alle anderen Modelle
+ * API-Routen (v3.27.5 — alle ueber Main-Prozess IPC):
+ *   - OpenAI GPT-4o  → window.electronAPI.aiRequest({ provider: 'openai', ... })
+ *   - Gemini Flash   → window.electronAPI.aiRequest({ provider: 'gemini', ... })
+ *   - OpenRouter     → window.electronAPI.aiRequest({ provider: 'openrouter', ... })
+ * Kein Key im Renderer. Main-Prozess haelt Secrets und fuehrt fetch aus.
  */
 
 'use strict';
 
-// ─── API-Keys (v3.27.4) ─────────────────────────────────────────
-// Kein Base64, kein localStorage, kein eingebettetes Geheimnis.
-// Keys werden ausschliesslich aus dem Hauptprozess via IPC geladen.
-//
-// Schreibpfad: main.js (ipcMain.handle 'get-api-key') -> loadRuntimeKeys() -> _runtimeKeys
-// Lesepfad:    requireKey('oai'|'gemini'|'openrouter')  (throws wenn Key fehlt)
-// Guard:       ensureRuntimeKeys() -> einmalig async; danach _keysLoaded = true
+// ─── Basis-API-Wrapper ueber Main-Prozess (v3.27.5) ─────────────
+// Renderer sendet nur Prompts + Provider-Name.
+// Main-Prozess fuehrt fetch aus, haelt Keys, gibt nur Text zurueck.
+// Kein API-Key, kein Base64, kein localStorage im Renderer.
 
-const _runtimeKeys = {
-  oai:        null,
-  gemini:     null,
-  openrouter: null,
-};
-
-let _keysLoaded = false;
-
-async function loadRuntimeKeys() {
-  if (!window?.electronAPI?.getApiKey) {
-    console.warn('[Pipeline] electronAPI.getApiKey nicht verfuegbar.');
-    return false;
+async function _ai(provider, payload) {
+  if (typeof window === 'undefined' || !window.electronAPI?.aiRequest) {
+    throw new Error('[Pipeline] Electron AI bridge nicht verfuegbar.');
   }
-  try {
-    _runtimeKeys.oai        = await window.electronAPI.getApiKey('oai');
-    _runtimeKeys.gemini     = await window.electronAPI.getApiKey('gemini');
-    _runtimeKeys.openrouter = await window.electronAPI.getApiKey('openrouter');
-    console.log('[Pipeline] ✅ API-Keys aus Hauptprozess geladen (IPC)');
-    return true;
-  } catch (e) {
-    console.warn('[Pipeline] Key-Load fehlgeschlagen:', e.message);
-    return false;
+  const res = await window.electronAPI.aiRequest({ provider, ...payload });
+  if (!res?.ok) {
+    throw new Error(res?.error || provider + ' request failed');
   }
+  return res.text || '';
 }
 
-async function ensureRuntimeKeys() {
-  if (_keysLoaded) return;
-  const ok = await loadRuntimeKeys();
-  if (!ok) throw new Error('[Pipeline] API-Key-Initialisierung fehlgeschlagen. App neu starten.');
-  _keysLoaded = true;
-}
-
-function requireKey(service) {
-  const key = _runtimeKeys[service];
-  if (!key) throw new Error('[Pipeline] API-Key fehlt: ' + service + '. App neu starten.');
-  return key;
-}
-
-
-// ─── Basis-API-Wrapper ────────────────────────────────────────────
-
-/** GPT-4o direkt (mit JSON-Mode) */
+/** GPT-4o */
 async function _gpt(system, user, opts = {}) {
-  await ensureRuntimeKeys();
-  const key = requireKey('oai');
-  const res = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
-    body: JSON.stringify({
-      model: 'gpt-4o',
-      max_tokens: opts.maxTokens || 1200,
-      temperature: opts.temperature ?? 0.85,
-      ...(opts.jsonMode ? { response_format: { type: 'json_object' } } : {}),
-      messages: [{ role: 'system', content: system }, { role: 'user', content: user }],
-    }),
-  });
-  if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error('GPT-4o: ' + (e?.error?.message || res.statusText)); }
-  const d = await res.json();
-  return d?.choices?.[0]?.message?.content?.trim() || '';
+  return _ai('openai', { model: 'gpt-4o', system, user, opts });
 }
 
-/** Gemini 2.5 Flash direkt */
+/** Gemini 2.5 Flash */
 async function _gemini(system, user, opts = {}) {
-  await ensureRuntimeKeys();
-  const key = requireKey('gemini');
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${key}`;
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ role: 'user', parts: [{ text: system + '\n\n' + user }] }],
-      generationConfig: { maxOutputTokens: opts.maxTokens || 1200, temperature: opts.temperature ?? 0.85 },
-    }),
-  });
-  if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error('Gemini: ' + (e?.error?.message || res.statusText)); }
-  const d = await res.json();
-  return d?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || '';
+  return _ai('gemini', { model: 'gemini-2.5-flash-preview-05-20', system, user, opts });
 }
 
 /** OpenRouter (alle anderen Modelle) */
 async function _or(model, system, user, opts = {}) {
-  await ensureRuntimeKeys();
-  const key = requireKey('openrouter');
-  const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + key,
-      'HTTP-Referer': 'https://hirsch-music.app',
-      'X-Title': 'Hirsch Music Hit Maker',
-    },
-    body: JSON.stringify({
-      model,
-      max_tokens: opts.maxTokens || 1200,
-      temperature: opts.temperature ?? 0.85,
-      messages: [{ role: 'system', content: system }, { role: 'user', content: user }],
-    }),
-  });
-  if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error(model + ': ' + (e?.error?.message || res.statusText)); }
-  const d = await res.json();
-  return d?.choices?.[0]?.message?.content?.trim() || '';
+  return _ai('openrouter', { model, system, user, opts });
 }
 
 // ─── Modell-Shortcuts ─────────────────────────────────────────────
