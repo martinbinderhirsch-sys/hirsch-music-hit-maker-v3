@@ -8476,51 +8476,7 @@ function _incVersionCounter() {
   return window._globalVersionCounter;
 }
 
-// Override addLyricsVersion to support max 10 versions and version-bar
-(function() {
-  window.addLyricsVersion = function(text, label) {
-    const title = label || extractSongTitle(text);
-    const vNum = _incVersionCounter();
-    const entry = { text, title, timestamp: new Date(), favorite: false, vNum: vNum };
-    lyricsVersions.push(entry);
-    if(lyricsVersions.length > 10) lyricsVersions.shift(); // keep max 10
-    activeVersionIdx = lyricsVersions.length - 1;
-    renderLyricsVersionTabs();
-    renderVersionBar();
-    showLyricsVersion(activeVersionIdx);
-    wbUpdateStats();
-
-    // ── AUTO-SYNC ZUR WORKBENCH ─────────────────────────────────
-    // Text automatisch in die Workbench übertragen
-    window._lastLyricsForWorkbench = text;
-    window._lastLyricsLabelForWorkbench = title || ('V' + vNum);
-
-    // Status-Indikator im Lyrics-Tab aktualisieren
-    var indicator = document.getElementById('wb-sync-indicator');
-    if (!indicator) {
-      var outputBox = document.getElementById('lyrics-output');
-      if (outputBox && outputBox.parentNode) {
-        indicator = document.createElement('div');
-        indicator.id = 'wb-sync-indicator';
-        indicator.style.cssText = 'font-size:11px;color:#A78BFA;font-weight:600;padding:4px 10px;background:rgba(124,58,237,0.1);border-radius:7px;border:1px solid rgba(124,58,237,0.25);margin-top:6px;display:inline-block;';
-        outputBox.parentNode.insertBefore(indicator, outputBox.nextSibling);
-      }
-    }
-    if (indicator) {
-      var isDE = window.currentLang !== 'en';
-      indicator.textContent = '✅ ' + (isDE ? 'Text an Workbench gesendet' : 'Text sent to Workbench');
-      indicator.style.display = 'inline-block';
-    }
-
-    // Falls "Eigener Text"-Bereich leer ist: Workbench-Source auf 'lyrics' setzen
-    if (typeof window.setSuperKISource === 'function') {
-      var ownText = document.getElementById('superki-own-text');
-      if (!ownText || !ownText.value.trim()) {
-        window.setSuperKISource('lyrics');
-      }
-    }
-  };
-})();
+// v3.27.2: addLyricsVersion → window.HirschModules.lyricsCore.addVersion (lyrics-core.js)
 
 function renderVersionBar() {
   let bar = document.getElementById('version-bar');
@@ -22202,6 +22158,7 @@ if (typeof _origRenderLibRow === 'function') {
     <script src="vocals-ui.js"></script>
   <script src="library-ui.js"></script>
   <script src="workbench-ui.js"></script>
+  <script src="lyrics-core.js"></script>
   <script src="export-ui.js"></script>
 
 <!-- ══ LEBENSSITUATION MODAL (v3.27.0) ══ -->
@@ -22303,56 +22260,7 @@ if (typeof _origRenderLibRow === 'function') {
   console.log('[HirschApp] ✅ Namespace v3.27.0 geladen');
 })();
 
-// ══════════════════════════════════════════════════════════════════
-// generateLyricsController — Einziger offizieller Einstiegspunkt
-// Zieht alle Patches zusammen: VocalStyle → Generierung → RetryBar
-// → History → CostTracking → UI-Update
-// ══════════════════════════════════════════════════════════════════
-window.generateLyricsController = async function(mode) {
-  mode = mode || 'single'; // 'single' | '7ki'
-
-  // 1. Vocal Style vor Generierung in SONG injizieren
-  if (typeof _vocalStyleSelected !== 'undefined' && _vocalStyleSelected.length > 0 &&
-      typeof VOCAL_STYLES !== 'undefined') {
-    const labels = _vocalStyleSelected.map(v => {
-      for (const cat of Object.values(VOCAL_STYLES)) {
-        const s = cat.styles?.find(x => x.value === v);
-        if (s) return s.en || s.de || v;
-      }
-      return v;
-    });
-    if (typeof SONG !== 'undefined') SONG.vocalStyle = labels.join(', ');
-    window._pendingVocalStyle = labels.join(', ');
-  } else {
-    window._pendingVocalStyle = '';
-  }
-
-  // 2. Generierung ausführen
-  let result;
-  try {
-    if (mode === '7ki' && typeof window.generateLyrics7KI === 'function') {
-      result = await window.generateLyrics7KI();
-    } else if (typeof window.generateLyrics === 'function') {
-      result = await window.generateLyrics();
-    }
-  } catch (err) {
-    console.error('[generateLyricsController] Fehler:', err);
-    return null;
-  }
-
-  // 3. Retry-Bar anzeigen
-  if (typeof window.showRetryBar === 'function') {
-    setTimeout(window.showRetryBar, 300);
-  }
-
-  // 4. Song-History speichern
-  if (typeof window.addSongToHistory === 'function' && result) {
-    window.addSongToHistory(result);
-  }
-
-  return result;
-};
-window.HirschApp.lyrics.controller = window.generateLyricsController;
+// v3.27.2: generateLyricsController → window.HirschModules.lyricsCore.generate (lyrics-core.js)
 
 // ══════════════════════════════════════════════════════════════════
 // initApp — Zentraler App-Startpunkt (v3.27.0)
