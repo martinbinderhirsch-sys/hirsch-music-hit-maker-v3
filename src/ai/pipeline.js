@@ -26,55 +26,59 @@
 
 'use strict';
 
-// ─── API-Schlüssel (Base64-enkodiert) ─────────────────────────────
-// v3.26.3: Key-Auflösung — Priorität: IPC (main.js) → localStorage → Fallback
-// In der Desktop-App kommen Keys sicher aus dem Hauptprozess via electronAPI.getApiKey()
-// Im Browser (Web-App) kommen Keys aus localStorage oder Fallback
-const _KEYS = {
-  oai: () => {
-    try { const k = localStorage.getItem('hirsch_openai_key'); if (k?.startsWith('sk-')) return k; } catch(e) {}
-    const p = [
-      'c2stcHJvai1HVDZiN2dkeDVPOGdBTDJwbV9zY25Q',
-      'ZURZQ2hxdGRyRVowRnB2Q1ZkWTNyS292OVRfQ3lD',
-      'MTBVc18zRTZIN0Z4X3ZoM1AtVGJJLVQzQmxia0ZKbzNLY0J4STlPdjU4MjhORkl3TTZPaXJoQ2RzZXlheDBEZi01MEY1Rkk4b1RUQUh0VzQ4aVJSSU5TZ05ZQnJXODlFRXhXQ3l3d0E=',
-    ];
-    return atob(p[0]) + atob(p[1]) + atob(p[2]);
-  },
-  gemini: () => {
-    try { const k = localStorage.getItem('hirsch_google_pro_key'); if (k) return k; } catch(e) {}
-    return atob('QUl6YVN5QThoUlZFNnJi') + atob('T1Y2NzBpREc5MGhwRlVEY3ZrdVI0LTJZ');
-  },
-  openrouter: () => {
-    try { const k = localStorage.getItem('hirsch_openrouter_key'); if (k) return k; } catch(e) {}
-    return atob('c2stb3ItdjEtYzAzYjA1NDZlZTA3Mjc4') +
-           atob('NjBmYjNkZjBkYzU3NzRjNTM2YmM4NmJj') +
-           atob('MjZhMzUyMDVjM2MyZTc4MjFkZWY0MjBkYw==');
-  },
+// ─── API-Keys (v3.27.4) ─────────────────────────────────────────
+// Kein Base64, kein localStorage, kein eingebettetes Geheimnis.
+// Keys werden ausschliesslich aus dem Hauptprozess via IPC geladen.
+//
+// Schreibpfad: main.js (ipcMain.handle 'get-api-key') -> loadRuntimeKeys() -> _runtimeKeys
+// Lesepfad:    requireKey('oai'|'gemini'|'openrouter')  (throws wenn Key fehlt)
+// Guard:       ensureRuntimeKeys() -> einmalig async; danach _keysLoaded = true
+
+const _runtimeKeys = {
+  oai:        null,
+  gemini:     null,
+  openrouter: null,
 };
 
-// Desktop-App: Keys asynchron aus Hauptprozess vorladen (IPC — sicherer als Renderer-Kontext)
-// Wird beim App-Start einmalig aufgerufen; überschreibt localStorage-Einträge nicht
-if (typeof window !== 'undefined' && window.electronAPI?.getApiKey) {
-  (async () => {
-    try {
-      const oai = await window.electronAPI.getApiKey('oai');
-      const gem = await window.electronAPI.getApiKey('gemini');
-      const or  = await window.electronAPI.getApiKey('openrouter');
-      if (oai) window._ipcKey_oai        = oai;
-      if (gem) window._ipcKey_gemini     = gem;
-      if (or)  window._ipcKey_openrouter = or;
-      console.log('[Pipeline] ✅ API-Keys sicher aus Hauptprozess geladen (IPC)');
-    } catch(e) {
-      console.warn('[Pipeline] IPC Key-Load fehlgeschlagen, nutze Fallback:', e.message);
-    }
-  })();
+let _keysLoaded = false;
+
+async function loadRuntimeKeys() {
+  if (!window?.electronAPI?.getApiKey) {
+    console.warn('[Pipeline] electronAPI.getApiKey nicht verfuegbar.');
+    return false;
+  }
+  try {
+    _runtimeKeys.oai        = await window.electronAPI.getApiKey('oai');
+    _runtimeKeys.gemini     = await window.electronAPI.getApiKey('gemini');
+    _runtimeKeys.openrouter = await window.electronAPI.getApiKey('openrouter');
+    console.log('[Pipeline] ✅ API-Keys aus Hauptprozess geladen (IPC)');
+    return true;
+  } catch (e) {
+    console.warn('[Pipeline] Key-Load fehlgeschlagen:', e.message);
+    return false;
+  }
 }
+
+async function ensureRuntimeKeys() {
+  if (_keysLoaded) return;
+  const ok = await loadRuntimeKeys();
+  if (!ok) throw new Error('[Pipeline] API-Key-Initialisierung fehlgeschlagen. App neu starten.');
+  _keysLoaded = true;
+}
+
+function requireKey(service) {
+  const key = _runtimeKeys[service];
+  if (!key) throw new Error('[Pipeline] API-Key fehlt: ' + service + '. App neu starten.');
+  return key;
+}
+
 
 // ─── Basis-API-Wrapper ────────────────────────────────────────────
 
 /** GPT-4o direkt (mit JSON-Mode) */
 async function _gpt(system, user, opts = {}) {
-  const key = window._ipcKey_oai || _KEYS.oai();
+  await ensureRuntimeKeys();
+  const key = requireKey('oai');
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
@@ -93,7 +97,8 @@ async function _gpt(system, user, opts = {}) {
 
 /** Gemini 2.5 Flash direkt */
 async function _gemini(system, user, opts = {}) {
-  const key = window._ipcKey_gemini || _KEYS.gemini();
+  await ensureRuntimeKeys();
+  const key = requireKey('gemini');
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${key}`;
   const res = await fetch(url, {
     method: 'POST',
@@ -110,7 +115,8 @@ async function _gemini(system, user, opts = {}) {
 
 /** OpenRouter (alle anderen Modelle) */
 async function _or(model, system, user, opts = {}) {
-  const key = window._ipcKey_openrouter || _KEYS.openrouter();
+  await ensureRuntimeKeys();
+  const key = requireKey('openrouter');
   const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
