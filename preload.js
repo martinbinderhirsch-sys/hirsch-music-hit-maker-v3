@@ -1,8 +1,9 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
-// Sichere IPC-Brücke (v3.27.5)
-// getApiKey() entfernt — Renderer erhält keine Keys mehr.
-// aiRequest() sendet Prompts; Main-Prozess führt fetch aus und gibt nur Text zurück.
+// Sichere IPC-Brücke (v3.27.6)
+// Renderer kennt keine API-Keys im Klartext.
+// - aiRequest: Prompts senden, Main-Prozess fetcht (OpenAI/Gemini/OpenRouter)
+// - setTopMediaiKey: User-Key einmalig an Main-Prozess übergeben (bleibt dort)
 contextBridge.exposeInMainWorld('electronAPI', {
   platform: process.platform,
   isDesktop: true,
@@ -19,4 +20,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
   // AI-Requests über Main-Prozess (kein Key im Renderer)
   aiRequest: (payload) => ipcRenderer.invoke('ai-request', payload),
+
+  // TopMediai: User-Key einmalig an Main-Prozess senden
+  // Key verlässt main.js danach nicht mehr — Proxy nutzt _runtimeTmKey direkt
+  setTopMediaiKey: (key) => ipcRenderer.invoke('set-topmediai-key', key),
 });

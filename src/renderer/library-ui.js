@@ -1543,26 +1543,12 @@ window.connectTopMediaiAccount = async function() {
   if (panelEl) panelEl.style.display = 'none';
   if (errorEl) errorEl.style.display = 'none';
 
-  const key = _getEffectiveTmKey();
-  if (!key) {
-    loadEl.style.display = 'none';
-    if (errorEl) { errorEl.style.display = 'block'; errorEl.textContent = '❌ Kein API Key gesetzt. Bitte unten eingeben.'; }
-    return;
-  }
-
+  // v3.27.6: Key-Prüfung entfällt im Renderer — Proxy antwortet mit 401 wenn kein Key im Main-Prozess
   const isDE = window.currentLang !== 'en';
 
-  // Try endpoints in order:
-  // 1. Local CORS proxy (port 5001) — works when app is served locally or via desktop
-  // 2. Direct API — works in Electron (no CORS)
-  // 3. Cached fallback
-  const proxyBase = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-    ? 'http://localhost:5001'
-    : null;
-
+  // v3.27.6: Proxy nutzt _runtimeTmKey aus Main-Prozess — kein x-api-key vom Client
   const tryEndpoints = [
-    ...(proxyBase ? [`${proxyBase}/v1/get_api_key_info`] : []),
-    'https://api.topmediai.com/v1/get_api_key_info',
+    'http://localhost:5001/v1/get_api_key_info',
   ];
 
   let d = null;
@@ -1570,14 +1556,14 @@ window.connectTopMediaiAccount = async function() {
   for (const endpoint of tryEndpoints) {
     try {
       const resp = await fetch(endpoint, {
-        headers: { 'x-api-key': key },
+        method: 'GET',
         signal: AbortSignal.timeout(8000)
       });
       if (!resp.ok) continue;
       const raw = await resp.json();
       if (raw.email || raw.x_api_key) { d = raw; break; }
     } catch(e) {
-      // Try next endpoint
+      // Proxy nicht erreichbar — Fallback auf Cache
     }
   }
 
@@ -1680,21 +1666,25 @@ window.saveTopMediaiKey = async function() {
     if (statusEl) statusEl.innerHTML = '<span style="color:var(--danger);">❌ Ungültiger Key</span>';
     return;
   }
-  // Save to localStorage
-  window._hirschTmKeyUser = key; localStorage.setItem("hirsch_topm_key", key);
+  // v3.27.6: Key via IPC an Main-Prozess senden — kein localStorage, kein Klartext im Renderer
   if (statusEl) statusEl.innerHTML = '<span style="color:#10a37f;">⏳ Verbinde...</span>';
-  // Test the key
   try {
-    const resp = await fetch('https://api.topmediai.com/v1/get_api_key_info', {
-      headers: { 'x-api-key': key }
+    if (!window.electronAPI?.setTopMediaiKey) {
+      throw new Error('Electron Bridge nicht verfügbar');
+    }
+    // Key einmalig an Main-Prozess übergeben (bleibt in _runtimeTmKey, verlässt main.js nie)
+    await window.electronAPI.setTopMediaiKey(key);
+    // Verifizierung über Proxy (kein x-api-key Header nötig — Main kennt Key)
+    const resp = await fetch('http://localhost:5001/v1/get_api_key_info', {
+      method: 'GET',
+      signal: AbortSignal.timeout(8000)
     });
     if (!resp.ok) throw new Error('HTTP ' + resp.status);
-    if (statusEl) statusEl.innerHTML = '<span style="color:#10a37f;">✅ Key gespeichert & verifiziert!</span>';
+    if (statusEl) statusEl.innerHTML = '<span style="color:#10a37f;">✅ Proxy verbunden & verifiziert!</span>';
     await window.connectTopMediaiAccount();
     if (input) input.value = '';
   } catch(e) {
     if (statusEl) statusEl.innerHTML = '<span style="color:var(--danger);">❌ Key ungültig: ' + e.message + '</span>';
-    window._hirschTmKeyUser = null; localStorage.removeItem("hirsch_topm_key");
   }
 };
 

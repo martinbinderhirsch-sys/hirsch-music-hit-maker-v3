@@ -2,6 +2,7 @@ const { app, BrowserWindow, Menu, shell, dialog, ipcMain } = require('electron')
 const path = require('path');
 const fs   = require('fs');
 const http = require('http');
+const https = require('https');
 
 // ─── GPU-Probleme auf Windows beheben ────────────────────────────
 app.commandLine.appendSwitch('disable-gpu-sandbox');
@@ -76,43 +77,121 @@ autoUpdater.on('error', (err) => {
   if (mainWindow) mainWindow.webContents.send('update-status', { status: 'error', message: err.message });
 });
 
-// ─── TopMediai CORS Proxy Server (Port 5001) ─────────────────────
+// ─── TopMediai User-Key (nur Main-Prozess) ────────────────────────
+// User gibt Key einmalig ein -> set-topmediai-key IPC -> _runtimeTmKey
+// Proxy nutzt _runtimeTmKey direkt — Renderer kennt Key nie im Klartext.
+let _runtimeTmKey = null;
+
+ipcMain.handle('set-topmediai-key', (_event, key) => {
+  if (!key || typeof key !== 'string' || key.length < 20) {
+    throw new Error('Ungültiger TopMediai Key');
+  }
+  _runtimeTmKey = key.trim();
+  console.log('[TopMediai] Key im Main-Prozess gespeichert');
+  return { ok: true };
+});
+
+// ─── TopMediai Strict Proxy (Port 5001, v3.27.6) ──────────────────
 const TOPMEDIAI_BASE = 'api.topmediai.com';
 
-function startTopMediaiProxy() {
-  const server = http.createServer((req, res) => {
-    const corsHeaders = {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, x-api-key',
-    };
-    if (req.method === 'OPTIONS') {
-      res.writeHead(200, corsHeaders); res.end(); return;
-    }
-    const apiKey = req.headers['x-api-key'] || '';
+// Nur diese zwei Routen sind erlaubt — keine freien Zielpfade.
+const TOPMEDIAI_ROUTE_MAP = {
+  'GET /v1/get_api_key_info': { upstreamPath: '/v1/get_api_key_info', method: 'GET',  maxBodyBytes: 0 },
+  'POST /v1/music':           { upstreamPath: '/v1/music',            method: 'POST', maxBodyBytes: 1024 * 1024 },
+};
+
+function _readBody(req, maxBytes) {
+  return new Promise((resolve, reject) => {
+    if (!maxBytes) return resolve(Buffer.alloc(0));
     const chunks = [];
-    req.on('data', c => chunks.push(c));
-    req.on('end', () => {
-      const body = Buffer.concat(chunks);
-      const options = {
-        hostname: TOPMEDIAI_BASE, port: 443, path: req.url, method: req.method,
-        headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'Content-Length': body.length }
+    let size = 0, done = false;
+    req.on('data', chunk => {
+      if (done) return;
+      size += chunk.length;
+      if (size > maxBytes) { done = true; reject(new Error('Payload too large')); req.destroy(); return; }
+      chunks.push(chunk);
+    });
+    req.on('end',   () => { if (!done) { done = true; resolve(Buffer.concat(chunks)); } });
+    req.on('error', err => { if (!done) { done = true; reject(err); } });
+  });
+}
+
+function _sendJson(res, status, cors, payload) {
+  res.writeHead(status, { ...cors, 'Content-Type': 'application/json; charset=utf-8' });
+  res.end(JSON.stringify(payload));
+}
+
+function startTopMediaiProxy() {
+  const server = http.createServer(async (req, res) => {
+    const cors = {
+      'Access-Control-Allow-Origin':  'null',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Vary': 'Origin',
+    };
+
+    if (req.method === 'OPTIONS') { res.writeHead(204, cors); res.end(); return; }
+
+    try {
+      // Route-Whitelist prüfen
+      const url      = new URL(req.url, 'http://127.0.0.1:5001');
+      const routeKey = `${req.method} ${url.pathname}`;
+      const route    = TOPMEDIAI_ROUTE_MAP[routeKey];
+      if (!route) { _sendJson(res, 404, cors, { error: 'Route not allowed' }); return; }
+
+      // Client darf keinen eigenen Key mitschicken
+      if (req.headers['x-api-key']) {
+        _sendJson(res, 400, cors, { error: 'Client x-api-key header is forbidden' });
+        return;
+      }
+
+      // Key muss im Main-Prozess vorhanden sein
+      if (!_runtimeTmKey) {
+        _sendJson(res, 401, cors, { error: 'TopMediai key not set. Please enter your key in the app.' });
+        return;
+      }
+
+      const body = await _readBody(req, route.maxBodyBytes);
+
+      const upstreamHeaders = {
+        'x-api-key': _runtimeTmKey,
+        'Accept':    'application/json',
       };
-      const proxyReq = require('https').request(options, (proxyRes) => {
+      if (route.method !== 'GET') {
+        upstreamHeaders['Content-Type']   = 'application/json';
+        upstreamHeaders['Content-Length'] = body.length;
+      }
+
+      const proxyReq = https.request({
+        hostname: TOPMEDIAI_BASE, port: 443,
+        path: route.upstreamPath, method: route.method,
+        headers: upstreamHeaders,
+      }, proxyRes => {
         const data = [];
         proxyRes.on('data', c => data.push(c));
         proxyRes.on('end', () => {
-          res.writeHead(proxyRes.statusCode, { ...corsHeaders, 'Content-Type': 'application/json' });
+          res.writeHead(proxyRes.statusCode || 502, {
+            ...cors,
+            'Content-Type': proxyRes.headers['content-type'] || 'application/json; charset=utf-8',
+          });
           res.end(Buffer.concat(data));
         });
       });
-      proxyReq.on('error', (e) => { res.writeHead(502, corsHeaders); res.end(JSON.stringify({ error: e.message })); });
-      if (body.length > 0) proxyReq.write(body);
+
+      proxyReq.on('error', err => _sendJson(res, 502, cors, { error: err.message }));
+      if (route.method !== 'GET' && body.length) proxyReq.write(body);
       proxyReq.end();
-    });
+
+    } catch (err) {
+      const status = err.message === 'Payload too large' ? 413 : 400;
+      _sendJson(res, status, cors, { error: err.message });
+    }
   });
-  server.listen(5001, '127.0.0.1', () => console.log('[Proxy] TopMediai CORS Proxy läuft auf Port 5001'));
-  server.on('error', (e) => { if (e.code !== 'EADDRINUSE') console.error('[Proxy] Fehler:', e.message); });
+
+  server.listen(5001, '127.0.0.1', () =>
+    console.log('[Proxy] TopMediai Strict Proxy läuft auf 127.0.0.1:5001')
+  );
+  server.on('error', e => { if (e.code !== 'EADDRINUSE') console.error('[Proxy] Fehler:', e.message); });
   return server;
 }
 
